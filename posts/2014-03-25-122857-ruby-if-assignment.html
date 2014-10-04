@@ -1,0 +1,35 @@
+<div class="meta"><div class="title">ruby在if中的assignment</div><div class="datetime">2014-03-25 12:28:57</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-if-assignment</div><div class="file">2014-03-25-122857-ruby-if-assignment</div><div class="template">post</div></div><p>如果我們想要檢查<code>foo.get_value()</code>有沒有值，如果有的話就用回傳的值做什麼事，如果回傳是<code>nil</code>則不做事之類的。那我們通常會寫成下面這個樣子：</p><div hljs="" include="'code1'"></div><script id="code1" language="ruby" type="text/ng-template">if a = foo.get_value()
+  # ...
+  # Do something with a if Foo.get_value() return a value...
+  # ...
+end</script><p>不過當你有兩個以上的判斷式就要小心了，先看一個最簡單的例子：</p><div hljs="" include="'code2'"></div><script id="code2" language="ruby" type="text/ng-template">if a = 1
+  p a
+end
+
+
+# 1</script><p>這個沒有問題，<code>a</code>的值是<code>1</code>，所以會跑<code>p a</code>，印出的值是<code>1</code>。那下面這個例子？</p><div hljs="" include="'code3'" language="ruby"></div><script id="code3" type="text/ng-template">if a = 1 && b = 2
+  p a
+  p b
+end
+
+
+# 2 <= ???
+# 2</script><p>這是因為<code>&&</code>的優先權大於<code>=</code>，所以<code>a = 1 && b = 2</code>的結果相當於</p><div hljs="" include="'code4'" language="ruby"></div><script id="code4" type="text/ng-template">a = 1 && b = 2
+a = (1 && (b = 2))
+a = (1 && 2) # b = 2
+a = 2</script><p>如果想要得到<code>a = 1</code>與<code>b = 2</code>的結果，可以使用<code>and</code>(<code>and</code>的優先權比<code>=</code>低)或是<code>()</code>來得到正確的值：</p><div hljs="" include="'code5'" language="ruby"></div><script id="code5" type="text/ng-template">if a = 1 and b = 2
+  p a
+  p b
+end
+
+
+# 1
+# 2
+
+if (a = 1) && (b = 2)
+  p a
+  p b
+end
+
+# 1
+# 2</script>

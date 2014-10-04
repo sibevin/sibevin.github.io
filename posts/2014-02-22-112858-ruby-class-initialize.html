@@ -1,0 +1,26 @@
+<div class="meta"><div class="title">ruby class的initialize</div><div class="datetime">2014-02-22 11:28:58</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-class-initialize</div><div class="file">2014-02-22-112858-ruby-class-initialize</div><div class="template">post</div></div><p>initialize其實就是ruby class中的contructor，下面的範例展示了一些initialize基本的用法。</p><div hljs="" include="'code1'"></div><script id="code1" type="text/ng-template">class A
+  def initialize
+    @var_a = 1
+  end
+end
+
+
+class B < A
+  def print_var_a
+    p @var_a
+  end
+end
+
+B.new.print_var_a
+# 1</script><ul><li>1. parent class的initialize會被child class繼承。</li><li>2. parent class的static variable也會被繼承，可以在child class中使用這些變數。</li></ul><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">class C < A
+  def initialize
+    p @var_a
+    super
+    p @var_a
+  end
+end
+
+
+C.new
+# nil
+# 1</script><ul><li>1. 如果在child class中明確定義了另一個initialize，那parent class的initialize會被child class的initialize複寫。</li><li>2. 可以在child class的initialize中使用super來呼叫parent class的initialize。</li></ul>
