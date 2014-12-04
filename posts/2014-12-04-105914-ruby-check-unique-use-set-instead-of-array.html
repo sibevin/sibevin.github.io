@@ -1,0 +1,64 @@
+<div class="meta"><div class="title">ruby處理unique物件</div><div class="datetime">2014-12-04 10:59:14</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-check-unique-use-set-instead-of-array</div><div class="file">2014-12-04-105914-ruby-check-unique-use-set-instead-of-array</div><div class="template">post</div></div><p>要建立一連串unique的字串，直覺上可以用array將建立過的字串存起來，再用<code>include?</code>來判斷新產生的字串有沒有被建立過：</p><div hljs="" include="'code1'" language="ruby"></div><script id="code1" type="text/ng-template">n = 10000
+created_tokens = []
+while created_tokens.size < n
+  token = RandomToken.gen(10)
+  if created_tokens.include?(token)
+    next
+  else
+    created_tokens << token
+  end
+end
+results = created_tokens</script><p>不過這個方法速度會非常的慢。有一個技巧是使用hash的key一定是unique的特性來判斷，程式如下：</p><div hljs="" include="'code2'" language="ruby"></div><script id="code2" type="text/ng-template">n = 10000
+created_tokens_hash = {}
+while created_tokens_hash.size < n
+  token = RandomToken.gen(10)
+  created_tokens_hash[token] = true
+end
+results = created_tokens_hash.keys</script><p>這速度很明顯的大幅提升，不過用hash看起來就像是用hack的方式感覺不是很乾淨，尤其是不會用到的value塞什麼都怪怪的。最好的做法就是用set了：</p><div hljs="" include="'code3'" language="ruby"></div><script id="code3" type="text/ng-template">n = 10000
+created_tokens_set = Set.new
+while created_tokens_set.size < n
+  token = RandomToken.gen(10)
+  created_tokens_set << token
+end
+results = created_tokens_set.to_a</script><p>效能測試如下：</p><div hljs="" include="'code4'" language="ruby"></div><script id="code4" type="text/ng-template">require 'benchmark'
+require 'set'
+require 'random_token'
+
+
+n = 10000
+
+Benchmark.bm(7) do |x|
+  x.report("array:") do
+    created_tokens = []
+    while created_tokens.size < n
+      token = RandomToken.gen(10)
+      if created_tokens.include?(token)
+        next
+      else
+        created_tokens << token
+      end
+    end
+    results = created_tokens
+  end
+
+  x.report("hash:") do
+    created_tokens_hash = {}
+    while created_tokens_hash.size < n
+      token = RandomToken.gen(10)
+      created_tokens_hash[token] = true
+    end
+    results = created_tokens_hash.keys
+  end
+
+  x.report("set:") do
+    created_tokens_set = Set.new
+    while created_tokens_set.size < n
+      token = RandomToken.gen(10)
+      created_tokens_set << token
+    end
+    results = created_tokens_set.to_a
+  end
+end</script><pre class="hljs"><code>              user     system      total        real
+array:    8.860000   0.050000   8.910000 (  9.112402)
+hash:     2.030000   0.010000   2.040000 (  2.062945)
+set:      2.000000   0.000000   2.000000 (  2.037125)</code></pre>
