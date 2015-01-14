@@ -78,8 +78,6 @@ end</script><p>記得在permit中加入<code>tag_tokens</code>。</p><p>6. 在ed
     },
     minimumInputLength: 1,
     createSearchChoice: function(term, data) {
-        var a = data;
-        var b = term;
         if (data.length === 0) {
             return {
                 id: "<<<" + term + ">>>",
