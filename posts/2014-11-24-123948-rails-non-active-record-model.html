@@ -1,4 +1,4 @@
-<div class="meta"><div class="title">不關聯到資料庫的model</div><div class="datetime">2014-11-24 12:39:48</div><div class="tag">rails_model</div><div class="category">programming</div><div class="link">rails-non-active-record-model</div><div class="file">2014-11-24-123948-rails-non-active-record-model</div><div class="template">post</div></div><h1>問題</h1><p>最近處理一些使用simple form的頁面遇到了一個問題。有一個頁面有兩個email input的欄位，要使用者輸入兩次email，rails這邊要做email格式與email確確認的檢查。我們知道如果要讓simple form支援錯誤顯示，則simple_form必須要跟一個model做關連，但以這個例子而言，這個model只有兩個attribute - email與email_confirmation，很明顯不會跟database有關係，但又要支援model的validation，所以要想辦法做一個不關聯到資料庫的model。</p><h1>解法</h1><p>下面是一個範例：</p><div hljs="" include="'code1'" language="ruby"></div><script id="code1" type="text/ng-template">class ExtraauthMail
+<div class="meta"><div class="title">不關聯到資料庫的model</div><div class="datetime">2014-11-24 12:39:48</div><div class="tag">rails_model</div><div class="category">programming</div><div class="link">rails-non-active-record-model</div><div class="file">2014-11-24-123948-rails-non-active-record-model</div><div class="template">post</div></div><h1>問題</h1><p>最近處理一些使用simple form的頁面遇到了一個問題。有一個頁面有兩個email input的欄位，要使用者輸入兩次email，rails這邊要做email格式與email確確認的檢查。我們知道如果要讓simple form支援錯誤顯示，則simple_form必須要跟一個model做關連，但以這個例子而言，這個model只有兩個attribute - email與email_confirmation，很明顯不會跟database有關係，但又要支援model的validation，所以要想辦法做一個不關聯到資料庫的model。</p><h1>解法</h1><p>下面是一個範例：</p><div hljs="" include="&#39;code1&#39;" language="ruby"></div><script id="code1" type="text/ng-template">class ExtraauthMail
   include ActiveModel::Validations
   include ActiveModel::Conversion
   extend ActiveModel::Naming
@@ -26,7 +26,7 @@
       @errors.add(:email, I18n.t("activemodel.errors.models.extraauth_mail.duplicated"))
     end
   end
-end</script><p>在網路上有許多類似的topic，例如在code school中的rails4 pattern也有提到怎麼做這種model。不過在實際上還是會遇到很多坑，在這裡記錄一下：</p><ul><li>如果要支援validation，除了要加上<code>include ActiveModel::Validations</code>之外，記得還要加<code>attr_reader :errors</code>，並且在initialize中初始化它。</li><li>理論上支援confiramtion的validation，應該不用自已加<code>attr_accessor :email_confirmation</code>，但實際測試還是要加，不然confirmation會失效。</li><li>預設的translation路徑需要改變，從activerecord變成activemodel。</li></ul><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">zh-TW:
+end</script><p>在網路上有許多類似的topic，例如在code school中的rails4 pattern也有提到怎麼做這種model。不過在實際上還是會遇到很多坑，在這裡記錄一下：</p><ul><li>如果要支援validation，除了要加上<code>include ActiveModel::Validations</code>之外，記得還要加<code>attr_reader :errors</code>，並且在initialize中初始化它。</li><li>理論上支援confiramtion的validation，應該不用自已加<code>attr_accessor :email_confirmation</code>，但實際測試還是要加，不然confirmation會失效。</li><li>預設的translation路徑需要改變，從activerecord變成activemodel。</li></ul><div hljs="" include="&#39;code2&#39;"></div><script id="code2" type="text/ng-template">zh-TW:
   activemodel:
     errors:
       models:

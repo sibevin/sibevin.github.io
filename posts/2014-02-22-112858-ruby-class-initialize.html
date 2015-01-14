@@ -1,4 +1,4 @@
-<div class="meta"><div class="title">ruby class的initialize</div><div class="datetime">2014-02-22 11:28:58</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-class-initialize</div><div class="file">2014-02-22-112858-ruby-class-initialize</div><div class="template">post</div></div><p>initialize其實就是ruby class中的contructor，下面的範例展示了一些initialize基本的用法。</p><div hljs="" include="'code1'"></div><script id="code1" type="text/ng-template">class A
+<div class="meta"><div class="title">ruby class的initialize</div><div class="datetime">2014-02-22 11:28:58</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-class-initialize</div><div class="file">2014-02-22-112858-ruby-class-initialize</div><div class="template">post</div></div><p>initialize其實就是ruby class中的contructor，下面的範例展示了一些initialize基本的用法。</p><div hljs="" include="&#39;code1&#39;"></div><script id="code1" type="text/ng-template">class A
   def initialize
     @var_a = 1
   end
@@ -12,7 +12,7 @@ class B < A
 end
 
 B.new.print_var_a
-# 1</script><ul><li>1. parent class的initialize會被child class繼承。</li><li>2. parent class的static variable也會被繼承，可以在child class中使用這些變數。</li></ul><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">class C < A
+# 1</script><ul><li>1. parent class的initialize會被child class繼承。</li><li>2. parent class的static variable也會被繼承，可以在child class中使用這些變數。</li></ul><div hljs="" include="&#39;code2&#39;"></div><script id="code2" type="text/ng-template">class C < A
   def initialize
     p @var_a
     super

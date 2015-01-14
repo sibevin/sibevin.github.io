@@ -16,7 +16,7 @@ Initializing git repo in /Users/wangkaito/workspace/ruby/dev/test/sub_cipher</co
 │   ├── sub_cipher
 │   │   └── version.rb
 │   └── sub_cipher.rb
-└── sub_cipher.gemspec</code></pre><ul><li>修改sub_cipher.gemspec，填入gem相關的資訊，細節請參考<a href="http://guides.rubygems.org/specification-reference/" target="_blank">RubyGems Guides - Specification Reference</a>。下面是sub_cipher的例子：</li></ul><div hljs="" include="'code1'"></div><script id="code1" type="text/ng-template"># coding: utf-8
+└── sub_cipher.gemspec</code></pre><ul><li>修改sub_cipher.gemspec，填入gem相關的資訊，細節請參考<a href="http://guides.rubygems.org/specification-reference/" target="_blank">RubyGems Guides - Specification Reference</a>。下面是sub_cipher的例子：</li></ul><div hljs="" include="&#39;code1&#39;"></div><script id="code1" type="text/ng-template"># coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'sub_cipher/version'
@@ -43,13 +43,13 @@ end</script><ul><li>Gemfile與Rakefile：這兩個檔案是bundler會用到的�
 gemspec</code></pre><p>Rakefile</p><pre><code class="hljs">require "bundler/gem_tasks"</code></pre><ul><li>LICENSE.txt：預設是MIT，可以改成自己想要的。如果改的話，要注意的是gemspec也要跟著一起改。</li></ul><h1>Gem package的目錄架構</h1><p>你會發現bundler幫你很自動建了一個lib的目錄，連對應package名稱的module和version都建立好了。</p><pre><code class="hljs">lib
 ├── sub_cipher
 │   └── version.rb
-└── sub_cipher.rb</code></pre><p>lib/sub_cipher.rb</p><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">require "sub_cipher/version"
+└── sub_cipher.rb</code></pre><p>lib/sub_cipher.rb</p><div hljs="" include="&#39;code2&#39;"></div><script id="code2" type="text/ng-template">require "sub_cipher/version"
 
 module SubCipher
   # Your code goes here...
-end</script><p>lib/sub_cipher/version.rb</p><div hljs="" include="'code3'"></div><script id="code3" type="text/ng-template">module SubCipher
+end</script><p>lib/sub_cipher/version.rb</p><div hljs="" include="&#39;code3&#39;"></div><script id="code3" type="text/ng-template">module SubCipher
   VERSION = "0.0.1"
-end</script><p>這樣的目錄其實就是標準一個gem應該要有的架構，lib/sub_cipher.rb就是gem的切入點。別人在<code>require "sub_cipher"</code>的時候，require的目標就是lib/sub_cipher.rb這個檔案，至於其它的程式碼都應該放在lib/sub_cipher/之下。</p><h1>測試</h1><p>自從ruby 2.0之後，官方建議使用minitest做為標準的測試工具。這個改變對於ruby 2.0以上的環境沒有什麼影響，但對於舊版本的ruby必須要在測試檔做一些修改。先看一下sub_cipher的測試檔範例：</p><div hljs="" include="'code4'"></div><script id="code4" type="text/ng-template">require 'minitest/autorun'
+end</script><p>這樣的目錄其實就是標準一個gem應該要有的架構，lib/sub_cipher.rb就是gem的切入點。別人在<code>require "sub_cipher"</code>的時候，require的目標就是lib/sub_cipher.rb這個檔案，至於其它的程式碼都應該放在lib/sub_cipher/之下。</p><h1>測試</h1><p>自從ruby 2.0之後，官方建議使用minitest做為標準的測試工具。這個改變對於ruby 2.0以上的環境沒有什麼影響，但對於舊版本的ruby必須要在測試檔做一些修改。先看一下sub_cipher的測試檔範例：</p><div hljs="" include="&#39;code4&#39;"></div><script id="code4" type="text/ng-template">require 'minitest/autorun'
 
 $LOAD_PATH.unshift("#{File.dirname(__FILE__)}/../lib")
 require "sub_cipher"
@@ -74,7 +74,7 @@ Run options: --seed 58072
 
 Finished in 0.020684s, 435.1189 runs/s, 1643.7826 assertions/s.
 
-9 runs, 34 assertions, 0 failures, 0 errors, 0 skips</code></pre><p>如果要在舊版本的ruby上跑minitest的測試，則還必須在測試檔的最上面加上下面的程式碼才行：</p><div hljs="" include="'code5'" language="ruby"></div><script id="code5" type="text/ng-template">require "rubygems"
+9 runs, 34 assertions, 0 failures, 0 errors, 0 skips</code></pre><p>如果要在舊版本的ruby上跑minitest的測試，則還必須在測試檔的最上面加上下面的程式碼才行：</p><div hljs="" include="&#39;code5&#39;" language="ruby"></div><script id="code5" type="text/ng-template">require "rubygems"
 gem "minitest"
 require 'minitest/autorun'
 # ...</script><h1>建立與上傳gem</h1><p>只要gemspec寫了好，就可以使用指令<code>gem build</code>來建立gem package</p><pre><code class="hljs">$ gem build sub_cipher.gemspec

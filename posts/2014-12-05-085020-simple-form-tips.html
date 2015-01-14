@@ -1,4 +1,4 @@
-<div class="meta"><div class="title">SimpleForm雜筆記本</div><div class="datetime">2014-12-05 08:50:20</div><div class="tag">rails simple-form tips</div><div class="category">programming</div><div class="link">simple-form-tips</div><div class="file">2014-12-05-085020-simple-form-tips</div><div class="template">post</div></div><h2>如何使用min, max等限制input的範圍</h2><div hljs="" include="'code1'" language="html"></div><script id="code1" type="text/ng-template"><%= simple_form_for @pet do |f| %>
+<div class="meta"><div class="title">SimpleForm雜筆記本</div><div class="datetime">2014-12-05 08:50:20</div><div class="tag">rails simple-form tips</div><div class="category">programming</div><div class="link">simple-form-tips</div><div class="file">2014-12-05-085020-simple-form-tips</div><div class="template">post</div></div><h2>如何使用min, max等限制input的範圍</h2><div hljs="" include="&#39;code1&#39;" language="html"></div><script id="code1" type="text/ng-template"><%= simple_form_for @pet do |f| %>
   <%= f.input :age, input_html: { min: '1' } %>
   <%= f.button :submit %>
 <% end %></script>

@@ -1,0 +1,102 @@
+<div class="meta"><div class="title">rails中使用select2來實作標籤選取功能</div><div class="datetime">2015-01-14 15:46:01</div><div class="tag">rails</div><div class="category">programming</div><div class="link">rails-implement-tag-selector-with-select2</div><div class="file">2015-01-14-154601-rails-implement-tag-selector-with-select2</div><div class="template">post</div></div><h1>需求</h1><ul><li>當輸入文字時可以自動搜尋包含輸入文字的標籤。</li><li>當輸入不存在的標籤時，可以在文章儲存時自動新增標籤。</li></ul><h1>How</h1><p>1. 加入<code>select2-rails</code>gem。</p><div hljs="" include="&#39;code1&#39;" language="ruby"></div><script id="code1" type="text/ng-template">gem 'select2-rails'</script><p>這裡用的版本是3.5.9.1。</p><p>2. 在<code>app/assets/javascripts/application.js</code>中require<code>select2</code>與<code>select2_locale_zh-TW</code>。</p><div hljs="" include="&#39;code2&#39;" language="ruby"></div><script id="code2" type="text/ng-template">//= require select2
+//= require select2_locale_zh-TW</script><p>3. 實作API讓js可以根據關鍵字查詢標籤。</p><p><code>config/routes.rb</code></p><div hljs="" include="&#39;code3&#39;" language="ruby"></div><script id="code3" type="text/ng-template">resources :tags, only: [:index]</script><p><code>app/controllers/tags_controller.rb</code></p><div hljs="" include="&#39;code4&#39;" language="ruby"></div><script id="code4" type="text/ng-template">class TagsController < ApplicationController
+  def index
+    @tags = Tag.where("name like ?", "%#{params[:q]}%").select("tags.id, tags.name")
+    render json: { tags: @tags.map { |t| { id: t.id, text: t.name } } }
+  end
+end</script><p>這個時候呼叫<code>/tags?q=時</code>，就會取得下面的json</p><div hljs="" include="&#39;code5&#39;" language="json"></div><script id="code5" type="text/ng-template">{"tags":[{"id":385,"text":"時間管理"},{"id":586,"text":"線上即時分析"},{"id":996,"text":"贏時代"},{"id":1238,"text":"時尚飾品"}]}</script><p>4. 修改<code>BlogPost</code>與<code>Tag</code>model，讓儲存文章時，若發現有新tag也會自動建立新的tag資料。</p><p><code>app/models/blog_post.rb</code></p><div hljs="" include="&#39;code6&#39;" language="ruby"></div><script id="code6" type="text/ng-template">class BlogPost < ActiveRecord::Base
+  # ...
+  has_many :blog_tag_maps, dependent: :destroy
+  has_many :tags, through: :blog_tag_maps
+
+
+  attr_reader :tag_tokens
+
+  def tag_tokens=(tokens)
+    self.tag_ids = Tag.get_ids_from_tokens(tokens)
+  end
+  # ...
+end</script><p><code>app/models/tag.rb</code></p><div hljs="" include="&#39;code7&#39;" language="ruby"></div><script id="code7" type="text/ng-template">class Tag < ActiveRecord::Base
+  # ...
+  has_many :blog_posts, through: :blog_tag_maps
+
+
+  def self.get_ids_from_tokens(tokens)
+    tokens.gsub!(/<<<(.+?)>>>/) { create!(name: $1.capitalize).id }
+    tokens.split(',')
+  end
+  # ...
+end</script><p>原理是用tag_token來處理tag_ids。tag_tokens會長的像<code>199,13764,296,<<<時間分配>>></code>這個樣子。如果標籤存在，它在tag_tokens中就會是id，如果不存在，就會是<<<新標籤>>>。新標籤在<code>Tag.get_ids_from_tokens</code>中被建立並換成id。</p><p>5. 在BlogPost的controller中處理tag。</p><div hljs="" include="&#39;code8&#39;" language="ruby"></div><script id="code8" type="text/ng-template">class BlogPostsController < ApplicationController
+  #...
+  before_action :set_blog_post, only: [:show, :edit, :update]
+
+
+  def new
+    @blog_post = BlogPost.new()
+    @tags = []
+  end
+
+  def edit
+    @tags = @blog_post.tags.select("tags.id, tags.name")
+  end
+
+  def update
+    if @blog_post.update(blog_post_params)
+      flash[:notice] = "成功修改文章"
+      redirect_to blog_posts_path
+    else
+      flash[:notice] = "修改失敗"
+      render action: 'edit'
+    end
+  end
+
+  # ...
+
+  private
+    def set_blog_post
+      @blog_post = BlogPost.find(params[:id])
+    end
+
+    def blog_post_params
+      params.require(:blog_post).permit(:title, :content, :tag_tokens)
+    end
+end</script><p>記得在permit中加入<code>tag_tokens</code>。</p><p>6. 在edit view的form中加入tag_tokens的input。</p><p><code>app/views/blog_posts/edit.html.erb</code></p><div hljs="" include="&#39;code9&#39;" language="ruby"></div><script id="code9" type="text/ng-template"><%= f.input :tag_tokens, input_html: { class: "tag-selector", :"data-init-tag" => @tags.map { |t| "#{t.id}==#{t.name}" }.join(','), value: @tags.map { |t| t.id }.join(',') } %></script><p>生成的input會長的像下面這個樣子：</p><div hljs="" include="&#39;code10&#39;" language="html"></div><script id="code10" type="text/ng-template"><input class="string optional tag-selector form-control select2-offscreen" data-init-tag="199==MBA價值,13764==低頭族,296==企劃" id="blog_post_tag_tokens" name="blog_post[tag_tokens]" type="text" value="199,13764,296" tabindex="-1"></script><p>這裡使用data-init-tag來儲存預設的標籤id與name，value則是用來儲存標籤id。要注意的是value一定要有值，不然光使用data-init-tag無法trigger select2的initSelection來顯示一開始的標籤。</p><p>7. 設定select2的js。</p><div hljs="" include="&#39;code11&#39;" language="javascript"></div><script id="code11" type="text/ng-template">$('.tag-selector').select2({
+    tags: true,
+    ajax: {
+        url: "/tags",
+        dataType: 'json',
+        quietMillis: 1000,
+        data: function (term, page) {
+            return {
+                q: term,
+            };
+        },
+        results: function (data, page) {
+            return { results: data.tags };
+        },
+        cache: true
+    },
+    minimumInputLength: 1,
+    createSearchChoice: function(term, data) {
+        var a = data;
+        var b = term;
+        if (data.length === 0) {
+            return {
+                id: "<<<" + term + ">>>",
+                text: term
+            };
+        } else {
+            return data;
+        }
+    },
+    initSelection: function(element, callback) {
+        var data = [];
+        var tags = element.data("init-tag").split(",")
+        tags.forEach(function(tag) {
+            var tag_arr = tag.split("==")
+            var tag_name = tag_arr.slice(1).join("==")
+            data.push({id: tag_arr[0], text: tag_name});
+        });
+        callback(data);
+    }
+});</script><p>其中的設定細節請參考select2的文件，這裡只大概說明一下。<code>tags: true</code>就是讓select2採用標籤方式顯示，同時可以支援新增tag。<code>ajax</code>用來設定如何呼叫API來取得標籤。<code>createSearchChoice</code>用來設定怎麼插入一個新的標籤，如果選擇的是一個已經存在的標籤，就直接從選單的data取出id與text，但如果是一個新的標籤，id的地方就會用<<<新標籤>>>取代。<code>initSelection</code>用來處理預設值，基本上是從input的data-init-tag取得並塞到data中。</p><p>8. 完成。</p>

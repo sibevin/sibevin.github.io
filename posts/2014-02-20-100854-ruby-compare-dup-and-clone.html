@@ -1,4 +1,4 @@
-<div class="meta"><div class="title">dup與clone的差異</div><div class="datetime">2014-02-20 10:08:54</div><div class="tag">ruby</div><div class="category">programming</div><div class="template">post</div><div class="link">ruby-compare-dup-and-clone</div><div class="file">2014-02-20-100854-ruby-compare-dup-and-clone</div></div><p><code>clone</code>會複製singleton class的method與constants，<code>dup不會。</code></p><div hljs="" include="'code1'"></div><script id="code1" type="text/ng-template">o = Object.new
+<div class="meta"><div class="title">dup與clone的差異</div><div class="datetime">2014-02-20 10:08:54</div><div class="tag">ruby</div><div class="category">programming</div><div class="template">post</div><div class="link">ruby-compare-dup-and-clone</div><div class="file">2014-02-20-100854-ruby-compare-dup-and-clone</div></div><p><code>clone</code>會複製singleton class的method與constants，<code>dup不會。</code></p><div hljs="" include="&#39;code1&#39;"></div><script id="code1" type="text/ng-template">o = Object.new
 class << o
   A = 'aa'
   def self.b
@@ -10,7 +10,7 @@ end
 o.clone.A # "aa"
 o.dup.A # raise NoMethodError
 o.clone.b # "bb"
-o.dup.b # raise NoMethodError</script><p><code>clone</code>會將freeze的狀態保留下來，<code>dup不會。</code></p><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">class Foo
+o.dup.b # raise NoMethodError</script><p><code>clone</code>會將freeze的狀態保留下來，<code>dup不會。</code></p><div hljs="" include="&#39;code2&#39;"></div><script id="code2" type="text/ng-template">class Foo
   attr_accessor: bar
 end
 foo = Foo.new

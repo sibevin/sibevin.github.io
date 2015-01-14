@@ -1,6 +1,6 @@
-<div class="meta"><div class="title">Simple Enum</div><div class="datetime">2014-10-24 11:17:26</div><div class="tag">ruby_gem rails_model</div><div class="category">programming</div><div class="link">gem-simple-enum</div><div class="file">2014-10-24-111726-gem-simple-enum</div><div class="template">post</div></div><ul><li><a href="http://lwe.github.io/simple_enum" target="_blank">Homepage</a></li><li><a href="https://github.com/lwe/simple_enum" target="_blank">Github</a></li><li><a href="https://rubygems.org/gems/simple_enum" target="_blank">RubyGem</a><code> (simple_enum)</code></li></ul><h1>What</h1><p>在model中加入enum的功能。</p><h1>Why</h1><p>除了enum外，這個gem還提供了一些相對應的method可以使用。另外enum與column名稱的對應也比較簡單明瞭。</p><h1>How</h1><p>摘錄至<a href="https://github.com/lwe/simple_enum/blob/master/README.md" target="_blank">README</a></p><p>在model中加入enum的設定</p><div hljs="" include="'code1'"></div><script id="code1" type="text/ng-template">class User < ActiveRecord::Base
+<div class="meta"><div class="title">Simple Enum</div><div class="datetime">2014-10-24 11:17:26</div><div class="tag">ruby_gem rails_model</div><div class="category">programming</div><div class="link">gem-simple-enum</div><div class="file">2014-10-24-111726-gem-simple-enum</div><div class="template">post</div></div><ul><li><a href="http://lwe.github.io/simple_enum" target="_blank">Homepage</a></li><li><a href="https://github.com/lwe/simple_enum" target="_blank">Github</a></li><li><a href="https://rubygems.org/gems/simple_enum" target="_blank">RubyGem</a><code> (simple_enum)</code></li></ul><h1>What</h1><p>在model中加入enum的功能。</p><h1>Why</h1><p>除了enum外，這個gem還提供了一些相對應的method可以使用。另外enum與column名稱的對應也比較簡單明瞭。</p><h1>How</h1><p>摘錄至<a href="https://github.com/lwe/simple_enum/blob/master/README.md" target="_blank">README</a></p><p>在model中加入enum的設定</p><div hljs="" include="&#39;code1&#39;"></div><script id="code1" type="text/ng-template">class User < ActiveRecord::Base
   as_enum :gender, female: 1, male: 0
-end</script><p>在migration中加入對應的column</p><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">class AddGenderColumnToUser < ActiveRecord::Migration
+end</script><p>在migration中加入對應的column</p><div hljs="" include="&#39;code2&#39;"></div><script id="code2" type="text/ng-template">class AddGenderColumnToUser < ActiveRecord::Migration
   def self.up
     add_column :users, :gender_cd, :integer
   end
@@ -9,7 +9,7 @@ end</script><p>在migration中加入對應的column</p><div hljs="" include="'co
   def self.down
     remove_column :users, :gender_cd
   end
-end</script><p>內建有許多的method可以使用</p><div hljs="" include="'code3'"></div><script id="code3" type="text/ng-template">jane = User.new
+end</script><p>內建有許多的method可以使用</p><div hljs="" include="&#39;code3&#39;"></div><script id="code3" type="text/ng-template">jane = User.new
 jane.gender = :female
 jane.female?   # => true
 jane.male?     # => false

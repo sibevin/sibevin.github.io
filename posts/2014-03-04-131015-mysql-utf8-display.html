@@ -1,13 +1,13 @@
-<div class="meta"><div class="title">如何顯示utf8的欄位</div><div class="tag">mysql</div><div class="category">tools</div><div class="datetime">2014-03-04 13:10:15</div><div class="template">post</div><div class="link">mysql-utf8-display</div><div class="file">2014-03-04-131015-mysql-utf8-display</div></div><h1>問題</h1><p>用client連進mysql的時候，很常遇到db明明己經設定成utf8，可是透過client看utf8的欄位時，還是出現???的字串。</p><div hljs="" include="'code1'"></div><script id="code1" type="text/ng-template">+----+-----------------+------------+
+<div class="meta"><div class="title">如何顯示utf8的欄位</div><div class="tag">mysql</div><div class="category">tools</div><div class="datetime">2014-03-04 13:10:15</div><div class="template">post</div><div class="link">mysql-utf8-display</div><div class="file">2014-03-04-131015-mysql-utf8-display</div></div><h1>問題</h1><p>用client連進mysql的時候，很常遇到db明明己經設定成utf8，可是透過client看utf8的欄位時，還是出現???的字串。</p><div hljs="" include="&#39;code1&#39;"></div><script id="code1" type="text/ng-template">+----+-----------------+------------+
 | id | name            | name_zh_tw |
 +----+-----------------+------------+
 | 1  | taipei-city     | ???        |
-| 2  | kaoh-siung-city | ???        |</script><h1>解法</h1><p>這種情況通常是client characterset沒有設好，設定步驟如下：</p><p>首先，先確定mysql的characterset，下指令<code>status;</code>。這時會發現Db characterset是utf8，但Client characterset卻是latin1，這就會使client無法正確顯示utf8的欄位。</p><div hljs="" include="'code2'"></div><script id="code2" type="text/ng-template">Server characterset: latin1
+| 2  | kaoh-siung-city | ???        |</script><h1>解法</h1><p>這種情況通常是client characterset沒有設好，設定步驟如下：</p><p>首先，先確定mysql的characterset，下指令<code>status;</code>。這時會發現Db characterset是utf8，但Client characterset卻是latin1，這就會使client無法正確顯示utf8的欄位。</p><div hljs="" include="&#39;code2&#39;"></div><script id="code2" type="text/ng-template">Server characterset: latin1
 Db characterset: utf8
 Client characterset: latin1
-Conn. characterset: latin1</script><p>修改<code>~/.my.cnf</code>(如果沒有這個檔案，請從<code>/etc/mysql/my.cnf</code>複製一份到你的home下面)，在<code>[client]</code>的地方加入以下設定：</p><div hljs="" include="'code3'"></div><script id="code3" type="text/ng-template">[client]
+Conn. characterset: latin1</script><p>修改<code>~/.my.cnf</code>(如果沒有這個檔案，請從<code>/etc/mysql/my.cnf</code>複製一份到你的home下面)，在<code>[client]</code>的地方加入以下設定：</p><div hljs="" include="&#39;code3&#39;"></div><script id="code3" type="text/ng-template">[client]
 
-default-character-set = utf8</script><p>再用指令<code>status;</code>，會發現Client characterset己改成utf8，utf8的欄位也可以正常顯示了。</p><div hljs="" include="'code4'"></div><script id="code4" type="text/ng-template">Server characterset: latin1
+default-character-set = utf8</script><p>再用指令<code>status;</code>，會發現Client characterset己改成utf8，utf8的欄位也可以正常顯示了。</p><div hljs="" include="&#39;code4&#39;"></div><script id="code4" type="text/ng-template">Server characterset: latin1
 Db characterset: utf8
 Client characterset: utf8
 Conn. characterset: utf8
