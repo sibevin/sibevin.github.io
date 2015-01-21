@@ -1,0 +1,26 @@
+<div class="meta"><div class="title">如何讓使用者完成註冊確認之後就做某件事</div><div class="datetime">2015-01-21 21:52:35</div><div class="tag">rails devise</div><div class="category">programming</div><div class="link">rails-devise-after-confirmation</div><div class="file">2015-01-21-215235-rails-devise-after-confirmation</div><div class="template">post</div></div><h1>問題</h1><p>我們希望能在一個使用者帳號被建立的時候初始化一些資料，最好的時間點就是當使用者完成註冊確認的時候。</p><h1>解法</h1><p>devise在3.1.2之後在<code>Devise::Confirmable</code>有提供一個method叫<code>after_confirmation</code>。你可以override它如下：</p><div hljs="" include="&#39;code1&#39;" language="ruby"></div><script id="code1" type="text/ng-template">class User < ActiveRecord::Base
+  devise :database_authenticatable, :registerable,
+     :recoverable, :rememberable, :trackable, :validatable, :confirmable
+
+
+  def after_confirmation
+    # do something...
+  end
+end</script><p>不過這樣的做法有個缺點就是每次使用者更改email重新做confirmation的時候都會再做一次，這顯然不是我們想要的。比較好的做法是override<code>confirm!</code>這個method，並且在method中檢查confirmed_at是否已經存在過來判斷是不是第一次做confirmation，程式如下：</p><div hljs="" include="&#39;code2&#39;" language="ruby"></div><script id="code2" type="text/ng-template">class User < ActiveRecord::Base
+  devise :database_authenticatable, :registerable,
+     :recoverable, :rememberable, :trackable, :validatable, :confirmable
+
+
+  def confirm!
+    super
+    if first_confirmation?
+      # do something...
+    end
+  end
+
+  private
+
+    def first_confirmation?
+      previous_changes[:confirmed_at] && previous_changes[:confirmed_at].first.nil?
+    end
+end</script><h1>Refs</h1><ul><li><a href="http://stackoverflow.com/questions/4558463/rails-devise-after-confirmation#comment12853945_4558910" target="_blank">SO - Rails Devise: after_confirmation</a></li></ul>

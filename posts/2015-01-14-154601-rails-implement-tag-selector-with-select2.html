@@ -97,4 +97,4 @@ end</script><p>記得在permit中加入<code>tag_tokens</code>。</p><p>6. 在ed
         });
         callback(data);
     }
-});</script><p>其中的設定細節請參考select2的文件，這裡只大概說明一下。<code>tags: true</code>就是讓select2採用標籤方式顯示，同時可以支援新增tag。<code>ajax</code>用來設定如何呼叫API來取得標籤。<code>createSearchChoice</code>用來設定怎麼插入一個新的標籤，如果選擇的是一個已經存在的標籤，就直接從選單的data取出id與text，但如果是一個新的標籤，id的地方就會用<<<新標籤>>>取代。<code>initSelection</code>用來處理預設值，基本上是從input的data-init-tag取得並塞到data中。</p><p>8. 完成。</p>
+});</script><p>其中的設定細節請參考select2的文件，這裡只大概說明一下。<code>tags: true</code>就是讓select2採用標籤方式顯示，同時可以支援新增tag。<code>ajax</code>用來設定如何呼叫API來取得標籤。<code>createSearchChoice</code>用來設定怎麼插入一個新的標籤，如果選擇的是一個已經存在的標籤，就直接從選單的data取出id與text，但如果是一個新的標籤，id的地方就會用<<<新標籤>>>取代。<code>initSelection</code>用來處理預設值，基本上是從input的data-init-tag取得並塞到data中。</p><p>8. 完成。</p><h1>Refs</h1><ul><li><a href="https://select2.github.io/" target="_blank">Select2 - The jQuery replacement for select boxes</a></li><li><a href="https://coderwall.com/p/d8kcsw/many-to-many-in-rails-tagging-with-select2" target="_blank">Many to many in Rails: Tagging with Select2 - by Sebastián González</a></li></ul>
