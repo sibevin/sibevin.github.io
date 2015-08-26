@@ -1,8 +1,0 @@
-<div class="meta"><div class="title">ruby如何讓你的initializer變成private</div><div class="datetime">2014-11-27 07:49:31</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-private-initializer</div><div class="file">2014-11-27-074931-ruby-private-initializer</div><div class="template">post</div></div><p>很簡單，可以用<code>private_class_method :new</code></p><div hljs="" include="&#39;code1&#39;" language="ruby"></div><script id="code1" type="text/ng-template">class A
-  private_class_method :new
-end</script><p><code>private_class_method</code>也可以用在其它的class method，不過必須放在method之後才會work。</p><div hljs="" include="&#39;code2&#39;" language="ruby"></div><script id="code2" type="text/ng-template">class A
-  def self.my_method
-    # ...
-  end
-  private_class_method :my_method
-end</script><p>另外，如果你只是為了做singleton而做private initializer，那其實可以考慮使用ruby內建的Singleton class，不用自己重建輪子。</p><h1>Refs</h1><p><a href="http://stackoverflow.com/questions/1567400/how-to-make-the-class-constructor-private-in-ruby" target="_blank">SO - How to make the class constructor private in Ruby?</a></p>

@@ -1,5 +1,0 @@
-<div class="meta"><div class="title">使用ruby寫script的雜記事本</div><div class="datetime">2014-10-29 11:22:22</div><div class="tag">ruby</div><div class="category">programming</div><div class="link">ruby-script-programming-notes</div><div class="file">2014-10-29-112222-ruby-script-programming-notes</div><div class="template">post</div><div class="draft"></div></div><h2>如何切換目錄</h2><pre><code>system "do something"
-Dir.chdir("the/target/path/to/change/to") do
-  system "do something"
-end
-# back to original path here</code></pre><h2>取得script檔案的路徑</h2><pre><code>script_path = Pathname.new(File.dirname(__FILE__))</code></pre>
