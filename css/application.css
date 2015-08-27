@@ -220,7 +220,7 @@ a {
 
 /* line 72, ../../src/sass/_base.sass */
 .mk-red {
-  border: 1px solid #E3695C;
+  border: 2px solid #E3695C;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -228,7 +228,7 @@ a {
 
 /* line 75, ../../src/sass/_base.sass */
 .mk-blue {
-  border: 1px solid #3B7F8C;
+  border: 2px solid #3B7F8C;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   border-radius: 3px;
@@ -236,7 +236,7 @@ a {
 
 /* line 78, ../../src/sass/_base.sass */
 .mkb-red {
-  border: 1px solid red;
+  border: 2px solid red;
   background: rgba(255, 0, 0, 0.1);
 }
 
@@ -618,6 +618,18 @@ a {
   padding: 3px;
 }
 
+/* line 3, ../../src/sass/partials/_draft.sass */
+.draft {
+  font-family: DFKai-sb, Time New Roman, serif;
+  font-size: 20px;
+  color: #aaa;
+  background: #ddd;
+  border: 1px #aaa dashed;
+  text-align: center;
+  padding: 8px;
+  margin: 12px auto;
+}
+
 /* line 5, ../../src/sass/views/_post.sass */
 .post .content {
   padding: 8px;
@@ -837,6 +849,28 @@ a {
     display: none;
   }
 }
+/* line 4, ../../src/sass/views/_error.sass */
+.error {
+  text-align: center;
+  padding-top: 200px;
+  color: #808080;
+}
+/* line 8, ../../src/sass/views/_error.sass */
+.error .error-number {
+  display: inline-block;
+  border: 5px solid;
+  padding: 8px;
+  font-size: 32px;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+  border-radius: 12px;
+}
+/* line 14, ../../src/sass/views/_error.sass */
+.error .error-title {
+  display: inline-block;
+  padding-top: 20px;
+}
+
 /* line 7, ../../src/sass/theme-color/_default.sass */
 .theme-color-default .header {
   background: #111;

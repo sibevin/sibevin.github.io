@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>ruby處理unique物件</title><meta content="ruby處理unique物件" name="description" /><meta content="ruby處理unique物件" property="og:title" /><meta content="ruby處理unique物件" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2014-12-04-105914-ruby-check-unique-use-set-instead-of-array")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">ruby處理unique物件</div><div class="title-info"><div class="title-time"><div class="time">2014-12-04 10:59:14</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(current_post).code}}">{{getPostCategory(current_post).name}}</a></div></div></div></div></div><div class="content"><div class="meta-data">title ruby處理unique物件</div><div class="meta-data">description ruby處理unique物件</div><div class="meta-data">datetime 2014-12-04 10:59:14</div><div class="meta-data">tags ruby</div><div class="meta-data">category coding</div><div class="meta-data">link ruby-check-unique-use-set-instead-of-array</div><div class="meta-data">file 2014-12-04-105914-ruby-check-unique-use-set-instead-of-array</div><div class="meta-data">template post</div><div class="meta-data">end</div><p>要建立一連串unique的字串，直覺上可以用array將建立過的字串存起來，再用<code>include?</code>來判斷新產生的字串有沒有被建立過：</p><pre><code class="ruby">n = 10000
+created_tokens = []
+while created_tokens.size < n
+  token = RandomToken.gen(10)
+  if created_tokens.include?(token)
+    next
+  else
+    created_tokens << token
+  end
+end
+results = created_tokens</code><p>不過這個方法速度會非常的慢。有一個技巧是使用hash的key一定是unique的特性來判斷，程式如下：</p></pre><pre><code class="ruby">n = 10000
+created_tokens_hash = {}
+while created_tokens_hash.size < n
+  token = RandomToken.gen(10)
+  created_tokens_hash[token] = true
+end
+results = created_tokens_hash.keys</code><p>這速度很明顯的大幅提升，不過用hash看起來就像是用hack的方式感覺不是很乾淨，尤其是不會用到的value塞什麼都怪怪的。最好的做法就是用set了：</p></pre><pre><code class="ruby">n = 10000
+created_tokens_set = Set.new
+while created_tokens_set.size < n
+  token = RandomToken.gen(10)
+  created_tokens_set << token
+end
+results = created_tokens_set.to_a</code><p>效能測試如下：</p></pre><pre><code class="ruby">require 'benchmark'
+require 'set'
+require 'random_token'
+n = 10000
+Benchmark.bm(7) do |x|
+  x.report("array:") do
+    created_tokens = []
+    while created_tokens.size < n
+      token = RandomToken.gen(10)
+      if created_tokens.include?(token)
+        next
+      else
+        created_tokens << token
+      end
+    end
+    results = created_tokens
+  end
+  x.report("hash:") do
+    created_tokens_hash = {}
+    while created_tokens_hash.size < n
+      token = RandomToken.gen(10)
+      created_tokens_hash[token] = true
+    end
+    results = created_tokens_hash.keys
+  end
+  x.report("set:") do
+    created_tokens_set = Set.new
+    while created_tokens_set.size < n
+      token = RandomToken.gen(10)
+      created_tokens_set << token
+    end
+    results = created_tokens_set.to_a
+  end
+end</code></pre><pre><code>              user     system      total        real
+array:    8.860000   0.050000   8.910000 (  9.112402)
+hash:     2.030000   0.010000   2.040000 (  2.062945)
+set:      2.000000   0.000000   2.000000 (  2.037125)</code></pre></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><a href="/posts/{{post.file}}">{{post.title}}</a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(post).code}}">{{getPostCategory(post).name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body></html>

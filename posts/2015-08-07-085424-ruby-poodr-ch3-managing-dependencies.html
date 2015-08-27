@@ -1,0 +1,137 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>rails 讀書會 - POODR - Ch3 管理相依性</title><meta content="" name="description" /><meta content="rails 讀書會 - POODR - Ch3 管理相依性" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2015-08-07-085424-ruby-poodr-ch3-managing-dependencies")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/drafts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">rails 讀書會 - POODR - Ch3 管理相依性</div><div class="title-info"><div class="title-time"><div class="time">2015-08-07 08:54:24</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(current_post).code}}">{{getPostCategory(current_post).name}}</a></div></div></div></div></div><div class="content"><div class="draft">DRAFT</div><div class="meta-data">title rails 讀書會 - POODR - Ch3 管理相依性</div><div class="meta-data">datetime 2015-08-07 08:54:24</div><div class="meta-data">tags ruby,ooad,rails_study-group,test</div><div class="meta-data">category coding</div><div class="meta-data">link ruby-poodr-ch3-managing-dependencies</div><div class="meta-data">file 2015-08-07-085424-ruby-poodr-ch3-managing-dependencies</div><div class="meta-data">template post</div><div class="meta-data">draft</div><div class="meta-data">end</div><p>物件導向能有效的解決問題是因為它反應了真實世界的模型，而就如同現實中的物件，它們之間不可避免的一定會產生一些互動。</p><p>class的method可以區分成三類：</p><ul><li>class本身實作的method</li><li>class經由繼承得知的method</li><li>class呼叫其它class實作的method</li></ul><p>設計良好的物件應該都要遵循single responsibility，因此很自然的必須互相合作來完成複雜的問題，合作就必須知道彼此，知道彼此就會產生相依性。</p><h1>了解相依性</h1><p>相依性的定義：一個物件相依於另一個物件表示當其中一個物件改變時，另一個物件可能會被強迫也跟著改變。</p><pre><code>class Gear
+  attr_reader :chainring, :cog, :rim, :tire
+  def initialize(chainring, cog, rim, tire)
+    @chainring = chainring
+    @cog       = cog
+    @rim       = rim
+    @tire      = tire
+  end
+
+  def gear_inches
+    ratio * Wheel.new(rim, tire).diameter
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+# ...
+end
+
+class Wheel
+  attr_reader :rim, :tire
+  def initialize(rim, tire)
+    @rim = rim
+    @tire = tire
+  end
+
+  def diameter
+    rim + (tire * 2)
+  end
+# ...
+end
+
+Gear.new(52, 11, 26, 1.5).gear_inches</code></pre><p>一個物件有相依性，表示它知道：</p><p><ul><li>另一個物件的「存在」，也就是知道物件的名稱。</li><li>另一個物件的「接受訊息的名稱」。</li><li>另一個物件的「接受訊息」所需要的「參數」。</li><li>另一個物件的「接受訊息」所需要的「參數」的「順序」。</li></ul></p><p>以程式的講法，一個class有相依性，表示它知道：</p><p><ul><li>另一個class的「存在」，也就是知道class的名稱。</li><li>另一個class的「method的名稱」。</li><li>另一個class的「method」所需要的「參數」。</li><li>另一個class的「method」所需要的「參數」的「順序」。</li></ul></p><p>上面的範例大部分的相依性其實都沒有必要，不必要的相依性會讓程式碼顯的不合理。因為小幅度的修改可能會被迫造成程式其它許多地方的修改，牽一髮而動全身。而這部分的設計挑戰，就是要盡可能的讓相依性減少，一個類別應該只需要知道足夠做好事情的資訊就好。</p><h2>物件之間的耦合 Coupling Between Objects (CBO)</h2><p>耦合 = 相依性，相依性越高 = 耦合程度就越高 = 多個物件會被視做同一個個體而很難切割或重複利用</p><h2>其它的相依性 Other Dependencies</h2><p><ul><li>訊息鏈(message chaining)：一個物件知道其它物件知道什麼，也就是知道其它物件傳遞的訊息。- Ch 4. 建立有彈性的界面 (Creating Flexible Interface)</li></ul></p><pre><code>user_phone = user.profile.contact.phone</code></pre><p><ul><li>程式與測試之間的相依性：當程式在做重構或是修改時，其對應的測試被迫也要跟著修改。- Ch 9 設計有效率的測試 (Design Cost-Effective Tests)</li></ul></p><h1>撰寫低耦合的程式 Writing loosely Coupled Code</h1><h2>插入相依性 Inject Dependencies</h2><pre><code>class Gear
+  attr_reader :chainring, :cog, <span class="mk-red">:rim, :tire</span>
+  def initialize(chainring, cog, <span class="mk-red">rim, tire</span>)
+    @chainring = chainring
+    @cog       = cog
+    <span class="mk-red">@rim       = rim</span>
+    <span class="mk-red">@tire      = tire</span>
+  end
+
+  def gear_inches
+    ratio * <span class="mk-red">Wheel.new(rim, tire)</span>.diameter
+  end
+
+  def y_pos
+    <span class="mk-red">Wheel.new(rim, tire)</span>.diameter / 2
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+end
+
+Gear.new(52, 11, 26, 1.5).gear_inches</code></pre><p>缺點：</p><p><ul><li>當修改Wheel class的名稱時，Gear的gear_inches與y_pos也必須跟著修改。</li><li>輪子鋼圈大小(rim)與輪胎厚度(tire)只用在初始化Wheel的instance，Gear卻必須儲存這兩個變數，違反單一責任原則。</li></ul></p><p>改進方式：</p><p><ul><li>將產生相依性的地方抽離出來，利用參數的方式插入到所需的class中。</li></ul></p><pre><code>class Gear
+  attr_reader :chainring, :cog, <span class="mk-blue">:wheel</span>
+  def initialize(chainring, cog, <span class="mk-blue">wheel</span>)
+    @chainring = chainring
+    @cog       = cog
+    <span class="mk-blue">@wheel     = wheel</span>
+  end
+
+  def gear_inches
+    ratio * <span class="mk-blue">wheel</span>.diameter
+  end
+
+  def y_pos
+    <span class="mk-blue">wheel</span>.diameter / 2
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+end
+
+Gear.new(52, 11, <span class="mk-blue">Wheel.new(26, 1.5)</span>).gear_inches</code></pre><p>優點：</p><p><ul><li>上面的缺點都不見了。</li><li>增加了彈性，Gear在計算gear_inches的時候，不限定一定要是Wheel的instance，而是任何有diameter這個method的class都可以傳入，這就是一個鴨子型態的運用。 - Ch 5 使用鴨子型態減少開發成本 (Reduce Cost with Duck Typing)</li></ul></p><p>補充：</p><p><ul><li>instance的初始化一直是經典的相依性問題，在design pattern中，甚至有一個專門的Factory pattern就是為了要處理這類的問題。</li></ul></p><h2>隔離相依性 Isolate Dependencies</h2><p>假如很不幸的我們沒辦法更改Gear初始化的參數，一定要傳入chaining, cog, rim, tire這些值，換句話說在Gear中無法避免Wheel instance的建立，那要怎麼修改比較好？</p><p>改進方式：</p><p><ul><li>將instance的建立儲存在變數中，在其它地方改採用存取變數的方式來取代直接建立instance。</li></ul></p><pre><code>class Gear
+  attr_reader :chainring, :cog, :rim, :tire, :wheel
+  def initialize(chainring, cog, <span class="mk-red">rim, tire</span>)
+    @chainring = chainring
+    @cog       = cog
+    <span class="mk-blue">@wheel     = Wheel.new(rim, tire)</span>
+  end
+
+  def gear_inches
+    ratio * wheel.diameter
+  end
+
+  def y_pos
+    wheel.diameter / 2
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+end
+
+Gear.new(52, 11, 26, 1.5).gear_inches</code></pre><p>優點：</p><p><ul><li>雖然無法完全除去Wheel的相依性，但減少了改變時需要修改的程度。例如當Wheel改名稱的時候，相較之前的版本必須每個Wheel.new的地方都要改，這個版本的Gear只需要改一個地方(第6行)。</li><li>Wheel與Gear的gear_inches/y_pos method有做適當的隔離，gear_inches/y_pos只需要知道變數wheel，而不用知道Wheel這個class。</li></ul></p><p>進階版本：</p><pre><code>class Gear
+  attr_reader :chainring, :cog, :rim, :tire
+  def initialize(chainring, cog, rim, tire)
+    @chainring = chainring
+    @cog       = cog
+    @rim       = rim
+    @tire      = tire
+  end
+
+  def gear_inches
+    ratio * wheel.diameter
+  end
+
+  def y_pos
+    wheel.diameter / 2
+  end
+
+  def ratio
+    chainring / cog.to_f
+  end
+
+  <span class="mk-blue">def wheel</span>
+    <span class="mk-blue">@wheel ||= Wheel.new(rim, tire)</span>
+  <span class="mk-blue">end</span>
+end
+
+Gear.new(52, 11, 26, 1.5).gear_inches</code></pre><p>優點：</p><p><ul><li>定義的wheel method讓Wheel instance建立時機點延後到呼叫gear_inches/y_pos時執行，也就是所謂的lazy loading的技巧，等到真的用到才做初始化。</li></ul></p><h2>隔離外部訊息 Isolate Vulnerable External Messages</h2><p>缺點：</p><p><ul><li>上面的例子還有一個問題，gear_inches/y_pos仍知道wheel有diameter這個method，一旦diameter的名稱改了，gear_inches/y_pos也必須跟著改。</li></ul></p><p>改進方式：</p><p><ul><li>將呼叫其它class method的部分隔離放在另一個method裡。</li></ul></p><pre><code>class Gear
+  # ...
+  def gear_inches
+    ratio * <span class="mk-blue">diameter</span>
+  end
+
+  def y_pos
+    <span class="mk-blue">diameter</span> / 2
+  end
+
+  <span class="mk-blue">def diameter</span>
+    <span class="mk-blue">wheel.diameter</span>
+  <span class="mk-blue">end</span>
+  # ...
+end</code></pre><p>優點：</p><p><ul><li>gear_inches/y_pos現在與wheel的diameter做適當的切割，當wheel.diameter修改時，只需要改Gear的diameter即可。</li></ul></p></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><a href="/posts/{{post.file}}">{{post.title}}</a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(post).code}}">{{getPostCategory(post).name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body></html>

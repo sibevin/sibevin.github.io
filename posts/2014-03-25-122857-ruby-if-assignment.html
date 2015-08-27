@@ -1,0 +1,32 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>ruby在if中的assignment</title><meta content="ruby在if中的assignment" name="description" /><meta content="ruby在if中的assignment" property="og:title" /><meta content="ruby在if中的assignment" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2014-03-25-122857-ruby-if-assignment")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">ruby在if中的assignment</div><div class="title-info"><div class="title-time"><div class="time">2014-03-25 12:28:57</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(current_post).code}}">{{getPostCategory(current_post).name}}</a></div></div></div></div></div><div class="content"><div class="meta-data">title ruby在if中的assignment</div><div class="meta-data">description ruby在if中的assignment</div><div class="meta-data">datetime 2014-03-25 12:28:57</div><div class="meta-data">tags ruby</div><div class="meta-data">category coding</div><div class="meta-data">link ruby-if-assignment</div><div class="meta-data">file 2014-03-25-122857-ruby-if-assignment</div><div class="meta-data">template post</div><div class="meta-data">end</div><p>如果我們想要檢查<code>foo.get_value()</code>有沒有值，如果有的話就用回傳的值做什麼事，如果回傳是<code>nil</code>則不做事之類的。那我們通常會寫成下面這個樣子：</p><pre><code class="hljs">if a = foo.get_value()
+  # ...
+  # Do something with a if Foo.get_value() return a value...
+  # ...
+end</code></pre><p>不過當你有兩個以上的判斷式就要小心了，先看一個最簡單的例子：</p><pre><code class="hljs">if a = 1
+  p a
+end
+
+# 1</code></pre><p>這個沒有問題，<code>a</code>的值是<code>1</code>，所以會跑<code>p a</code>，印出的值是<code>1</code>。那下面這個例子？</p><pre><code class="hljs ruby">if a = 1 && b = 2
+  p a
+  p b
+end
+
+# 2 <= ???
+# 2</code></pre><p>這是因為<code>&&</code>的優先權大於<code>=</code>，所以<code>a = 1 && b = 2</code>的結果相當於</p><pre><code class="hljs ruby">a = 1 && b = 2
+a = (1 && (b = 2))
+a = (1 && 2) # b = 2
+a = 2</code></pre><p>如果想要得到<code>a = 1</code>與<code>b = 2</code>的結果，可以使用<code>and</code>(<code>and</code>的優先權比<code>=</code>低)或是<code>()</code>來得到正確的值：</p><pre><code class="hljs ruby">if a = 1 and b = 2
+  p a
+  p b
+end
+
+# 1
+# 2
+
+if (a = 1) && (b = 2)
+  p a
+  p b
+end
+
+# 1
+# 2</code></pre></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><a href="/posts/{{post.file}}">{{post.title}}</a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(post).code}}">{{getPostCategory(post).name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body></html>
