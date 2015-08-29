@@ -77,7 +77,7 @@ h1 {
 }
 /* line 17, ../../src/sass/_base.sass */
 h1:before {
-  content: "_";
+  content: "-";
   background: #000;
   color: #000;
   display: inline-block;
@@ -98,7 +98,7 @@ h2 {
 }
 /* line 22, ../../src/sass/_base.sass */
 h2:before {
-  content: "_";
+  content: "-";
   background: #000;
   color: #000;
   display: inline-block;
@@ -119,7 +119,7 @@ h3, h4, h5, h6 {
 }
 /* line 27, ../../src/sass/_base.sass */
 h3:before, h4:before, h5:before, h6:before {
-  content: "_";
+  content: "-";
   background: #000;
   color: #000;
   display: inline-block;
@@ -177,12 +177,12 @@ a {
 /* line 56, ../../src/sass/_base.sass */
 .content li:before {
   content: "_";
-  content: "_";
+  content: "-";
   background: #000;
   color: #000;
   display: inline-block;
-  width: 16px;
-  line-height: 16px;
+  width: 14px;
+  line-height: 14px;
   margin: 0px 10px;
   text-align: center;
   font-family: DFKai-sb, Time New Roman, serif;
@@ -744,7 +744,7 @@ a {
   }
   /* line 44, ../../src/sass/views/_posts.sass */
   .posts .post-list .pl-title:before {
-    content: "_";
+    content: "-";
     background: #000;
     color: #000;
     display: inline-block;
