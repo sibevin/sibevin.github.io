@@ -321,6 +321,7 @@ strong {
 }
 /* line 31, ../../src/sass/partials/_header.sass */
 .header .hd-input-search {
+  display: none;
   padding: 6px 12px;
   height: 38px;
   width: 100%;
@@ -334,33 +335,33 @@ strong {
   background: #555;
   color: #aaa;
 }
-/* line 41, ../../src/sass/partials/_header.sass */
+/* line 42, ../../src/sass/partials/_header.sass */
 .header .hd-btn-menu {
   float: left;
   padding: 6px 0px 6px 6px;
 }
-/* line 44, ../../src/sass/partials/_header.sass */
+/* line 45, ../../src/sass/partials/_header.sass */
 .header .hd-btn-menu .hd-icon {
   height: 48px;
   width: 48px;
   background: url("/images/header/menu_48x.svg");
 }
-/* line 49, ../../src/sass/partials/_header.sass */
+/* line 50, ../../src/sass/partials/_header.sass */
 .header .hd-btn-menu:hover .hd-icon, .header .hd-btn-menu.active .hd-icon {
   background: url("/images/header/menu_d_48x.svg");
 }
-/* line 41, ../../src/sass/partials/_header.sass */
+/* line 42, ../../src/sass/partials/_header.sass */
 .header .hd-btn-search {
   float: left;
   padding: 6px 0px 6px 6px;
 }
-/* line 44, ../../src/sass/partials/_header.sass */
+/* line 45, ../../src/sass/partials/_header.sass */
 .header .hd-btn-search .hd-icon {
   height: 48px;
   width: 48px;
   background: url("/images/header/search_48x.svg");
 }
-/* line 49, ../../src/sass/partials/_header.sass */
+/* line 50, ../../src/sass/partials/_header.sass */
 .header .hd-btn-search:hover .hd-icon, .header .hd-btn-search.active .hd-icon {
   background: url("/images/header/search_d_48x.svg");
 }
@@ -511,7 +512,7 @@ strong {
 
 /* line 3, ../../src/sass/partials/_search_result_panel.sass */
 .search-result-panel {
-  display: hidden;
+  display: none;
   position: absolute;
   left: 0px;
   right: 0px;
@@ -673,6 +674,27 @@ strong {
     border-width: 5px;
   }
 }
+/* line 5, ../../src/sass/partials/_demo.sass */
+.demo {
+  padding: 12px;
+  -moz-box-shadow: 0px 0px 10px 0px #aaa;
+  -webkit-box-shadow: 0px 0px 10px 0px #aaa;
+  box-shadow: 0px 0px 10px 0px #aaa;
+}
+/* line 8, ../../src/sass/partials/_demo.sass */
+.demo:before {
+  content: "DEMO";
+  background: #555;
+  color: #fff;
+  display: inline-block;
+  padding: 8px;
+  margin-bottom: 8px;
+  text-align: center;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+
 /* line 5, ../../src/sass/views/_post.sass */
 .post .content {
   padding: 8px;
