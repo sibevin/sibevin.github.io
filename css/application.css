@@ -197,36 +197,41 @@ strong {
 }
 
 /* line 63, ../../src/sass/_base.sass */
+i {
+  font-style: italic;
+}
+
+/* line 66, ../../src/sass/_base.sass */
 .meta-data {
   display: none;
 }
 
-/* line 66, ../../src/sass/_base.sass */
+/* line 69, ../../src/sass/_base.sass */
 .text-red {
   color: #E3695C;
 }
 
-/* line 68, ../../src/sass/_base.sass */
+/* line 71, ../../src/sass/_base.sass */
 .text-blue {
   color: #3B7F8C;
 }
 
-/* line 70, ../../src/sass/_base.sass */
+/* line 73, ../../src/sass/_base.sass */
 .text-green {
   color: #46AC5C;
 }
 
-/* line 72, ../../src/sass/_base.sass */
+/* line 75, ../../src/sass/_base.sass */
 .text-orange {
   color: #E39E5C;
 }
 
-/* line 74, ../../src/sass/_base.sass */
+/* line 77, ../../src/sass/_base.sass */
 .text-grey {
   color: #999;
 }
 
-/* line 77, ../../src/sass/_base.sass */
+/* line 80, ../../src/sass/_base.sass */
 .mk-red {
   border: 2px solid #E3695C;
   -moz-border-radius: 3px;
@@ -234,7 +239,7 @@ strong {
   border-radius: 3px;
 }
 
-/* line 80, ../../src/sass/_base.sass */
+/* line 83, ../../src/sass/_base.sass */
 .mk-blue {
   border: 2px solid #3B7F8C;
   -moz-border-radius: 3px;
@@ -242,7 +247,7 @@ strong {
   border-radius: 3px;
 }
 
-/* line 83, ../../src/sass/_base.sass */
+/* line 86, ../../src/sass/_base.sass */
 .mkb-red {
   border: 2px solid red;
   background: rgba(255, 0, 0, 0.1);
