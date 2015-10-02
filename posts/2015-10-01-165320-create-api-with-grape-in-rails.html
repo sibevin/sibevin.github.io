@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>在rails中使用grape來建立API</title><meta content="" name="description" /><meta content="在rails中使用grape來建立API" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><link href="/favicon.ico?" rel="shortcut icon" type="image/x-icon" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-26486503-2', 'auto');
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2015-10-01-165320-create-api-with-grape-in-rails")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">在rails中使用grape來建立API</div><div class="title-info"><div class="title-time"><div class="time">2015-10-01 16:53:20</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(current_post).code}}">{{getPostCategory(current_post).name}}</a></div></div></div></div></div><div class="content"><div class="meta-data">title 在rails中使用grape來建立API</div><div class="meta-data">datetime 2015-10-01 16:53:20</div><div class="meta-data">tags rails,grape</div><div class="meta-data">category coding</div><div class="meta-data">link create-api-with-grape-in-rails</div><div class="meta-data">file 2015-10-01-165320-create-api-with-grape-in-rails</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>什麼是Grape？</h1><p>Grape是一個用來建立API的framework，它有下面的優點：</p><ul><li>採用自己獨特的DSL來簡化建立API的流程。</li><li>雖然我們也可以使用controller來建立API，但controller在啟動時會載入許多module，而其中有很多module在實作API上其實是用不到的。相較於rails的controller，使用輕量化的Grape所建立的API在使用上會更有效率。</li><li>內建的API版本機制與模組化的設計讓我們更容易管理維護API。</li><li>支援swagger文件自動生成。</li></ul><h1>Grape on Rails</h1><p>Grape的一個好處是可以在rails中使用。設定的步驟如下：</p><ul><li>在Gemfile中加入<code>grape</code>的gem。</li></ul><p><i>Gemfile</i></p><pre><code>gem 'grape'</code></pre><ul><li>在config/application.rb中設定儲放Api相關檔案的目錄，目前我們設定在<code>app/api</code>之下。</li></ul><p><i>config/application.rb</i></p><pre><code>module MyApp
+  class Application < Rails::Application
+    # ...
+    # Support grape API
+    config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
+    config.autoload_paths += Dir[Rails.root.join('app')]
+    # ...
+  end
+end</code></pre><ul><li>建立一個測試用的API。</li></ul><p><i>app/api/test.rb</i></p><pre><code>module Api
+  class Test < Grape::API
+    get :ping do
+      { data: "pong" }
+    end
+  end
+end</code></pre><ul><li>在routes中掛載api的路徑。</li></ul><p><i>config/routes.rb</i></p><pre><code>Rails.application.routes.draw do
+  # ...
+  mount Api::Test => '/'
+  # ...
+end</code></pre><ul><li>重新啟動rails server，在網址列輸入<code>localhost:3000/ping</code>就可以呼叫API了。</li></ul><h1>使用swagger自動生成API文件</h1><p>使用Grape的另一個好處是它可以自動生成swagger的API文件，所以只要API寫好了，APIjj文件就寫好了。除此之外，還可以整合swagger-ui直接將API文件掛載在rails的routes下，超級方便的啊。下面是設定的步驟：</p><ul><li>在Gemfile中加入<code>grape-swagger</code>與<code>grape-swagger-rails</code>，基本上我們會將這兩個gem放在development的group下，因為production用不到。</li></ul><p><i>Gemfile</i></p><pre><code>group :development do
+  gem 'grape-swagger'
+  gem 'grape-swagger-rails'
+end</code></pre><ul><li>API最上層的class加入<code>add_swagger_documentation</code>，讓grape可以自動生成swagger doc。</li></ul><p><i>app/api/test.rb</i></p><pre><code>module Api
+  class Test < Grape::API
+    get :ping do
+      { data: "pong" }
+    end
+
+    if Rails.env.development?
+      add_swagger_documentation(
+        mount_path: 'api/swagger_doc',
+        hide_format: true,
+        hide_documentation_path: true
+      )
+    end
+  end
+end</code></pre><p>更多有關grape-swagger的設定選項可以參考<a href="https://github.com/ruby-grape/grape-swagger" target="_blank">grape-swagger的文件</a>。</p><ul><li>在initializer中加入一個新檔案用來初使化grape-swagger-rails。 </li></ul><p><i>config/initializers/grape_swagger_rails.rb</i></p><pre><code>if Rails.env.development?
+  GrapeSwaggerRails.options.url = "api/swagger_doc"
+  GrapeSwaggerRails.options.app_name = 'My App'
+  GrapeSwaggerRails.options.app_url = '/'
+end</code></pre><ul><li>在routes中掛載api文件的路徑。</li></ul><p><i>config/routes.rb</i></p><pre><code>Rails.application.routes.draw do
+  # ...
+  if Rails.env.development?
+    mount GrapeSwaggerRails::Engine => '/apidoc'
+  end
+  # ...
+end</code></pre><ul><li>重新啟動rails server，在網址列輸入<code>localhost:3000/apidoc</code>就可以看到由swagger-ui生成的API文件了。</li></ul><div class="image-center"><img alt="Swagger UI" src="/images/post/20151002084548772-swagger-ui.png" /><div class="image-text">Swagger UI</div></div><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'create-api-with-grape-in-rails';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><a href="/posts/{{post.file}}">{{post.title}}</a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(post).code}}">{{getPostCategory(post).name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body></html>
