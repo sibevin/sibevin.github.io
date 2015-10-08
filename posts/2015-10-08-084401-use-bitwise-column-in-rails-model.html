@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>在model中使用bitwise欄位</title><meta content="" name="description" /><meta content="在model中使用bitwise欄位" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><link href="/favicon.ico?" rel="shortcut icon" type="image/x-icon" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-26486503-2', 'auto');
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2015-10-08-084401-use-bitwise-column-in-rails-model")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">在model中使用bitwise欄位</div><div class="title-info"><div class="title-time"><div class="time">2015-10-08 08:44:01</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(current_post).code}}">{{getPostCategory(current_post).name}}</a></div></div></div></div></div><div class="content"><div class="meta-data">title 在model中使用bitwise欄位</div><div class="meta-data">datetime 2015-10-08 08:44:01</div><div class="meta-data">tags rails_model</div><div class="meta-data">category coding</div><div class="meta-data">link use-bitwise-column-in-rails-model</div><div class="meta-data">file 2015-10-08-084401-use-bitwise-column-in-rails-model</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>問題</h1><p>我們有一個User model，每個user會有不同的角色(admin, manager, member)，而且一個user可以同時擁有多個角色，那要怎麼儲存user的角色資訊呢？</p><ul><li>方法1：最直覺的做法是建另一個model例如叫UserRole，裡面有<code>user_id</code>與<code>role</code>這兩個欄位，則一個user會有多個user_role。這是標準使用model association的做法，如果你需要查詢哪一些user有某個role，或是之後想要動態增加新的角色，其實這是最正確的做法。但如果沒有這些需求，也就是說角色已經固定，而且只想確定某個user的角色是什麼，那麼為了要儲存role而多建了一個model似乎有點殺雞牛刀的感覺。另外，因為role是儲存在另一個table，意味著每次要做role的判斷都要同時讀取users與user_roles這兩個table，顯然在效能上會受到一些影響。</li><li>方法2：將role的資訊存在users裡的某個欄位，例如users裡建一個<code>roles</code>的欄位。但如果要存多個值，第一個會想到的就是用serialize data，也就是在<code>roles</code>中儲存的是<code>[:admin, :member]</code>之類的值，這樣可以不用開另一個table來儲存role的資訊。但如果只是存role，卻要用到serialize data似乎有點殺雞牛刀的感覺(你到底有多少把牛刀啊)，serialize data本身也有沒辦法判斷dirty而有強迫更新的問題。</li><li>方法3：如果只是存儲role，感覺可以用bitwise的方式來做，也就是將每個role都定義在一個bit的位置，roles實際上只儲存一個integer。例如：</li></ul><table><thead><tr><th>角色</th><th>所在的bit位置(由左到右)</th><th>用bitwise的方式表示</th><th>實際會儲存在<code>roles</code>的值</th></tr></thead><tbody><tr><td>admin</td><td>1</td><td>001</td><td>1</td></tr><tr><td>manager</td><td>2</td><td>010</td><td>2</td></tr><tr><td>member</td><td>3</td><td>100</td><td>4</td></tr></tbody></table><p>如果某個user有admin又有member的角色，那在<code>roles</code>中儲存的值就會像下面所表示的：</p><table><thead><tr><th>角色</th><th>用bitwise的方式表示</th><th>實際會儲存在<code>roles</code>的值</th></tr></thead><tbody><tr><td>[:admin, :member]</td><td>101</td><td>4 + 1 = 5</td></tr></tbody></table><p>看起來是個不錯的方法，可是要怎麼實作呢？</p><h1>解法</h1><h4>在users table加上一個integer的roles欄位。</h4><p><i>db/migrate/20151008032103_add_roles_to_users.rb</i></p><pre><code>class AddRolesToUsers < ActiveRecord::Migration
+  def change
+    add_column :users, :roles, :integer, null: false, default: 0
+  end
+end</code></pre><h4>在User model裡加上<code>ROLES</code>用來定義有哪些角色。另外再加上<code>roles_bitwise</code>與<code>roles_bitwise=</code>這兩個method。</h4><p><i>app/models/user.rb</i></p><pre><code>class User < ActiveRecord::Base
+  ROLES = {
+    admin: 1,
+    manager: 2,
+    member: 3,
+  }
+
+  attr_accessor :role_bitwise
+
+  # ...
+
+  def roles_bitwise
+    result = []
+    ROLES.each do |bit_key, bit_value|
+      result << bit_key if (self.roles & 2**(bit_value - 1)) != 0
+    end
+    result
+  end
+
+  def roles_bitwise=(bitwise_val)
+    result = 0
+    bitwise_val.each do |bv|
+      result = result | 2**(ROLES[bv.to_sym] - 1) if ROLES[bv.to_sym]
+    end
+    self.roles = result
+    self.roles
+  end
+end</code></pre><p>有了<code>roles_bitwise</code>與<code>roles_bitwise=</code>就可以用Array的方式設定角色，而roles_bitwise會自動將array轉成integer並assign到roles中。</p><pre><code class="ruby">u = User.new
+u.roles_bitwise = [:admin, :manager]
+puts u.roles # 5
+u.roles = 1
+puts u.roles_bitwise # [:admin]</code></pre><h4>在controller與view中我們就直接用<code>roles_bitwise</code>來取代<code>roles</code>，使用<code>roles_bitwise</code>的方式就跟一般的欄位一樣，但要注意的是strong parameter中的<code>roles_bitwise</code>需要設成Array的方式傳入。</h4><p><i>app/controllers/user/roles_controller.rb</i></p><pre><code>class User::RolesController < ApplicationController
+  def update
+    if @user.update_attributes(user_params)
+      # ...
+    end
+  end
+
+  # ...
+
+  private
+
+  def user_params
+    params.require(:user).permit(roles_bitwise:[])
+  end
+end</code></pre><p><i>app/views/user/roles/edit.html.erb</i></p><pre><code class="erb">&lt;%= simple_form_for(@user) do |f| %&gt;
+  &lt;%= f.input :roles_bitwise,
+    collection: User::ROLES,
+    as: :check_boxes,
+    label_method: -&gt; (r){ t(&quot;user.role.#{r.first}&quot;) },
+    value_method: :first %&gt;
+  &lt;%= f.button :submit %&gt;
+&lt;% end %&gt;
+</code></pre><h1>小結</h1><p>這裡介紹了如何使用bitwise的方式儲存multiple value的值，我覺得很重要的兩點就是：</p><ul><li>注意使用的時機，如果你需要做查詢或是動態新增角色，使用model的方式才是正解。</li><li>User model中的<code>roles_bitwise</code>與<code>roles_bitwise=</code>這兩個method簡化了roles的計算與處理，我們不直接使用<code>roles</code>而是藉由<code>roles_bitwise</code>來處理<code>roles</code>是一個重要的技巧。</li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'use-bitwise-column-in-rails-model';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><a href="/posts/{{post.file}}">{{post.title}}</a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category"><a class="category-link" ng-href="/categories?c={{getPostCategory(post).code}}">{{getPostCategory(post).name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body></html>
