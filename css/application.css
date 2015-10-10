@@ -625,7 +625,7 @@ i {
 }
 /* line 12, ../../src/sass/partials/_title.sass */
 .title .title-main {
-  padding: 20px;
+  padding: 10px 20px;
   display: table-cell;
   vertical-align: middle;
 }
