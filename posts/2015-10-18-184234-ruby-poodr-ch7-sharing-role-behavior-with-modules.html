@@ -3,7 +3,7 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-26486503-2', 'auto');
-ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2015-10-18-184234-ruby-poodr-ch7-sharing-role-behavior-with-modules")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/drafts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">rails 讀書會 - POODR - Ch7 使用module來分享角色的行為</div><div class="title-info"><div class="title-time"><div class="time">2015-10-18 18:42:34</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="draft">DRAFT</div><div class="meta-data">title rails 讀書會 - POODR - Ch7 使用module來分享角色的行為</div><div class="meta-data">datetime 2015-10-18 18:42:34</div><div class="meta-data">tags ruby,ooad,rails_study-group</div><div class="meta-data">category coding</div><div class="meta-data">link ruby-poodr-ch7-sharing-role-behavior-with-modules</div><div class="meta-data">file 2015-10-18-184234-ruby-poodr-ch7-sharing-role-behavior-with-modules</div><div class="meta-data">template post</div><div class="meta-data">draft</div><div class="meta-data">end</div><ul><li>ruby的繼承無法處理多重繼承。</li><li>使用分享角色的方式取代繼承。</li></ul><h1>Understanding Roles</h1><p>角色的定義：多個不相關的class擁有相同的行為，我們把它定義成這些class在扮演分享同一個角色。這些class就會有一個扮演相同角色的相依性，這種相依性在設計的時候就要考慮進來。</p><h2>Finding Roles</h2><p>duck typing就是一種角色的概念。與第5章的duck typing不同的是我們想組織分享的行為，通常我們會將分享的行為定義在某個檔案中方便使用與參照，ruby的module就非常適合用來定義共用的method。</p><p>一旦在class使用了module來共用method，class可以呼叫的method就會擴大，基本上包含了：</p><ul><li>1. class自己實作的method。</li><li>2. class由繼承體系得知的method。</li><li>3. class由include module共用的method。</li><li>4. class由繼承體系中的class，這些class裡include module共用的method。</li></ul><h2>Organizing Responsibilities</h2><ul><li>選擇哪一些method需要共用的方法，就如同之前規劃承繼架構中所提到的方法。</li></ul><h2>Removing Unnecessary Dependencies</h2><h2>Writing the Concrete Code</h2><p>Bicycle中有一系列有關schedule的method用來處理排程的問題。</p><pre><code>class Bicycle
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2015-10-18-184234-ruby-poodr-ch7-sharing-role-behavior-with-modules")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">rails 讀書會 - POODR - Ch7 使用module來分享角色的行為</div><div class="title-info"><div class="title-time"><div class="time">2015-10-18 18:42:34</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title rails 讀書會 - POODR - Ch7 使用module來分享角色的行為</div><div class="meta-data">datetime 2015-10-18 18:42:34</div><div class="meta-data">tags ruby,ooad,rails_study-group</div><div class="meta-data">category coding</div><div class="meta-data">link ruby-poodr-ch7-sharing-role-behavior-with-modules</div><div class="meta-data">file 2015-10-18-184234-ruby-poodr-ch7-sharing-role-behavior-with-modules</div><div class="meta-data">template post</div><div class="meta-data">end</div><ul><li>ruby的繼承無法處理多重繼承。</li><li>使用分享角色的方式取代繼承。</li></ul><h1>Understanding Roles</h1><p>角色的定義：多個不相關的class擁有相同的行為，我們把它定義成這些class在扮演分享同一個角色。這些class就會有一個扮演相同角色的相依性，這種相依性在設計的時候就要考慮進來。</p><h2>Finding Roles</h2><p>duck typing就是一種角色的概念。與第5章的duck typing不同的是我們想組織分享的行為，通常我們會將分享的行為定義在某個檔案中方便使用與參照，ruby的module就非常適合用來定義共用的method。</p><p>一旦在class使用了module來共用method，class可以呼叫的method就會擴大，基本上包含了：</p><ul><li>1. class自己實作的method。</li><li>2. class由繼承體系得知的method。</li><li>3. class由include module共用的method。</li><li>4. class由繼承體系中的class，這些class裡include module共用的method。</li></ul><h2>Organizing Responsibilities</h2><ul><li>選擇哪一些method需要共用的方法，就如同之前規劃承繼架構中所提到的方法。</li></ul><h2>Removing Unnecessary Dependencies</h2><h2>Writing the Concrete Code</h2><p>Bicycle中有一系列有關schedule的method用來處理排程的問題。</p><pre><code>class Bicycle
   attr_reader :schedule, :size, :chain, :tire_size
   # Inject the Schedule and provide a default
   def initialize(args={})
@@ -88,7 +88,53 @@ v = Vehicle.new v.schedulable?(starting, ending)
 m = Mechanic.new m.schedulable?(starting, ending)
 # This Mechanic is not scheduled
 # between 2015-02-29 and 2015-09-10
-# => true</code></pre><p>注意<code>schedulable?</code>與<code>scheduled?</code>這兩個method因為在Bicycle等class中並沒有實作，所以這些method會直接從schedulable module中delegate(委派)，也就是採用module中method的實作。但因為三個class都各自重新定義了<code>lead_days</code>，所以<code>lead_days</code>會使用class自己定義的天數。</p><ul><li>繼承與分享角色的差別，其實就是is-a(是一個xxx)與behaviors-like-a(行為像是一個xxx)的差別。</li></ul><h2>Looking Up Methods</h2><p>尋找method的順序：</p><ul><li>1. 先找class中有沒有這個method的實作。</li><li>2. 如果上面找不到，找class include的module中有沒有這個method的實作。</li><li>3. 如果上面都找不到，呼叫method_missing並將method的名字當參數傳進去，如果沒有做什麼，最後往父類別繼續找method的實作。</li></ul><h2>Inheriting Role Behavior</h2><p>module中還可以include其它的module，使得module變成有繼承體系的感覺，但同時也會增加系統的複雜度，也變的更難理解與維護，就看適不適合這樣子用了。</p><h1>Writing Inheritable Code</h1><h2>Recognize the Antipatterns</h2><p>只要出現下面兩種程式碼，表示有可能已經違反了設計的原則：</p><ul><li>一個物件必須根據自己是哪一種類別或資料型態來決定method要怎麼運作。</li><li>一個method必須檢查傳進來的物件是哪一種類別或資料型態來做不同的事情。</li></ul><p>基本上，在大多數的情況下，「檢查是哪一種類別或資料型態」都會是一個錯誤。</p><h2>Insist on the Abstraction</h2><ul><li>任何可以使用在父類別的程式碼，繼承父類別的子類別也應該可以運作。父類別不應該包含任何一個只能讓某些子類別才能用的method。這個原則同樣用於module。</li><li>如果有一個子類別得到了來自於繼承或是include的method，卻將它實作成raise一個 "Dose not implement" 的exception。這就要重新思考這個子類別到底是不是真的符合繼承父類別的條件。</li><li>如果你沒辦法抽象化出一個父類別，這表示繼承並不適用於你目前的系統。</li></ul><h2>Honor the Contract</h2><p>簡言之就是Liskov Substitution Principle (LSP)，一個子類別應該可以在任何可以使用父類別的地方取待父類別。</p><h2>Use the Template Method Pattern</h2><p>抽象的父類別定義method的界面，而繼承的子類別則複寫method的實作。</p><h2>Preemptively Decouple Classes</h2><p>盡量避免在子類別中呼叫super，取而待之是使用hook之類的作法。</p><h2>Create Shallow Hierarchies</h2><h1>Summary</h1><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+# => true</code></pre><p>注意<code>schedulable?</code>與<code>scheduled?</code>這兩個method因為在Bicycle等class中並沒有實作，所以這些method會直接從schedulable module中delegate(委派)，也就是採用module中method的實作。但因為三個class都各自重新定義了<code>lead_days</code>，所以<code>lead_days</code>會使用class自己定義的天數。</p><ul><li>繼承與分享角色的差別，其實就是is-a(是一個xxx)與behaviors-like-a(行為像是一個xxx)的差別。</li></ul><h2>Looking Up Methods</h2><p>尋找method的順序：</p><ul><li>1. 先找class中有沒有這個method的實作。</li><li>2. 如果上面找不到，找class include的module中有沒有這個method的實作。</li><li>3. 如果上面都找不到，呼叫method_missing並將method的名字當參數傳進去，如果沒有做什麼，最後往父類別繼續找method的實作。</li></ul><h2>Inheriting Role Behavior</h2><p>module中還可以include其它的module，使得module變成有繼承體系的感覺，但同時也會增加系統的複雜度，也變的更難理解與維護，就看適不適合這樣子用了。</p><h1>Writing Inheritable Code</h1><h2>Recognize the Antipatterns</h2><p>只要出現下面兩種程式碼，表示有可能已經違反了設計的原則：</p><ul><li>一個物件必須根據自己是哪一種類別或資料型態來決定method要怎麼運作。</li><li>一個method必須檢查傳進來的物件是哪一種類別或資料型態來做不同的事情。</li></ul><p>基本上，在大多數的情況下，「檢查是哪一種類別或資料型態」都會是一個錯誤。</p><h2>Insist on the Abstraction</h2><ul><li>任何可以使用在父類別的程式碼，繼承父類別的子類別也應該可以運作。父類別不應該包含任何一個只能讓某些子類別才能用的method。這個原則同樣用於module。</li><li>如果有一個子類別得到了來自於繼承或是include的method，卻將它實作成raise一個 "Dose not implement" 的exception。這就要重新思考這個子類別到底是不是真的符合繼承父類別的條件。</li><li>如果你沒辦法抽象化出一個父類別，這表示繼承並不適用於你目前的系統。</li></ul><h2>Honor the Contract</h2><p>簡言之就是Liskov Substitution Principle (LSP)，一個子類別應該可以在任何可以使用父類別的地方取待父類別。</p><h2>Use the Template Method Pattern</h2><p>抽象的父類別定義method的界面，而繼承的子類別則複寫method的實作。</p><h2>Preemptively Decouple Classes</h2><p>盡量避免在子類別中呼叫super，取而待之是使用hook之類的作法，因為呼叫super表示你在父類別與子類別之間增加了相依性。例如：</p><p><i>不好的寫法：</i></p><pre><code>class Car
+  def initialize(move_action: nil, carry_action: nil)
+    @move_action = move_action || Run.new
+    @carry_action = carry_action || Carry.new
+  end
+end
+
+class SportCar < Car
+  def initialize(move_action: nil, carry_action: nil)
+    super(move_action, carry_action)
+    @move_action = RunFaster.new
+  end
+end</code></pre><p><i>比較好的寫法：</i></p><pre><code>class Car
+  def initialize(move_action: nil, carry_action: nil)
+    @move_action = move_action || Run.new
+    @carry_action = carry_action || Carry.new
+    init_action
+  end
+
+  private
+
+  def init_action
+  end
+end
+
+class SportCar < Car
+  private
+
+  def init_action
+    @move_action = RunFaster.new
+  end
+end</code></pre><p>在上面的例子中，<code>init_action</code>就是一個hook。不過使用hook的限制就是只能用在直接繼承的父子類別，在更多層的繼承關係反而會限制class的使用。例如：</p><pre><code>class SportCar < Car
+  private
+
+  def init_action
+    @move_action = RunFaster.new
+  end
+end
+
+class CoolSportCar < Car
+  private
+
+  def init_action
+    super
+    @carry_action = CarryCool.new
+  end
+end</code></pre><p>在上面的例子中，CoolSportCar為了要維持SportCar原本的行為，必須在<code>init_action</code>呼叫super。</p><h2>Create Shallow Hierarchies</h2><p>盡量避免過深的繼承階層關係，繼承階層越多，表示要找到對應的method定義或實作就越困難，同時在同一個階層體系下的class表示他們彼此之間都有相依性，這也會造成如果改了繼承階層中的class，會大大增加出包的機會。</p><h1>Summary</h1><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'ruby-poodr-ch7-sharing-role-behavior-with-modules';
 /* * * DON'T EDIT BELOW THIS LINE * * */
