@@ -51,7 +51,7 @@ rect.width = rect.width * 2
 puts (rect.area == original_are * 2) # true</code></pre><p>但在這種情況下，正方形是無法當作長方形來使用，因為正方形的面積會成4倍。</p><pre class="ruby"><code>rect = Square.new(side: 2)
 original_area = rect.area
 rect.width = rect.width * 2
-puts (rect.area == original_area * 2) # false</code></pre><p>這違反了父類別可以使用的地方，子類別應該也要可以用的原則。也許你會爭論說這不是預期的使用方式，可是就如同上面提到的，你不能預期別人是怎麼看待一個長方形，這樣的認知差異造成了長方形與正方形本質上的不同，如果硬要說正方形是一個長方形，在某些使用的情境上(就如同上面的例子)就失去了合理性。</p><h1>Ref:</h1><ul><li><a href="http://programmers.stackexchange.com/questions/238176/why-would-square-inheriting-from-rectangle-be-problematic-if-we-override-the-set" target="_blank">SO - Why would Square inheriting from Rectangle be problematic if we override the SetWidth and SetHeight methods?</a></li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+puts (rect.area == original_area * 2) # false</code></pre><p>這違反了父類別可以使用的地方，子類別應該也要可以用的原則(Liskov Substitution Principle)。也許你會爭論說這不是預期的使用方式，可是就如同上面提到的，你不能預期別人是怎麼看待一個長方形(認為一個長方形當它的寬變2倍時，面積也要變2倍)，這樣的認知差異造成了長方形與正方形本質上的不同，如果硬要說正方形是一個長方形，在某些使用的情境上就失去了合理性。</p><h1>Ref:</h1><ul><li><a href="http://programmers.stackexchange.com/questions/238176/why-would-square-inheriting-from-rectangle-be-problematic-if-we-override-the-set" target="_blank">SO - Why would Square inheriting from Rectangle be problematic if we override the SetWidth and SetHeight methods?</a></li><li><a href="http://blog.csdn.net/Bitou_Von/article/details/4210654" target="_blank">架构师之路之 里氏代换原则（Liskov Substitution Principle, LSP）</a></li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'is-a-square-a-rectangle';
 /* * * DON'T EDIT BELOW THIS LINE * * */
