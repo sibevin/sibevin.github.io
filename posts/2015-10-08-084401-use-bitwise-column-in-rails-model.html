@@ -35,7 +35,7 @@ end</code></pre><h4>在User model裡加上<code>ROLES</code>用來定義有哪�
     self.roles
   end
 end</code></pre><p>有了<code>roles_bitwise</code>與<code>roles_bitwise=</code>就可以用Array的方式設定角色，而roles_bitwise會自動將array轉成integer並assign到roles中。</p><pre><code class="ruby">u = User.new
-u.roles_bitwise = [:admin, :manager]
+u.roles_bitwise = [:admin, :member]
 puts u.roles # 5
 u.roles = 1
 puts u.roles_bitwise # [:admin]</code></pre><h4>在controller與view中我們就直接用<code>roles_bitwise</code>來取代<code>roles</code>，使用<code>roles_bitwise</code>的方式就跟一般的欄位一樣，但要注意的是strong parameter中的<code>roles_bitwise</code>需要設成Array的方式傳入。</h4><p><i>app/controllers/user/roles_controller.rb</i></p><pre><code>class User::RolesController < ApplicationController
