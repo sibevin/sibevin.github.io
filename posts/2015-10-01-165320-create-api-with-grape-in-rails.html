@@ -21,7 +21,7 @@ end</code></pre><ul><li>在routes中掛載api的路徑。</li></ul><p><i>config/
   # ...
   mount Api::Test => '/'
   # ...
-end</code></pre><ul><li>重新啟動rails server，在網址列輸入<code>localhost:3000/ping</code>就可以呼叫API了。</li></ul><h1>使用swagger自動生成API文件</h1><p>使用grape的另一個好處是它可以自動生成swagger的API文件，所以只要API寫好了，APIjj文件就寫好了。除此之外，還可以整合swagger-ui直接將API文件掛載在rails的routes下，超級方便的啊。下面是設定的步驟：</p><ul><li>在Gemfile中加入<code>grape-swagger</code>與<code>grape-swagger-rails</code>，基本上我們會將這兩個gem放在development的group下，因為production用不到。</li></ul><p><i>Gemfile</i></p><pre><code>group :development do
+end</code></pre><ul><li>重新啟動rails server，在網址列輸入<code>localhost:3000/ping</code>就可以呼叫API了。</li></ul><h1>使用swagger自動生成API文件</h1><p>使用grape的另一個好處是它可以自動生成swagger的API文件，所以只要API寫好了，API文件就寫好了。除此之外，還可以整合swagger-ui直接將API文件掛載在rails的routes下，超級方便的啊。下面是設定的步驟：</p><ul><li>在Gemfile中加入<code>grape-swagger</code>與<code>grape-swagger-rails</code>，基本上我們會將這兩個gem放在development的group下，因為production用不到。</li></ul><p><i>Gemfile</i></p><pre><code>group :development do
   gem 'grape-swagger'
   gem 'grape-swagger-rails'
 end</code></pre><ul><li>API最上層的class加入<code>add_swagger_documentation</code>，讓grape可以自動生成swagger doc。</li></ul><p><i>app/api/test.rb</i></p><pre><code>module Api
