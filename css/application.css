@@ -635,18 +635,19 @@ i {
   font-size: 2.5em;
   font-family: DFKai-sb, Time New Roman, serif;
   font-weight: bold;
+  word-break: break-all;
 }
-/* line 21, ../../src/sass/partials/_title.sass */
+/* line 22, ../../src/sass/partials/_title.sass */
 .title .title-main .title-time {
   text-align: right;
   padding-bottom: 5px;
 }
-/* line 24, ../../src/sass/partials/_title.sass */
+/* line 25, ../../src/sass/partials/_title.sass */
 .title .title-main .title-tcs {
   text-align: right;
   padding-top: 5px;
 }
-/* line 27, ../../src/sass/partials/_title.sass */
+/* line 28, ../../src/sass/partials/_title.sass */
 .title .title-img {
   background: #555;
   padding: 12px 12px 12px 12px;
