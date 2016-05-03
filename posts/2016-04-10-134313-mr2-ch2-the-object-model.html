@@ -104,30 +104,7 @@ code
   | 。</li><li>可以使用::來取得root的constants，例如上面的 
 code
   | ::A
-| 。</li><li><code>Module.constant</code>會列出所有root-level的constants。 <code>Module.nesting</code>則可以列出目前的namespace。</li></ul><h2>Loading and Requiring</h2><i>a.rb</i><pre><code class="ruby">A = "A constant in a.rb"
-p &quot;Print A = &#39;#{A}&#39; in a.rb&quot;</code></pre><i>b.rb</i><pre><code class="ruby">A = "A constant in b.rb"
-p &quot;Print A = &#39;#{A}&#39; in b.rb&quot;</code></pre><p>如果在c.rb裡同時load a.rb與b.rb兩個檔案如下：</p><i>c.rb</i><pre><code class="ruby">load("a.rb")
-load("b.rb")
-p &quot;Print A = &#39;#{A}&#39; in c.rb&quot;
-load("b.rb")</code></pre><p>則會出現下面的結果：</p><pre><code class="nohighlight">"Print A = 'A constant in file a.rb' in a.rb"
-b.rb:1: warning: already initialized constant A
-a.rb:1: warning: previous definition of A was here
-"Print A = 'A constant in file b.rb' in b.rb"
-"Print A = 'A constant in file b.rb' in c.rb"
-b.rb:1: warning: already initialized constant A
-b.rb:1: warning: previous definition of A was here
-"Print A = 'A constant in file b.rb' in b.rb"</code></pre><p>由此可知，使用load有下面特性：</p><ul><li>被load的檔案會被執行(print有被執行)。</li><li>如果load的兩個檔案裡有相同的constant，則會出現警告，而且會以最後載入的constant為主。</li><li>如果重複load相同的檔案，則檔案會被重複執行。</li></ul><p>如果不想將b.rb裡的constant載入到c.rb中，則可以在load後面加上true：</p><i>c.rb</i><pre><code class="ruby">load("a.rb")
-load("b.rb", true)
-p &quot;Print A = &#39;#{A}&#39; in c.rb&quot;</code></pre><pre><code class="nohighlight">"Print A = 'A constant in file a.rb' in a.rb"
-"Print A = 'A constant in file b.rb' in b.rb"
-"Print A = 'A constant in file a.rb' in c.rb"</code></pre><p>上面執行的結果就只會讀到a.rb的A，但b.rb的程式碼仍會執行。</p><p>如果將c.rb改成require如下：</p><pre><code class="ruby">require("./a")
-require("./b")
-p &quot;Print A = &#39;#{A}&#39; in c.rb&quot;
-require("./b")</code></pre><p>則結果會變成：</p><pre><code class="nohighlight">"Print A = 'A constant in file a.rb' in a.rb"
-/Users/kait/temp/b.rb:1: warning: already initialized constant A
-/Users/kait/temp/a.rb:1: warning: previous definition of A was here
-"Print A = 'A constant in file b.rb' in b.rb"
-"Print A = 'A constant in file b.rb' in c.rb"</code></pre><p>由此可知，require與load的差別在於</p><ul><li>require需要指定絕對路徑(更精確來說，如果不指定絕對路徑，則預設會去找$LOAD_PATH目錄裡有沒有指定的檔案，範例是將a.rb, b.rb, c.rb放在同一個目錄下，而./並不在預設的$LOAD_PATH，所以不加./會找不到)</li><li>require可以省略檔案的副檔名.rb，但load則是一定要加.rb，不然會找不到檔案。</li><li>如果require兩次相同的檔案，則檔案只會載入並執行第一次，之後的不會重複載入執行，load則每次都會載入執行。</li></ul><h1>What Happens When You Call a Method?</h1><h2>Method Lookup</h2><pre><code class="ruby">class A
+| 。</li><li><code>Module.constant</code>會列出所有root-level的constants。 <code>Module.nesting</code>則可以列出目前的namespace。</li></ul><h2>Loading and Requiring</h2><p>請看這篇：<a href="/posts/2016-05-02-145830-load-vs-require-in-ruby" target="_blank">ruby的load與require是差在什麼地方？</a></p><h1>What Happens When You Call a Method?</h1><h2>Method Lookup</h2><pre><code class="ruby">class A
   def say_hi
     puts "Hi"
   end
@@ -172,7 +149,7 @@ end
 
 c = C.new
 p c.say_hi # "Hi in M2"
-p C.ancestors # [M2, C, M1, B, A, Object, Kernel, BasicObject]</code></pre><h2>The Kernel</h2><p><span class="mk-blue">Kernel Method</span>：因為Object有include Kernel module，因此ruby中所有的物件都可以使用Kernel內定義的method。換句話說，只要將method加入Kernel中，則所有的物件都會擁有這個method，這會讓method變成像是ruby keyword的錯覺，酷。</p><pre><code class="ruby">module Kernel
+p C.ancestors # [M2, C, M1, B, A, Object, Kernel, BasicObject]</code></pre><p>更詳細有關module的include與prepend說明可以看這篇： <a href="/posts/2014-05-04-081714-ruby-module" target="_blank">ruby module的用法 </a></p><h2>The Kernel</h2><p><span class="mk-blue">Kernel Method</span>：因為Object有include Kernel module，因此ruby中所有的物件都可以使用Kernel內定義的method。換句話說，只要將method加入Kernel中，則所有的物件都會擁有這個method，這會讓method變成像是ruby keyword的錯覺，酷。</p><pre><code class="ruby">module Kernel
   def say_hi
     "Hi"
   end
@@ -184,7 +161,9 @@ class A
 end
 
 a = A.new
-p a.say_hi</code></pre><p>上面的例子，我們用<span class="mk-blue">Open Class</span>的方式將say_hi塞到Kernel中，這時候say_hi變成到處都可以用了。書上也舉了AwesomePrint這個有趣的例子。</p><h2>Method Execution</h2><p>ruby的每一行程式碼都是在某個物件中執行，我們稱做current object，而ruby會把current object記錄到 <code>self</code>之中。如果呼叫一個method但不指定receiver的話，預設就會把self當做receiver。當你呼叫method時指定了receiver，則self會在呼叫時method切換到對應的receiver。</p><h3>Private Method</h3><p>在ruby中，private method指的是不能使用receiver呼叫的method，即使是self也不行。這樣的定義表示除了在物件本身之中呼叫外，其它的地方都無法呼叫這個method。</p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+p a.say_hi</code></pre><p>上面的例子，我們用<span class="mk-blue">Open Class</span>的方式將say_hi塞到Kernel中，這時候say_hi變成到處都可以用了(連a也可以用)。書上也舉了AwesomePrint這個有趣的例子。</p><h2>Method Execution</h2><p>ruby的每一行程式碼都是在某個物件中執行，我們稱做current object，而ruby會把current object記錄到 <code>self</code>之中。如果呼叫一個method但不指定receiver的話，預設就會把self當做receiver。當你呼叫method時指定了receiver，則self會在呼叫時method切換到對應的receiver，換句話說，self記錄的是最後一次呼叫method的receiver。</p><h3>Private Method</h3><p>在ruby中，private method指的是不能使用receiver呼叫的method，即使是self也不行。這樣的定義表示除了在物件本身之中呼叫外，其它的地方都無法呼叫這個method。</p><h3>Top level</h3><p>在尚未執行任何method的呼叫時，預設的self是一個叫main的Object，由ruby interpreter在執行ruby程式的一開始就會配置的Object，這個object又稱做top-level context。(雖然它叫main，可是跟C或是java的main()一點關係也沒有。)</p><h3>Class Definitions and self</h3><p>在class或是module的定義中，self會被指定成class或是module本身。</p><pre><code class="ruby">class A
+  self # A
+end</code></pre><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'mr2-ch2-the-object-model';
 /* * * DON'T EDIT BELOW THIS LINE * * */
