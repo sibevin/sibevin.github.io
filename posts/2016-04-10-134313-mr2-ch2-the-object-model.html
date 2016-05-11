@@ -5,40 +5,40 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 ga('create', 'UA-26486503-2', 'auto');
 ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-04-10-134313-mr2-ch2-the-object-model")</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Metaprogramming Ruby 2 - ch2 - The Object Model</div><div class="title-info"><div class="title-time"><div class="time">2016-04-10 13:43:13</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Metaprogramming Ruby 2 - ch2 - The Object Model</div><div class="meta-data">datetime 2016-04-10 13:43:13</div><div class="meta-data">tags mp,mr2,note,ruby</div><div class="meta-data">category coding</div><div class="meta-data">link mr2-ch2-the-object-model</div><div class="meta-data">file 2016-04-10-134313-mr2-ch2-the-object-model</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>這是 Metaprogramming Ruby 2 的閱讀筆記，只會記錄我覺得重要的地方。如果你想要了解完整的內容或是想讓Ruby程式做一些神奇的事，強烈推薦去讀讀這本書。</p><h1>Open Classes</h1><p><span class="mk-blue">Open Class</span>：我們可以在任何時間點reopen已經存在的class並修改它。</p><pre><code class="ruby">class A
   def say
-    puts "Hi"
+    "Hi"
   end
 end
 
 a = A.new
-a.say # Hi
-# a.say_hello # NoMethodError
+p a.say # Hi
+# p a.say_hello # NoMethodError
 
 class A
   def say_hello
-    puts "Hello"
+    "Hello"
   end
 end
 
-a.say # Hi
-a.say_hello # Hello</code></pre><p>上面的例子，第二個class A並不是重新定義class A，而是reopen class A，並加一個新的method在class A之中。有趣的是即使是在reopen之前宣告的instance a，在reopen加上method之後就會有新的method可以用。</p><h1>The Problem with Open Classes</h1><pre><code class="ruby">class A
+p a.say # Hi
+p a.say_hello # Hello</code></pre><p>上面的例子，第二個class A並不是重新定義class A，而是reopen class A，並加一個新的method在class A之中。有趣的是即使是在reopen之前宣告的instance a，在reopen加上method之後就會有新的method可以用。</p><h1>The Problem with Open Classes</h1><pre><code class="ruby">class A
   def say
-    puts "Hi"
+    "Hi"
   end
 end
 
 a = A.new
-a.say # Hi
+p a.say # Hi
 
 class A
   def say
-    puts "Hello"
+    "Hello"
   end
 end
 
-a.say # Hello</code></pre><p>由上面的例子可以發現reopen之後我們可以將原本存在在class的method履寫掉，這樣的特性會在使用open class時很容易不小心改掉class原本的method而造成非預期的bug，所以這個技巧又被稱做<span class="mk-blue">Monkeypatch</span>。</p><h1>Inside the Object Model</h1><pre><code class="ruby">class A
+p a.say # Hello</code></pre><p>由上面的例子可以發現reopen之後我們可以將原本存在在class的method履寫掉，這樣的特性會在使用open class時很容易不小心改掉class原本的method而造成非預期的bug，所以這個技巧又被稱做<span class="mk-blue">Monkeypatch</span>。</p><h1>Inside the Object Model</h1><pre><code class="ruby">class A
   def say
     @var = 1
-    puts "Hi"
+    "Hi"
   end
 end
 
@@ -48,7 +48,7 @@ p a.class # A
 p a.methods # [:say, ... ]
 p a.instance_variable # []
 
-a.say # Hi
+p a.say # Hi
 
 p a.instance_variable # [:@var]
 
@@ -110,7 +110,68 @@ end
 
 b = B.new
 p b.say # Hi
-B.ancestors # [B, A, Object, Kernel, BasicObject]</code></pre><p>instance b呼叫了say，這時候ruby會先去找對應這個instance的class，也就是B有沒有定義這個method，如果沒有則往繼承體系上找有沒有這個method，以上面的例子而言，在class A中找到了say，於是就會使用class A中定義的say。我們可以使用 <code>ancestors</code>來查看一個class它所對應的繼承體系。</p><h2>Modules and Lookup</h2><p>請參考： <a href="/posts/2014-05-04-081714-ruby-module" target="_blank">ruby module的用法</a></p><h2>The Kernel</h2><p><span class="mk-blue">Kernel Method</span>：因為Object有include Kernel module，因此ruby中所有的物件都可以使用Kernel內定義的method。換句話說，只要將method加入Kernel中，則所有的物件都會擁有這個method，這會讓method變成像是ruby keyword的錯覺，酷。</p><pre><code class="ruby">module Kernel
+B.ancestors # [B, A, Object, Kernel, BasicObject]</code></pre><p>instance b呼叫了say，這時候ruby會先去找對應這個instance的class，也就是B有沒有定義這個method，如果沒有則往繼承體系上找有沒有這個method，以上面的例子而言，在class A中找到了say，於是就會使用class A中定義的say。我們可以使用 <code>ancestors</code>來查看一個class它所對應的繼承體系。</p><h2>Modules and Lookup</h2><p>請參考： <a href="/posts/2014-05-04-081714-ruby-module" target="_blank">ruby module的用法</a></p><pre><code class="ruby">class A
+  def say
+    "A say Hi"
+  end
+end
+
+module M1
+  def say
+    "M1 say Hi"
+  end
+end
+
+module M2
+  def say
+    "M2 say Hi"
+  end
+end
+
+class B < A
+  include M1
+  prepend M2
+  def say
+    "B say Hi"
+  end
+end
+
+class B
+  def say
+    "Reopen B say Hi"
+  end
+end
+
+module M3
+  def say
+    "M3 say Hi"
+  end
+end
+
+module M4
+  def say
+    "M4 say Hi"
+  end
+end
+
+module SayRefinement
+  refine B do
+    include M3
+    prepend M4
+    def say
+      "Refinement B say Hi"
+    end
+  end
+end
+
+b = B.new
+p b.say # "M2 say Hi"
+p B.ancestors # [M2, B, M1, A, Object, Kernel, BasicObject]
+
+using SayRefinement
+
+p b.say # "M4 say Hi"
+p B.ancestors # [M2, B, M1, A, Object, Kernel, BasicObject]</code></pre><div class="image-center"><a href="/images/post/20160511181400-mr2-ch2-method-lookup.png"><img alt="Method Lookup的順序" src="/images/post/20160511181400-mr2-ch2-method-lookup.png" /></a><div class="image-text">Method Lookup的順序</div></div><h2>The Kernel</h2><p><span class="mk-blue">Kernel Method</span>：因為Object有include Kernel module，因此ruby中所有的物件都可以使用Kernel內定義的method。換句話說，只要將method加入Kernel中，則所有的物件都會擁有這個method，這會讓method變成像是ruby keyword的錯覺，酷。</p><pre><code class="ruby">module Kernel
   def say
     "Hi"
   end
