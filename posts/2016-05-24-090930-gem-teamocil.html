@@ -16,7 +16,8 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
   layout: even-horizontal
   panes:
     - zc
-    - focus: true</code></pre><p>有了上面的設定檔，當開啟iTerm時，下指令 <code>teamocil my_workspace</code>，這時候iTrem就會做下面的事情：</p><ul><li>開一個新的視窗，將工作目錄切到 /Users/kait/workspace/rails/dev/my_project/ ，分割成左邊一個，右邊上下兩個，共三個面版分別跑 <code>rs -p 1234, guard, zs</code>這三個指令。</li><li>開另一個新的視窗，同樣將工作目錄切到 /Users/kait/workspace/rails/dev/my_project/ ，分割成上下兩個面版，上面跑 <code>zc</code>下面則維持terminal的畫面。</li></ul><p>更多的layout與設定方式可以參考Teamocil的官網。</p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+    - focus: true</code></pre><p>有了上面的設定檔，當開啟iTerm時，下指令 <code>teamocil my_workspace</code>，這時候iTrem就會做下面的事情：</p><ul><li>開一個新的視窗，將工作目錄切到 /Users/kait/workspace/rails/dev/my_project/ ，分割成左邊一個，右邊上下兩個，共三個面版分別跑 <code>rs -p 1234, guard, zs</code>這三個指令。</li><li>開另一個新的視窗，同樣將工作目錄切到 /Users/kait/workspace/rails/dev/my_project/ ，分割成上下兩個面版，上面跑 <code>zc</code>下面則維持terminal的畫面。</li></ul><p>更多的layout與設定方式可以參考Teamocil的官網。</p><h1>UPDATE</h1><p>如果你的iTerm更新到3.0.0以上的版本，那可能要用brew裝itermocil。指令如下：</p><pre><code class="nohighlight">$ brew update
+$ brew install TomAnthony/brews/itermocil</code></pre><p>請參考 <a href="https://github.com/TomAnthony/itermocil/issues/41" target="_blank">Support iTerm 3.0.0</a></p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'gem-teamocil';
 /* * * DON'T EDIT BELOW THIS LINE * * */
