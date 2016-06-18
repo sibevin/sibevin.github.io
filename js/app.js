@@ -175,7 +175,8 @@ CATEGORY_DATA = {"tools":{"count":28,"name":"好用工具","code":"tools","desc"
       };
       initVars = function() {
         $scope.footer_ts = new TabSwitcher("close");
-        return $scope.display_mode_ts = new TabSwitcher("web");
+        $scope.display_mode_ts = new TabSwitcher("web");
+        return $scope.has_tos = false;
       };
       init = function() {
         return initVars();
@@ -190,7 +191,8 @@ CATEGORY_DATA = {"tools":{"count":28,"name":"好用工具","code":"tools","desc"
     '$scope', '$filter', 'APP_POST_DATA', 'CURRENT_FILE', function($scope, $filter, APP_POST_DATA, CURRENT_FILE) {
       var init, initVars;
       initVars = function() {
-        return $scope.current_post = APP_POST_DATA[CURRENT_FILE];
+        $scope.current_post = APP_POST_DATA[CURRENT_FILE];
+        return $scope.$parent.has_tos = true;
       };
       init = function() {
         return initVars();
