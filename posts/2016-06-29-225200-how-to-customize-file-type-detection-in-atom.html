@@ -8,7 +8,7 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
     'customFileTypes':
       'source.ruby': [
         'rb'
-      ]</code></pre><p>不過如果這個設定加上去了，原本 rails 的 .rb 檔也會被判斷成一般的ruby檔案，這個時候只能搭配 project-manager 來針對不用的專案加上這個設定：</p><i>~/.atom/projects.cson</i><pre><code class="ruby">pure_ruby_project:
+      ]</code></pre><p>不過如果這個設定加上去了，原本 rails 的 .rb 檔也會被判斷成一般的ruby檔案，這個時候只能搭配 project-manager 來針對不用的專案加上這個設定：</p><i>~/.atom/projects.cson</i><pre><code class="json">pure_ruby_project:
   title: "Pure Ruby Project"
   paths: [
     "/Users/kait/my_ruby_project/"
