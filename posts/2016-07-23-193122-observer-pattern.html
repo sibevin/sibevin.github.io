@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>Observer - 觀察者模式</title><meta content="" name="description" /><meta content="Observer - 觀察者模式" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><link href="/favicon.ico?" rel="shortcut icon" type="image/x-icon" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script crossorigin="anonymous" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" src="https://code.jquery.com/jquery-2.2.4.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/vendor/md5.min.js"></script><script src="/js/vendor/contents.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-26486503-2', 'auto');
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-07-23-193122-observer-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Observer - 觀察者模式</div><div class="title-info"><div class="title-time"><div class="time">2016-07-23 19:31:22</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Observer - 觀察者模式</div><div class="meta-data">datetime 2016-07-23 19:31:22</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link observer-pattern</div><div class="meta-data">file 2016-07-23-193122-observer-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>我們有一個訊息轉發系統(MessageDeliver)，它會接收傳入訊息並轉發給其它三個系統：螢幕顯示系統(ScreenDisplay)、列印系統(Printer)與寄信系統(Mailer)。其中每個系統有下列的行為：</p><ul><li>訊息轉發系統(MessageDeliver)有一個 deliver(msg) 的 method 用來接收訊息並做轉發的動作。</li><li>螢幕顯示系統(ScreenDisplay)有一個 display(msg) 的 method 會將訊息顯示在螢幕(The message 'xxx' is displayed on the screen.)。</li><li>列印系統(Printer)有一個 print(msg) 的 method 會將訊息印出(The message 'xxx' is printed.)。</li><li>寄信系統(Mailer)有一個 mail(msg) 的 method 會將訊息用信件寄出(The message 'xxx' is mailed.)。</li></ul><h1>沒有使用模式的實作</h1><pre><code class="ruby">class ScreenDisplay
+  def display(msg)
+    &quot;The message &#39;#{msg}&#39; is displayed on the screen.&quot;
+  end
+end
+
+class Printer
+  def print(msg)
+    &quot;The message &#39;#{msg}&#39; is printed.&quot;
+  end
+end
+
+class Mailer
+  def mail(msg)
+    &quot;The message &#39;#{msg}&#39; is mailed.&quot;
+  end
+end
+
+class MessageDeliver
+  def initialize(screen_display, printer, mailer)
+    @screen_display = screen_display
+    @printer = printer
+    @mailer = mailer
+  end
+
+  def deliver(msg)
+    @screen_display.display(msg)
+    @printer.print(msg)
+    @mailer.mail(msg)
+  end
+end
+
+screen_display = ScreenDisplay.new
+printer = Printer.new
+mailer = Mailer.new
+
+msg_deliver = MessageDeliver.new(screen_display, printer, mailer)
+msg_deliver.deliver('Hello')</code></pre><h2>上面實作的缺點</h2><ul><li>MessageDeliver 無法動態增加或減少轉發的對象，例如：不需要轉發給 Printer 時，必須要更改 MessageDeliver 的 initialize 與 deliver method 。</li></ul><h1>使用模式的實作</h1><pre><code class="ruby">module Observer
+  def update(msg)
+    fail 'You should implement "update" in your Observer-based class'
+  end
+end
+
+class ScreenDisplay
+  include Observer
+
+  def display(msg)
+    &quot;The message &#39;#{msg}&#39; is displayed on the screen.&quot;
+  end
+
+  def update(msg)
+    display(msg)
+  end
+end
+
+class Printer
+  include Observer
+
+  def print(msg)
+    &quot;The message &#39;#{msg}&#39; is printed.&quot;
+  end
+
+  def update(msg)
+    print(msg)
+  end
+end
+
+class Mailer
+  include Observer
+
+  def mail(msg)
+    &quot;The message &#39;#{msg}&#39; is mailed.&quot;
+  end
+
+  def update(msg)
+    mail(msg)
+  end
+end
+
+class MessageDeliver
+  def initialize
+    @observers = []
+  end
+
+  def attach(observer)
+    @observers.push(observer)
+  end
+
+  def deliver(msg)
+    @observers.each do |observer|
+      observer.update(msg)
+    end
+  end
+
+  def detach(observer)
+    @observers.delete(observer)
+  end
+end
+
+screen_display = ScreenDisplay.new
+printer = Printer.new
+mailer = Mailer.new
+msg_deliver = MessageDeliver.new
+
+msg_deliver.attach(screen_display)
+msg_deliver.attach(printer)
+msg_deliver.attach(mailer)
+msg_deliver.deliver('Hello')
+
+msg_deliver.detach(printer)
+msg_deliver.deliver('Hi')</code></pre><h2>上面實作的優點</h2><ul><li>msg_deliver 可以使用 attach 與 detach 來動態增加或移除訊息轉發的系統。</li><li>容易新增一個接收轉發訊息系統，只要它實作 Observer 的界面就可以利用 attach 加到訊息轉發的對象(@observers)。</li></ul><h1>樣式名稱</h1><p>Observer - 觀察者模式</p><h1>目的</h1><p>當主題(subject) class(MessageDeliver)有變動時，需要通知其它的觀察者(observer) class(ScreenDisplay, Printer, Mailer)去做對應的事情時，可以在主題 class中記錄(@observer)有哪些觀察者 class 已經有註冊(attach)，利用 attach 與 detach method 來註冊或移除觀察者，就可以做到變動時的通知，同時也可以動態增減通知的對象。</p><h1>應用時機</h1><p>當某個主題 class 變動時需要通知其它觀察者 class，而且有可能需要動態增減通知的對象。</p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'observer-pattern';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td" ng-show="has_toc"><a class="hd-btn-toc" href="#" ng-class="{active: footer_ts.isTab(&#39;toc&#39;)}" ng-click="switchFooter(&#39;toc&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><nav class="toc"></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(post).code}}"><div class="ca-icon-{{getPostCategory(post).code}}"></div></a></div><a href="/posts/{{post.file}}">{{post.title}}</a><a href="{{post.website}}" ng-show="post.website" target="_blank"><img class="pl-weblink" src="/images/list/weblink_25x.svg" /></a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body><script>$(function () {
+  var contents,
+      articleId;
+  articleId = function (articleName, element) {
+    return md5(articleName);
+  };
+  contents = gajus
+    .Contents({articleId: articleId});
+  $('.toc').append(contents.list());
+});</script></html>
