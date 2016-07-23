@@ -309,6 +309,14 @@ i {
   background: rgba(255, 0, 0, 0.1);
 }
 
+/* line 114, ../../src/sass/_base.sass */
+.emoji {
+  width: 1.5em;
+  height: 1.5em;
+  display: inline-block;
+  margin-bottom: -0.25em;
+}
+
 /* line 4, ../../src/sass/partials/_layout.sass */
 .layout .menu {
   left: -216px;
