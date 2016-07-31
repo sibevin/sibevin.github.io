@@ -1,0 +1,301 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>Decorator Pattern - 裝飾者模式</title><meta content="" name="description" /><meta content="Decorator Pattern - 裝飾者模式" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><link href="/favicon.ico?" rel="shortcut icon" type="image/x-icon" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script crossorigin="anonymous" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" src="https://code.jquery.com/jquery-2.2.4.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/vendor/md5.min.js"></script><script src="/js/vendor/contents.js"></script><script src="/js/vendor/emojify.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-26486503-2', 'auto');
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-07-31-101309-decorator-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Decorator Pattern - 裝飾者模式</div><div class="title-info"><div class="title-time"><div class="time">2016-07-31 10:13:09</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Decorator Pattern - 裝飾者模式</div><div class="meta-data">datetime 2016-07-31 10:13:09</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link decorator-pattern</div><div class="meta-data">file 2016-07-31-101309-decorator-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>咖啡廳有買三種輕食(Food)：漢堡(Burger)、貝果(Bagel)與三明治(Sandwich)，它們有各自的名稱與價錢如下：</p><ul><li>漢堡：burger，30元。</li><li>貝果：bagel，35元。</li><li>三明治：sandwich，25元。</li></ul><p>另外還提供客製化的服務，可以在輕食中加上配料(Additive)，每個配料也有名稱與價錢：</p><ul><li>起司：cheese，10元。</li><li>蕃茄：tomoto，5元。</li><li>火腿：ham，15元。</li></ul><p>系統必須能列印出客製化輕食的名稱與計算總金額，例如：有一片起司加上蕃茄的漢堡，要顯示名稱： "burger + cheese + tomoto"，金額則是 30 + 10 + 5 = 45元。</p><h1>沒有使用模式的實作</h1><pre><code class="ruby">class Food
+  def initialize
+    @cheese_count = 0
+    @tomoto_count = 0
+    @ham_count = 0
+  end
+
+  def name
+    ' + cheese' * @cheese_count +
+    ' + tomoto' * @tomoto_count +
+    ' + ham' * @ham_count
+  end
+
+  def cost
+    10 * @cheese_count +
+    5 * @tomoto_count +
+    15 * @ham_count
+  end
+
+  def add(additive)
+    if additive == :cheese
+      @cheese_count += 1
+    elsif additive == :tomoto
+      @tomoto_count += 1
+    elsif additive == :ham
+      @ham_count += 1
+    end
+  end
+end
+
+class Burger < Food
+  def name
+    'burger' + super
+  end
+
+  def cost
+    30 + super
+  end
+end
+
+class Bagel < Food
+  def name
+    'bagel' + super
+  end
+
+  def cost
+    35 + super
+  end
+end
+
+class Sandwich < Food
+  def name
+    'sandwich' + super
+  end
+
+  def cost
+    25 + super
+  end
+end
+
+burger = Burger.new
+burger.add(:cheese)
+burger.add(:tomoto)
+p burger.name
+p burger.cost
+
+sandwich = Sandwich.new
+sandwich.add(:ham)
+sandwich.add(:ham)
+sandwich.add(:cheese)
+p sandwich.name
+p sandwich.cost</code></pre><h2>上面實作的缺點</h2><ul><li>更改配料的名稱或金額時，必須要去修改 Food 裡的 name 或 cost。</li><li>新增一種新配料或是刪除某個配料時，也必須要去修改 Food 裡每一個 method(囧)。</li></ul><h1>使用模式的實作</h1><pre><code class="ruby">class Food
+  def name
+    fail 'Not implement'
+  end
+
+  def cost
+    fail 'Not implement'
+  end
+end
+
+class Burger < Food
+  def name
+    'burger'
+  end
+
+  def cost
+    30
+  end
+end
+
+class Bagel < Food
+  def name
+    'bagel'
+  end
+
+  def cost
+    35
+  end
+end
+
+class Sandwich < Food
+  def name
+    'sandwich'
+  end
+
+  def cost
+    25
+  end
+end
+
+class Additive < Food
+  def initialize(food)
+    @food = food
+  end
+end
+
+class Cheese < Additive
+  def name
+    &quot;#{@food.name} + cheese&quot;
+  end
+
+  def cost
+    @food.cost + 10
+  end
+end
+
+class Tomoto < Additive
+  def name
+    &quot;#{@food.name} + tomoto&quot;
+  end
+
+  def cost
+    @food.cost + 5
+  end
+end
+
+class Ham < Additive
+  def name
+    &quot;#{@food.name} + ham&quot;
+  end
+
+  def cost
+    @food.cost + 15
+  end
+end
+
+burger = Burger.new
+burger = Tomoto.new(Cheese.new(burger))
+p burger.name
+p burger.cost
+
+sandwich = Sandwich.new
+sandwich = Cheese.new(Ham.new(Ham.new(sandwich)))
+p sandwich.name
+p sandwich.cost</code></pre><h2>上面實作的優點</h2><ul><li>更改配料的名稱或金額不會更改到其它的 class。</li><li>新增一種新配料或是刪除某個配料時，只要新增或移除對應的 class 就可以了，不會更改到其它的 class。</li></ul><h2>上面實作的缺點</h2><ul><li>會多出許多行為的小 class ，增加程式的複雜度。</li><li>裝飾出來的 class 不是原本的 class，例如上面的 burger 原本是 Burger class，但裝飾完就變成 Tomoto class(最後一個裝飾者的 class)，如果接下來的程式在使用 burger 必須要判斷為 Burger class 時就會出錯。(不過如果需要做判斷 class 的動作就表示程式本身有設計上的問題。)</li></ul><h1>樣式名稱</h1><p>Decorator - 裝飾者模式</p><h1>目的</h1><p>將原本的 class(Food) 一些附加的行為(加上 cheese, tomoto, ham)封裝成另一個系列的 class(Addtive) ，這些 class(Addtive) 仍然是繼承於原本 class(Food) 而擁有與之前 class 相同的界面。在實作上會將原本的 class(Food) 的 instance(burger, sandwich) 傳入並在對應的 method(name, cost) 去做修改。</p><h1>使用時機</h1><p>當某個 class(Food) 擁有附加行為(加上 cheese, tomoto, ham)時，這些行為會變動原本的 method(name, cost)，另外這些行為在未來有可能需要變動。</p><h1>備註</h1><p>下面是我一開始不使用pattern實作的版本，基本上多了一個 CustomizedFood 來處理輕食與配料的組合：</p><pre><code class="ruby">class Food
+  def name
+    fail 'Not implement'
+  end
+
+  def cost
+    fail 'Not implement'
+  end
+end
+
+class Burger < Food
+  def name
+    'burger'
+  end
+
+  def cost
+    30
+  end
+end
+
+class Bagel < Food
+  def name
+    'bagel'
+  end
+
+  def cost
+    35
+  end
+end
+
+class Sandwich < Food
+  def name
+    'sandwich'
+  end
+
+  def cost
+    25
+  end
+end
+
+class Additive < Food
+end
+
+class Cheese < Additive
+  def name
+    'cheese'
+  end
+
+  def cost
+    10
+  end
+end
+
+class Tomoto < Additive
+  def name
+    'tomoto'
+  end
+
+  def cost
+    5
+  end
+end
+
+class Ham < Additive
+  def name
+    'ham'
+  end
+
+  def cost
+    15
+  end
+end
+
+class CustomizedFood < Food
+  def initialize(food)
+    @food = food
+    @additives = []
+  end
+
+  def name
+  &quot;#{@food.name}#{@additives.map {|ad| &quot; + #{ad.name}&quot;}.join}&quot;
+  end
+
+  def cost
+    @food.cost + @additives.map(&:cost).inject(:+)
+  end
+
+  def add(additive)
+    @additives << additive
+    self
+  end
+end
+
+burger = CustomizedFood.new(Burger.new)
+burger.add(Cheese.new).add(Tomoto.new)
+p burger.name
+p burger.cost
+
+sandwich = CustomizedFood.new(Sandwich.new)
+sandwich.add(Ham.new).add(Ham.new).add(Cheese.new)
+p sandwich.name
+p sandwich.cost</code></pre><h2>上面實作的優點</h2><ul><li>與裝飾者模式有相同的優點。</li></ul><h2>上面實作的缺點</h2><ul><li>與裝飾者模式有相同的缺點。</li><li>上面的實作方式限定了每個配料顯示的方式( + 配料名稱)與金額計算(加總)必須一致。如果之後出現了另一個配料為「打8折」，顯示方式是在名稱後面加上 "(20% off)"，計算金額為總金額 * 0.8，那上面的實作方式完全不能用。但裝飾者模式完全不會有問題，只要新增下面的 class 就可以了。</li></ul><pre><code class="ruby">class Discount20Off < Additive
+  def name
+    &quot;#{@food.name} (20% off)&quot;
+  end
+
+  def cost
+    @food.cost * 0.8
+  end
+end</code></pre><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'decorator-pattern';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td" ng-show="has_toc"><a class="hd-btn-toc" href="#" ng-class="{active: footer_ts.isTab(&#39;toc&#39;)}" ng-click="switchFooter(&#39;toc&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><nav class="toc"></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(post).code}}"><div class="ca-icon-{{getPostCategory(post).code}}"></div></a></div><a href="/posts/{{post.file}}">{{post.title}}</a><a href="{{post.website}}" ng-show="post.website" target="_blank"><img class="pl-weblink" src="/images/list/weblink_25x.svg" /></a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body><script>$(function () {
+  // TOC
+  try {
+    var contents,
+        articleId;
+    articleId = function (articleName, element) {
+      return md5(articleName);
+    };
+    contents = gajus
+      .Contents({articleId: articleId});
+    $('.toc').append(contents.list());
+  } catch(e) {
+  }
+  // emoji
+  emojify.setConfig({
+    ignore_emoticons: true,
+    img_dir: '/images/emoji',
+    blacklist: {
+      elements: ['script', 'textarea', 'pre', 'code'],
+      classes: ['no-emojify']
+    }
+  });
+  emojify.run();
+});</script></html>
