@@ -3,22 +3,22 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-26486503-2', 'auto');
-ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-07-31-101309-decorator-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Decorator Pattern - 裝飾者模式</div><div class="title-info"><div class="title-time"><div class="time">2016-07-31 10:13:09</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Decorator Pattern - 裝飾者模式</div><div class="meta-data">datetime 2016-07-31 10:13:09</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link decorator-pattern</div><div class="meta-data">file 2016-07-31-101309-decorator-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>咖啡廳有買三種輕食(Food)：漢堡(Burger)、貝果(Bagel)與三明治(Sandwich)，它們有各自的名稱與價錢如下：</p><ul><li>漢堡：burger，30元。</li><li>貝果：bagel，35元。</li><li>三明治：sandwich，25元。</li></ul><p>另外還提供客製化的服務，可以在輕食中加上配料(Additive)，每個配料也有名稱與價錢：</p><ul><li>起司：cheese，10元。</li><li>蕃茄：tomoto，5元。</li><li>火腿：ham，15元。</li></ul><p>系統必須能列印出客製化輕食的名稱與計算總金額，例如：有一片起司加上蕃茄的漢堡，要顯示名稱： "burger + cheese + tomato"，金額則是 30 + 10 + 5 = 45元。</p><h1>沒有使用模式的實作</h1><pre><code class="ruby">class Food
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-07-31-101309-decorator-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Decorator Pattern - 裝飾者模式</div><div class="title-info"><div class="title-time"><div class="time">2016-07-31 10:13:09</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Decorator Pattern - 裝飾者模式</div><div class="meta-data">datetime 2016-07-31 10:13:09</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link decorator-pattern</div><div class="meta-data">file 2016-07-31-101309-decorator-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>咖啡廳有買三種輕食(Food)：漢堡(Burger)、貝果(Bagel)與三明治(Sandwich)，它們有各自的名稱與價錢如下：</p><ul><li>漢堡：burger，30元。</li><li>貝果：bagel，35元。</li><li>三明治：sandwich，25元。</li></ul><p>另外還提供客製化的服務，可以在輕食中加上配料(Additive)，每個配料也有名稱與價錢：</p><ul><li>起司：cheese，10元。</li><li>蕃茄：tomato，5元。</li><li>火腿：ham，15元。</li></ul><p>系統必須能列印出客製化輕食的名稱與計算總金額，例如：有一片起司加上蕃茄的漢堡，要顯示名稱： "burger + cheese + tomato"，金額則是 30 + 10 + 5 = 45元。</p><h1>沒有使用模式的實作</h1><pre><code class="ruby">class Food
   def initialize
     @cheese_count = 0
-    @tomoto_count = 0
+    @tomato_count = 0
     @ham_count = 0
   end
 
   def name
     ' + cheese' * @cheese_count +
-    ' + tomato' * @tomoto_count +
+    ' + tomato' * @tomato_count +
     ' + ham' * @ham_count
   end
 
   def cost
     10 * @cheese_count +
-    5 * @tomoto_count +
+    5 * @tomato_count +
     15 * @ham_count
   end
 
@@ -26,7 +26,7 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
     if additive == :cheese
       @cheese_count += 1
     elsif additive == :tomato
-      @tomoto_count += 1
+      @tomato_count += 1
     elsif additive == :ham
       @ham_count += 1
     end
@@ -319,7 +319,7 @@ end
 
 class Cheese < Additive
   def name(input_name)
-  &quot;#{input_name} + cheese&quot;
+    &quot;#{input_name} + cheese&quot;
   end
 
   def cost(input_cost)
@@ -329,7 +329,7 @@ end
 
 class Tomato < Additive
   def name(input_name)
-  &quot;#{input_name} + tomato&quot;
+    &quot;#{input_name} + tomato&quot;
   end
 
   def cost(input_cost)
@@ -339,7 +339,7 @@ end
 
 class Ham < Additive
   def name(input_name)
-  &quot;#{input_name} + ham&quot;
+    &quot;#{input_name} + ham&quot;
   end
 
   def cost(input_cost)
