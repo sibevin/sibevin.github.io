@@ -3,7 +3,7 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-26486503-2', 'auto');
-ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-07-31-101309-decorator-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Decorator Pattern - 裝飾者模式</div><div class="title-info"><div class="title-time"><div class="time">2016-07-31 10:13:09</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Decorator Pattern - 裝飾者模式</div><div class="meta-data">datetime 2016-07-31 10:13:09</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link decorator-pattern</div><div class="meta-data">file 2016-07-31-101309-decorator-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>咖啡廳有買三種輕食(Food)：漢堡(Burger)、貝果(Bagel)與三明治(Sandwich)，它們有各自的名稱與價錢如下：</p><ul><li>漢堡：burger，30元。</li><li>貝果：bagel，35元。</li><li>三明治：sandwich，25元。</li></ul><p>另外還提供客製化的服務，可以在輕食中加上配料(Additive)，每個配料也有名稱與價錢：</p><ul><li>起司：cheese，10元。</li><li>蕃茄：tomoto，5元。</li><li>火腿：ham，15元。</li></ul><p>系統必須能列印出客製化輕食的名稱與計算總金額，例如：有一片起司加上蕃茄的漢堡，要顯示名稱： "burger + cheese + tomoto"，金額則是 30 + 10 + 5 = 45元。</p><h1>沒有使用模式的實作</h1><pre><code class="ruby">class Food
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-07-31-101309-decorator-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Decorator Pattern - 裝飾者模式</div><div class="title-info"><div class="title-time"><div class="time">2016-07-31 10:13:09</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Decorator Pattern - 裝飾者模式</div><div class="meta-data">datetime 2016-07-31 10:13:09</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link decorator-pattern</div><div class="meta-data">file 2016-07-31-101309-decorator-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>咖啡廳有買三種輕食(Food)：漢堡(Burger)、貝果(Bagel)與三明治(Sandwich)，它們有各自的名稱與價錢如下：</p><ul><li>漢堡：burger，30元。</li><li>貝果：bagel，35元。</li><li>三明治：sandwich，25元。</li></ul><p>另外還提供客製化的服務，可以在輕食中加上配料(Additive)，每個配料也有名稱與價錢：</p><ul><li>起司：cheese，10元。</li><li>蕃茄：tomoto，5元。</li><li>火腿：ham，15元。</li></ul><p>系統必須能列印出客製化輕食的名稱與計算總金額，例如：有一片起司加上蕃茄的漢堡，要顯示名稱： "burger + cheese + tomato"，金額則是 30 + 10 + 5 = 45元。</p><h1>沒有使用模式的實作</h1><pre><code class="ruby">class Food
   def initialize
     @cheese_count = 0
     @tomoto_count = 0
@@ -12,7 +12,7 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
 
   def name
     ' + cheese' * @cheese_count +
-    ' + tomoto' * @tomoto_count +
+    ' + tomato' * @tomoto_count +
     ' + ham' * @ham_count
   end
 
@@ -25,7 +25,7 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
   def add(additive)
     if additive == :cheese
       @cheese_count += 1
-    elsif additive == :tomoto
+    elsif additive == :tomato
       @tomoto_count += 1
     elsif additive == :ham
       @ham_count += 1
@@ -65,7 +65,7 @@ end
 
 burger = Burger.new
 burger.add(:cheese)
-burger.add(:tomoto)
+burger.add(:tomato)
 p burger.name
 p burger.cost
 
@@ -74,7 +74,7 @@ sandwich.add(:ham)
 sandwich.add(:ham)
 sandwich.add(:cheese)
 p sandwich.name
-p sandwich.cost</code></pre><h2>上面實作的缺點</h2><ul><li>更改配料的名稱或金額時，必須要去修改 Food 裡的 name 或 cost。</li><li>新增一種新配料或是刪除某個配料時，也必須要去修改 Food 裡每一個 method(囧)。</li></ul><h1>使用模式的實作</h1><pre><code class="ruby">class Food
+p sandwich.cost</code></pre><h2>上面實作的缺點</h2><ul><li>更改配料的名稱或金額時，必須要去修改 Food 裡的 name 或 cost。</li><li>新增一種新配料或是刪除某個配料時，必須要去修改 Food 裡每一個 method(囧)。</li></ul><h1>使用模式的實作</h1><pre><code class="ruby">class Food
   def name
     fail 'Not implement'
   end
@@ -130,9 +130,9 @@ class Cheese < Additive
   end
 end
 
-class Tomoto < Additive
+class Tomato < Additive
   def name
-    &quot;#{@food.name} + tomoto&quot;
+    &quot;#{@food.name} + tomato&quot;
   end
 
   def cost
@@ -151,14 +151,14 @@ class Ham < Additive
 end
 
 burger = Burger.new
-burger = Tomoto.new(Cheese.new(burger))
+burger = Tomato.new(Cheese.new(burger))
 p burger.name
 p burger.cost
 
 sandwich = Sandwich.new
 sandwich = Cheese.new(Ham.new(Ham.new(sandwich)))
 p sandwich.name
-p sandwich.cost</code></pre><h2>上面實作的優點</h2><ul><li>更改配料的名稱或金額不會更改到其它的 class。</li><li>新增一種新配料或是刪除某個配料時，只要新增或移除對應的 class 就可以了，不會更改到其它的 class。</li></ul><h2>上面實作的缺點</h2><ul><li>會多出許多行為的小 class ，增加程式的複雜度。</li><li>裝飾出來的 class 不是原本的 class，例如上面的 burger 原本是 Burger class，但裝飾完就變成 Tomoto class(最後一個裝飾者的 class)，如果接下來的程式在使用 burger 必須要判斷為 Burger class 時就會出錯。(不過如果需要做判斷 class 的動作就表示程式本身有設計上的問題。)</li></ul><h1>樣式名稱</h1><p>Decorator - 裝飾者模式</p><h1>目的</h1><p>將原本的 class(Food) 一些附加的行為(加上 cheese, tomoto, ham)封裝成另一個系列的 class(Addtive) ，這些 class(Addtive) 仍然是繼承於原本 class(Food) 而擁有與之前 class 相同的界面。在實作上會將原本的 class(Food) 的 instance(burger, sandwich) 傳入並在對應的 method(name, cost) 去做修改。</p><h1>使用時機</h1><p>當某個 class(Food) 擁有附加行為(加上 cheese, tomoto, ham)時，這些行為會變動原本的 method(name, cost)，另外這些行為在未來有可能需要變動。</p><h1>備註</h1><p>下面是我一開始不使用pattern實作的版本，基本上多了一個 CustomizedFood 來處理輕食與配料的組合：</p><pre><code class="ruby">class Food
+p sandwich.cost</code></pre><h2>上面實作的優點</h2><ul><li>更改配料的名稱或金額不會更改到其它的 class。</li><li>新增一種新配料或是刪除某個配料時，只要新增或移除對應的 class 就可以了，不會更改到其它的 class。</li></ul><h2>上面實作的缺點</h2><ul><li>會多出許多行為的小 class ，增加程式的複雜度。</li><li>裝飾出來的 class 不是原本的 class，例如上面的 burger 原本是 Burger class，但裝飾完就變成 Tomato class(最後一個裝飾者的 class)，如果接下來的程式在使用 burger 必須要判斷為 Burger class 時就會出錯。(不過如果需要做判斷 class 的動作就表示程式本身有設計上的問題。)</li></ul><h1>樣式名稱</h1><p>Decorator - 裝飾者模式</p><h1>目的</h1><p>將原本的 class(Food) 一些附加的行為(加上 cheese, tomato, ham)封裝成另一個系列的 class(Addtive) ，這些 class(Addtive) 仍然是繼承於原本 class(Food) 而擁有與之前 class 相同的界面。在實作上會將原本的 class(Food) 的 instance(burger, sandwich) 傳入到裝飾者的 class 中並在對應的 method(name, cost) 去做修改，也就是將原本的 instance(burger) 包在一個裝飾的 instance(Cheese.new(burger)) 裡，而使用 instance 的程式實際面對的是裝飾者 class 的 instance 而非原本的 instance。</p><h1>使用時機</h1><p>當某個 class(Food) 擁有附加行為(加上 cheese, tomato, ham)時，這些行為會變動原本的 method(name, cost)，另外這些行為在未來有可能需要變動。</p><h1>備註1</h1><p>下面是我一開始不使用pattern實作的版本，基本上多了一個 CustomizedFood 來處理輕食與配料的組合：</p><pre><code class="ruby">class Food
   def name
     fail 'Not implement'
   end
@@ -211,9 +211,9 @@ class Cheese < Additive
   end
 end
 
-class Tomoto < Additive
+class Tomato < Additive
   def name
-    'tomoto'
+    'tomato'
   end
 
   def cost
@@ -252,7 +252,7 @@ class CustomizedFood < Food
 end
 
 burger = CustomizedFood.new(Burger.new)
-burger.add(Cheese.new).add(Tomoto.new)
+burger.add(Cheese.new).add(Tomato.new)
 p burger.name
 p burger.cost
 
@@ -266,6 +266,133 @@ p sandwich.cost</code></pre><h2>上面實作的優點</h2><ul><li>與裝飾者�
 
   def cost
     @food.cost * 0.8
+  end
+end</code></pre><h1>備註2</h1><p>在參加讀書會的時候，有人提出了另一種實作的方式，基本上就是將處理name與cost的方式存在array中，再一個個拿出來處理，有點類似備註1的做法：</p><pre><code class="ruby">class Food
+  def name
+    fail 'Not implement'
+  end
+
+  def cost
+    fail 'Not implement'
+  end
+end
+
+class Burger < Food
+  def name
+    'burger'
+  end
+
+  def cost
+    30
+  end
+end
+
+class Bagel < Food
+  def name
+    'bagel'
+  end
+
+  def cost
+    35
+  end
+end
+
+class Sandwich < Food
+  def name
+    'sandwich'
+  end
+
+  def cost
+    25
+  end
+end
+
+class Additive
+  def name(input_name)
+    fail 'Not implement'
+  end
+
+  def cost(input_cost)
+    fail 'Not implement'
+  end
+end
+
+class Cheese < Additive
+  def name(input_name)
+  &quot;#{input_name} + cheese&quot;
+  end
+
+  def cost(input_cost)
+    input_cost + 10
+  end
+end
+
+class Tomato < Additive
+  def name(input_name)
+  &quot;#{input_name} + tomato&quot;
+  end
+
+  def cost(input_cost)
+    input_cost + 5
+  end
+end
+
+class Ham < Additive
+  def name(input_name)
+  &quot;#{input_name} + ham&quot;
+  end
+
+  def cost(input_cost)
+    input_cost + 15
+  end
+end
+
+class CustomizedFood < Food
+  def initialize(food)
+    @food = food
+    @additives = []
+  end
+
+  def name
+    result = @food.name
+    @additives.each do |ad|
+      result = ad.name(result)
+    end
+    result
+  end
+
+  def cost
+    result = @food.cost
+    @additives.each do |ad|
+      result = ad.cost(result)
+    end
+    result
+  end
+
+  def add(additive)
+    @additives << additive
+    self
+  end
+end
+
+burger = CustomizedFood.new(Burger.new)
+burger.add(Tomato.new)
+burger.add(Cheese.new)
+p burger.name
+p burger.cost
+
+sandwich = CustomizedFood.new(Sandwich.new)
+sandwich.add(Cheese.new)
+sandwich.add(Ham.new)
+sandwich.add(Ham.new)
+p sandwich.name
+p sandwich.cost</code></pre><h2>上面實作的優點</h2><ul><li>與裝飾者模式有相同的優點。</li><li>因為 Additive 裡的 name 與 cost 存的是處理方式而非靜態的值，所以沒有之前備註1的問題。</li></ul><h2>上面實作的缺點</h2><ul><li>與裝飾者模式有相同的缺點。</li><li>因為 name 與 cost 個別只吃對應的 input_name 與 input_cost，如果在處理 name 的時候需要 cost 的值，例如：有一個配料叫做「在名稱中顯示總金額」，也就是名稱需要在最後加上 (xx元)，而金額計算的部分維持不變。上面的方式就沒辦法做到，但裝飾者只要加下面的 class 就可以了：</li></ul><pre><code class="ruby">class DisplayCost < Additive
+  def name
+    &quot;#{@food.name} (#{@food.cost}元)&quot;
+  end
+
+  def cost
+    @food.cost
   end
 end</code></pre><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
