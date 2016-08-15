@@ -1,0 +1,234 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>Factory Method Pattern - 工廠方法模式</title><meta content="" name="description" /><meta content="Factory Method Pattern - 工廠方法模式" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><link href="/favicon.ico?" rel="shortcut icon" type="image/x-icon" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script crossorigin="anonymous" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" src="https://code.jquery.com/jquery-2.2.4.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/vendor/md5.min.js"></script><script src="/js/vendor/contents.js"></script><script src="/js/vendor/emojify.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-26486503-2', 'auto');
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-08-14-115926-simple-factory-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Factory Method Pattern - 工廠方法模式</div><div class="title-info"><div class="title-time"><div class="time">2016-08-14 11:59:26</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Factory Method Pattern - 工廠方法模式</div><div class="meta-data">datetime 2016-08-14 11:59:26</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link factory-method-pattern</div><div class="meta-data">file 2016-08-14-115926-simple-factory-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>我們有一個訊息轉發系統(MessageDeliver) :repeat: 與加密系統(Encrypter) :secret: ，它們會接收傳入訊息並轉發給負責輸出的裝置(Exporter)，其中負責輸出的裝置(Exporter)有三個：螢幕顯示裝置(ScreenDisplay) :computer: 、列印裝置(Printer) :fax: 與寄信裝置(Mailer) :envelope: 。</p><ul><li>螢幕顯示裝置(ScreenDisplay)有一個 display(msg) 的 method 會將訊息顯示在螢幕(The message 'xxx' is displayed on the screen.)。</li><li>列印裝置(Printer)有一個 print(msg) 的 method 會將訊息印出(The message 'xxx' is printed.)。</li><li>寄信裝置(Mailer)有一個 mail(msg) 的 method 會將訊息用信件寄出(The message 'xxx' is mailed.)。</li></ul><p>程式碼如下：</p><pre><code class="ruby">class Exporter
+  def output(_msg)
+    fail 'You should implement "output" in your Exporter-based class.'
+  end
+end
+
+class ScreenDisplay < Exporter
+  def display(msg)
+    &quot;The message &#39;#{msg}&#39; is displayed on the screen.&quot;
+  end
+end
+
+class Printer < Exporter
+  def print(msg)
+    &quot;The message &#39;#{msg}&#39; is printed.&quot;
+  end
+end
+
+class Mailer < Exporter
+  def mail(msg)
+    &quot;The message &#39;#{msg}&#39; is mailed.&quot;
+  end
+end</code></pre><p>現在的問題是要實作訊息轉發與加密系統，這兩個系統有下列的行為：</p><ul><li>訊息轉發系統(MessageDeliver)有一個 deliver(msg, target) 的 method 用來接收訊息並做轉發的動作，其中 target 是用來指定要轉發至哪個系統。</li><li>加密系統(MessageDeliver)有一個 encrypt(msg, target) 的 method 用來接收訊息並將訊息加密之後做轉發的動作，其中 target 是用來指定要轉發至哪個系統。</li></ul><h1>沒有使用模式的實作</h1><pre><code class="ruby">class MessageDeliver
+  def deliver(msg, target)
+    exporter = case target
+               when :screen_display then ScreenDisplay.new
+               when :printer then Printer.new
+               when :mailer then Mailer.new
+               else
+                 fail 'Uknown exporter.'
+    end
+    exporter.output(msg)
+  end
+end
+
+class Encrypter
+  def encrypt(msg, target)
+    msg = msg.gsub(/[a-zA-Z0-9]/, '*')
+    exporter = case target
+               when :screen_display then ScreenDisplay.new
+               when :printer then Printer.new
+               when :mailer then Mailer.new
+               else
+                 fail 'Uknown exporter.'
+    end
+    exporter.output(msg)
+  end
+end
+
+msg_deliver = MessageDeliver.new
+encrypter = Encrypter.new
+
+msg_deliver.deliver('hello', :screen_display)
+msg_deliver.deliver('Yoooo~~~', :mailer)
+encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的缺點</h2><ul><li>選擇要使用哪個 exporter 的程式在 MessageDeliver#deliver 與 Encrypter#encrypt 都有出現，這表示只要新增或是刪除某個 exporter 都要修改這兩個 method 。</li><li>MessageDeliver 與 Encrypter 與所有的 exporter 都產生相依性。</li></ul><h1>使用模式的實作：靜態工廠方法(Static Factory Method)</h1><pre><code class="ruby">class ExporterFactory
+  def self.create(target)
+    case target
+    when :screen_display then ScreenDisplay.new
+    when :printer then Printer.new
+    when :mailer then Mailer.new
+    else
+      fail 'Uknown exporter.'
+    end
+  end
+end
+
+class MessageDeliver
+  def deliver(msg, target)
+    exporter = ExporterFactory.create(target)
+    exporter.output(msg)
+  end
+end
+
+class Encrypter
+  def encrypt(msg, target)
+    msg = msg.gsub(/[a-zA-Z0-9]/, '*')
+    exporter = ExporterFactory.create(target)
+    exporter.output(msg)
+  end
+end
+
+msg_deliver = MessageDeliver.new
+encrypter = Encrypter.new
+
+msg_deliver.deliver('hello', :screen_display)
+msg_deliver.deliver('Yoooo~~~', :mailer)
+encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的優點</h2><ul><li>新增一種新 exporter 或是刪除某個 exporter 時，只要修改 ExporterFactory 的 create 就可以了，不會更改到其它的 class。</li><li>MessageDeliver, Encrypter 只與 ExporterFactory 有相依，降低了與其它 exporter 的相依性。</li></ul><h2>上面實作的缺點</h2><ul><li>使用靜態方法實作，變成無法處理更複雜的建立流程。(參考下面的例子)</li></ul><h1>範例問題(延伸)</h1><p>加密方式每個 exporter 變得不同，需要另外三個 exporter(EncryptedScreenDisplay, EncryptedPrinter, EncryptedMailer) 各別處理加密如下：</p><pre><code class="ruby">class EncryptedScreenDisplay < Exporter
+  def display(msg)
+    msg = msg.gsub(/[a-zA-Z0-9]/, '*')
+    &quot;The message &#39;#{msg}&#39; is displayed on the screen.&quot;
+  end
+end
+
+class EncryptedPrinter < Exporter
+  def print(msg)
+    msg = msg.gsub(/[a-zA-Z0-9]/, 'o')
+    &quot;The message &#39;#{msg}&#39; is printed.&quot;
+  end
+end
+
+class EncryptedMailer < Exporter
+  def mail(msg)
+    msg = msg.gsub(/[a-zA-Z0-9]/, 'x')
+    &quot;The message &#39;#{msg}&#39; is mailed.&quot;
+  end
+end</code></pre><h1>使用模式的實作：靜態工廠方法(Static Factory Method)</h1><pre><code class="ruby">class ExporterFactory
+  def self.create(target, encrypted = false)
+    if encrypted
+      return case target
+      when :screen_display then EncryptedScreenDisplay.new
+      when :printer then EncryptedPrinter.new
+      when :mailer then EncryptedMailer.new
+      else
+        fail 'Uknown exporter.'
+      end
+    else
+      return case target
+      when :screen_display then ScreenDisplay.new
+      when :printer then Printer.new
+      when :mailer then Mailer.new
+      else
+        fail 'Uknown exporter.'
+      end
+    end
+  end
+end
+
+class MessageDeliver
+  def deliver(msg, target)
+    exporter = ExporterFactory.create(target)
+    exporter.output(msg)
+  end
+end
+
+class Encrypter
+  def encrypt(msg, target)
+    exporter = ExporterFactory.create(target, true)
+    exporter.output(msg)
+  end
+end
+
+msg_deliver = MessageDeliver.new
+encrypter = Encrypter.new
+
+msg_deliver.deliver('hello', :screen_display)
+msg_deliver.deliver('Yoooo~~~', :mailer)
+encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的缺點</h2><ul><li>因為多了一系列 encrypted exporter，使 ExporterFactory 內的 self.create 需要針對不同 encrypt 的情況建立 exporter，如果以後出現了另一個系列的 exporter， self.create 將會變得越來越複雜。</li></ul><h1>使用模式的實作：工廠方法(Factory Method)</h1><pre><code class="ruby">class ExporterFactory
+  def create(target)
+    fail 'You should implement "create" in your ExporterFactory-based class.'
+  end
+end
+
+class NormalExporterFactory < ExporterFactory
+  def create(target)
+    return case target
+    when :screen_display then ScreenDisplay.new
+    when :printer then Printer.new
+    when :mailer then Mailer.new
+    else
+      fail 'Uknown exporter.'
+    end
+  end
+end
+
+class EncryptedExporterFactory < ExporterFactory
+  def create(target)
+    return case target
+    when :screen_display then EncryptedScreenDisplay.new
+    when :printer then EncryptedPrinter.new
+    when :mailer then EncryptedMailer.new
+    else
+      fail 'Uknown exporter.'
+    end
+  end
+end
+
+class MessageDeliver
+  def deliver(msg, target)
+    factory = NormalExporterFactory.new
+    exporter = factory.create(target)
+    exporter.output(msg)
+  end
+end
+
+class Encrypter
+  def encrypt(msg, target)
+    factory = EncryptedExporterFactory.new
+    exporter = factory.create(target)
+    exporter.output(msg)
+  end
+end
+
+msg_deliver = MessageDeliver.new
+encrypter = Encrypter.new
+
+msg_deliver.deliver('hello', :screen_display)
+msg_deliver.deliver('Yoooo~~~', :mailer)
+encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的優點</h2><ul><li>建立 exporter 不是一個單純的 static method(self.create)，而是一個 ExporterFactory 的抽象方法 create，由子類別(NormalExporterFactory, EncryptedExporterFactory)多型的方式實作不同的 create 使建立 exporter 的方式可以更彈性。</li></ul><h1>樣式名稱</h1><p>Factory Method - 工廠方法模式</p><h1>目的</h1><p>將原本建立 class(exporter) 的流程封裝在 factory(ExporterFactory) class 之中，需要建立 class(exporter) 時，就使用 factory(ExporterFactory) 來建立。這樣的好處是透過 factory(ExporterFactory) 降低使用這些 class(exporter) 的 client(MessageDeliver, Encrypter) 與 class(exporter) 之間的相依性。</p><h1>使用時機</h1><p>當有一系列的 class(exporter) 需要被建立，而建立的方式可能會根據不同的情況而需要建立不同的 class(exporter)。</p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'factory-method-pattern';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td" ng-show="has_toc"><a class="hd-btn-toc" href="#" ng-class="{active: footer_ts.isTab(&#39;toc&#39;)}" ng-click="switchFooter(&#39;toc&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><nav class="toc"></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(post).code}}"><div class="ca-icon-{{getPostCategory(post).code}}"></div></a></div><a href="/posts/{{post.file}}">{{post.title}}</a><a href="{{post.website}}" ng-show="post.website" target="_blank"><img class="pl-weblink" src="/images/list/weblink_25x.svg" /></a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body><script>$(function () {
+  // TOC
+  try {
+    var contents,
+        articleId;
+    articleId = function (articleName, element) {
+      return md5(articleName);
+    };
+    contents = gajus
+      .Contents({articleId: articleId});
+    $('.toc').append(contents.list());
+  } catch(e) {
+  }
+  // emoji
+  emojify.setConfig({
+    ignore_emoticons: true,
+    img_dir: '/images/emoji',
+    blacklist: {
+      elements: ['script', 'textarea', 'pre', 'code'],
+      classes: ['no-emojify']
+    }
+  });
+  emojify.run();
+});</script></html>
