@@ -3,26 +3,26 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 ga('create', 'UA-26486503-2', 'auto');
-ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-08-14-115926-factory-method-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Factory Method Pattern - 工廠方法模式</div><div class="title-info"><div class="title-time"><div class="time">2016-08-14 11:59:26</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Factory Method Pattern - 工廠方法模式</div><div class="meta-data">datetime 2016-08-14 11:59:26</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link factory-method-pattern</div><div class="meta-data">file 2016-08-14-115926-factory-method-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>我們有一個訊息轉發系統(MessageDeliver) :repeat: 與加密系統(Encrypter) :secret: ，它們會接收傳入訊息並轉發給負責輸出的裝置(Exporter)，其中負責輸出的裝置(Exporter)有三個：螢幕顯示裝置(ScreenDisplay) :computer: 、列印裝置(Printer) :fax: 與寄信裝置(Mailer) :envelope: 。</p><ul><li>螢幕顯示裝置(ScreenDisplay)有一個 display(msg) 的 method 會將訊息顯示在螢幕(The message 'xxx' is displayed on the screen.)。</li><li>列印裝置(Printer)有一個 print(msg) 的 method 會將訊息印出(The message 'xxx' is printed.)。</li><li>寄信裝置(Mailer)有一個 mail(msg) 的 method 會將訊息用信件寄出(The message 'xxx' is mailed.)。</li></ul><p>程式碼如下：</p><pre><code class="ruby">class Exporter
-  def output(_msg)
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-08-14-115926-factory-method-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Factory Method Pattern - 工廠方法模式</div><div class="title-info"><div class="title-time"><div class="time">2016-08-14 11:59:26</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Factory Method Pattern - 工廠方法模式</div><div class="meta-data">datetime 2016-08-14 11:59:26</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link factory-method-pattern</div><div class="meta-data">file 2016-08-14-115926-factory-method-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>我們有一個訊息轉發系統(MessageDeliver) :repeat: 與加密系統(Encrypter) :secret: ，它們會接收傳入訊息並轉發給負責輸出的裝置(Exporter)，其中負責輸出的裝置(Exporter)有三個：螢幕顯示裝置(ScreenDisplay) :computer: 、列印裝置(Printer) :fax: 與寄信裝置(Mailer) :envelope: ，每個 exporter 都有一個 output(msg) 的 method 用來輸出訊息。</p><ul><li>螢幕顯示裝置(ScreenDisplay)的 output 會將訊息顯示在螢幕(The message 'xxx' is displayed on the screen.)。</li><li>列印裝置(Printer)的 output 會將訊息印出(The message 'xxx' is printed.)。</li><li>寄信裝置(Mailer)的 output 會將訊息用信件寄出(The message 'xxx' is mailed.)。</li></ul><p>程式碼如下：</p><pre><code class="ruby">class Exporter
+  def output(msg)
     fail 'You should implement "output" in your Exporter-based class.'
   end
 end
 
 class ScreenDisplay < Exporter
-  def display(msg)
+  def output(msg)
     &quot;The message &#39;#{msg}&#39; is displayed on the screen.&quot;
   end
 end
 
 class Printer < Exporter
-  def print(msg)
+  def output(msg)
     &quot;The message &#39;#{msg}&#39; is printed.&quot;
   end
 end
 
 class Mailer < Exporter
-  def mail(msg)
+  def output(msg)
     &quot;The message &#39;#{msg}&#39; is mailed.&quot;
   end
 end</code></pre><p>現在的問題是要實作訊息轉發與加密系統，這兩個系統有下列的行為：</p><ul><li>訊息轉發系統(MessageDeliver)有一個 deliver(msg, target) 的 method 用來接收訊息並做轉發的動作，其中 target 是用來指定要轉發至哪個系統。</li><li>加密系統(MessageDeliver)有一個 encrypt(msg, target) 的 method 用來接收訊息並將訊息加密之後做轉發的動作，其中 target 是用來指定要轉發至哪個系統。</li></ul><h1>沒有使用模式的實作</h1><pre><code class="ruby">class MessageDeliver
