@@ -1,0 +1,204 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>Singleton Pattern - 獨體模式</title><meta content="" name="description" /><meta content="Singleton Pattern - 獨體模式" property="og:title" /><meta content="" property="og:description" /><meta content="魔法師的手杖" property="og:site_name" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><link href="/favicon.ico?" rel="shortcut icon" type="image/x-icon" /><script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script><script crossorigin="anonymous" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" src="https://code.jquery.com/jquery-2.2.4.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="//cdn.jsdelivr.net/lodash/3.10.1/lodash.min.js"></script><script src="/js/vendor/angular-tau-utils.min.js"></script><script src="/js/vendor/focusIf.min.js"></script><script src="/js/vendor/md5.min.js"></script><script src="/js/vendor/contents.js"></script><script src="/js/vendor/emojify.min.js"></script><script src="/js/app.js"></script><script>hljs.initHighlightingOnLoad();</script><script>(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-26486503-2', 'auto');
+ga('send', 'pageview');</script></head><body class="theme-color-default layout" ng-class="{&#39;lo-menu-open&#39;:footer_ts.isTab(&#39;menu&#39;),&#39;lo-toc-open&#39;:footer_ts.isTab(&#39;toc&#39;)}" ng-controller="LayoutCtrl" ng-keydown="layoutKeyDown($event)"><div class="main-container"><section class="main"><script>angular.module("scsBlogApp").constant("CURRENT_FILE", "2016-08-29-091048-singleton-pattern");</script><div class="post" ng-controller="PostCtrl"><div class="title"><div class="title-img"><a href="/posts"><img src="/images/menu/paper_76x.svg" /></a></div><div class="title-main"><div class="title-text">Singleton Pattern - 獨體模式</div><div class="title-info"><div class="title-time"><div class="time">2016-08-29 09:10:48</div></div><div class="title-tcs"><div class="tag" ng-repeat="tag in getPostTags(current_post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(current_post).code}}"><div class="ca-icon-{{getPostCategory(current_post).code}}"></div></a></div></div></div></div></div><div class="content"><div class="meta-data">title Singleton Pattern - 獨體模式</div><div class="meta-data">datetime 2016-08-29 09:10:48</div><div class="meta-data">tags dp</div><div class="meta-data">category coding</div><div class="meta-data">link singleton-pattern</div><div class="meta-data">file 2016-08-29-091048-singleton-pattern</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>最近讀書會在讀深入淺出設計模式，趁這個機會複習一下設計模式，試著舉出簡單的例子並且用非模式與模式的方式來實作，比較它們的差異與優缺點。</p><h1>範例問題</h1><p>我們有一個 log 輸出系統會將 log 輸出個一個檔案之中，它有下面的功能：</p><ul><li>在一開始的時候要呼叫一個 do_heavy_work 來設定 log 檔案。</li><li>有一個 write(msg) 用來記錄 log。</li><li>會記錄有多少筆 log 被寫入，有一個 count method 用來取得目前的 log 數。</li></ul><h1>沒有使用模式的實作</h1><pre><code class="ruby">class Logger
+  def initialize
+    @counter = 0
+    do_heavy_work
+  end
+
+  def write(msg)
+    @counter += 1
+    p &quot;Write #{msg} to log ...&quot;
+  end
+
+  def count
+    @counter
+  end
+
+  private
+
+  def do_heavy_work
+    p "Do heavy work..."
+  end
+end
+
+logger = Logger.new
+logger.write('Hello')
+logger.write('Hi')
+p logger.count
+
+class A
+  def initialize
+    @logger = Logger.new
+  end
+
+  def say(msg)
+    @logger.write(msg)
+    p msg
+  end
+end
+
+a = A.new
+a.say('Yoooo~~')
+
+p logger.count # 2</code></pre><h2>上面實作的缺點</h2><ul><li>logger.count 的計數錯了，因為在 class A 中的 @logger 被重新建立，造成@counter無法共用。(將 @counter 改成 @@counter 可以解決這個問題。)</li><li>do_heavy_work 在每一次 Logger 被建立的時候就會被呼叫，而上面這個例子因為建立了兩次，所以 do_heavy_work 被呼叫了兩次。</li></ul><h1>使用模式的實作：使用靜態變數儲存單一 instance</h1><pre><code class="ruby">class Logger
+  def self.gen
+    @@instance
+  end
+
+  private_class_method :new
+  def initialize
+    @counter = 0
+    do_heavy_work
+  end
+
+  def write(msg)
+    @counter += 1
+    p &quot;Write #{msg} to log ...&quot;
+  end
+
+  def count
+    @counter
+  end
+
+  private
+
+  def do_heavy_work
+    p "Do heavy work..."
+  end
+
+  @@instance = new
+end
+
+logger = Logger.gen
+logger.write('Hello')
+logger.write('Hi')
+p logger.count
+
+class A
+  def initialize
+    @logger = Logger.gen
+  end
+
+  def say(msg)
+    @logger.write(msg)
+    p msg
+  end
+end
+
+a = A.new
+a.say('Yoooo~~')
+
+p logger.count # 3</code></pre><h2>上面實作的優點</h2><ul><li>在 class 宣告的時候就建立一個 instance，並使用 Logger.gen 取代 Logger.new 確保只會讀取到這個建立的 instance，do_heavy_work 只需要做一次就可以了。</li></ul><h2>上面實作的缺點</h2><ul><li>無論有沒有使用到 Logger，一定會建立 instance，也就是 do_heavy_work 一定會被執行一次。</li></ul><h1>使用模式的實作：lazy-load的版本</h1><pre><code class="ruby">class Logger
+  @@instance = nil
+
+  def self.gen
+    @@instance = @@instance || new
+  end
+
+  private_class_method :new
+  def initialize
+    @counter = 0
+    do_heavy_work
+  end
+
+  def write(msg)
+    @counter += 1
+    p &quot;Write #{msg} to log ...&quot;
+  end
+
+  def count
+    @counter
+  end
+
+  private
+
+  def do_heavy_work
+    p "Do heavy work..."
+  end
+end
+
+logger = Logger.gen
+logger.write('Hello')
+logger.write('Hi')
+p logger.count # 2
+
+class A
+  def initialize
+    @logger = Logger.gen
+  end
+
+  def say(msg)
+    @logger.write(msg)
+    p msg
+  end
+end
+
+a = A.new
+a.say('Yoooo~~')
+
+p logger.count # 3</code></pre><h2>上面實作的優點</h2><ul><li>同樣使用 Logger.gen 取代 Logger.new 確保只會有一個 instance 被產生， do_heavy_work 只需要做一次就可以了。</li><li>只有在使用 Logger 的第一次才會建立 instnace，沒有用到就不會建立，避免不必要的初使化流程。</li></ul><h2>上面實作的缺點</h2><ul><li>在多執行緒的環境會有 race condition 的問題，無法確保只有單一的 instance 會被建立。例如：兩個執行緒同時執行判斷 @@instance 時候，因為都同時判斷為nil，這時候就會同時建立兩個 Logger 的 instance。</li></ul><h1>使用模式的實作：同步的版本</h1><pre><code class="ruby">class Logger
+  @@instance = nil
+
+  def self.gen
+    instance_mutex = Mutex.new
+    instance_mutex.synchronize do
+      @@instance = @@instance || new
+    end
+  end
+
+  private_class_method :new
+  def initialize
+    @counter = 0
+    do_heavy_work
+  end
+
+  def write(msg)
+    @counter += 1
+    p &quot;Write #{msg} to log ...&quot;
+  end
+
+  def count
+    @counter
+  end
+
+  private
+
+  def do_heavy_work
+    p "Do heavy work..."
+  end
+end</code></pre><h2>上面實作的優點</h2><ul><li>同樣有之前實作的優點。</li><li>使用 mutex 確保在多執行緒的環境下只會建立一個單一的 instance。</li></ul><h1>樣式名稱</h1><p>Singleton - 獨體模式</p><h1>目的</h1><p>當某個 class (Logger) 只需要單一 instance 時，使用 private 的 contructor(Logger.new) 來限制 instance 的建立，取而代之的是使用另一個 class method (Logger.gen) 並搭配 class variable(@@instance) 來確保只有唯一個 instance 會被建立。要特別注意的是在多執行緒下的同步問題。</p><h1>使用時機</h1><p>當某個 class 只需要單一 instance，而且在初使化的過程可能會花費較多的資源而希望可以減少初使化的次數。</p><h1>Refs</h1><ul><li><a href="http://dalibornasevic.com/posts/9-ruby-singleton-pattern" target="_blank">Ruby Singleton Pattern - 使用多種不同的方式來實作 singleton pattern</a></li><li><a href="http://c2.com/cgi/wiki?RubySingleton" target="_blank">Ruby Singleton - 一個使用 mutex 實作 singleton pattern 的範例。</a></li><li><a href="http://stackoverflow.com/questions/212407/what-exactly-is-the-singleton-class-in-ruby" target="_blank">SO - What exactly is the singleton class in ruby?</a></li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'singleton-pattern';
+/* * * DON'T EDIT BELOW THIS LINE * * */
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script></div></div></section></div><header class="header"><table><tbody><tr><td class="hd-btn-td"><a class="hd-btn-menu" href="#" ng-class="{active: footer_ts.isTab(&#39;menu&#39;)}" ng-click="switchFooter(&#39;menu&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td" ng-show="has_toc"><a class="hd-btn-toc" href="#" ng-class="{active: footer_ts.isTab(&#39;toc&#39;)}" ng-click="switchFooter(&#39;toc&#39;)"><div class="hd-icon"></div></a></td><td class="hd-btn-td"><a class="hd-btn-search" href="#" ng-class="{active: footer_ts.isTab(&#39;search&#39;)}" ng-click="switchFooter(&#39;search&#39;)"><div class="hd-icon"></div></a></td><td class="hd-op-td"><input class="hd-input-search" focus-if="footer_ts.isTab(&#39;search&#39;)" ng-model="query_keyword" ng-show="footer_ts.isTab(&#39;search&#39;)" /><a class="hd-trademark" href="/" ng-hide="footer_ts.isTab(&#39;search&#39;)"><img alt="魔法師的手杖" src="/images/header/trademark_200x50.svg" title="魔法師的手杖" /></a></td></tr></tbody></table></header><nav class="menu"><ul><li><a class="mu-btn-paper active" href="/posts"><div class="mu-icon"></div>文章</a></li><li><a class="mu-btn-category" href="/categories"><div class="mu-icon"></div>分類</a></li><li><a class="mu-btn-tag" href="/tags"><div class="mu-icon"></div>標籤</a></li><li><a class="mu-btn-work" href="/works"><div class="mu-icon"></div>作品</a></li><li><a class="mu-btn-wizard" href="/about"><div class="mu-icon"></div>關於</a></li></ul></nav><nav class="toc"></nav><aside class="search-result-panel" ng-show="footer_ts.isTab(&#39;search&#39;)"><div class="posts"><div class="post-list"><div class="pl-row" ng-repeat="post in getSearchPosts()"><div class="pl-cell pl-title"><div class="category-icon"><a ng-href="/categories?c={{getPostCategory(post).code}}"><div class="ca-icon-{{getPostCategory(post).code}}"></div></a></div><a href="/posts/{{post.file}}">{{post.title}}</a><a href="{{post.website}}" ng-show="post.website" target="_blank"><img class="pl-weblink" src="/images/list/weblink_25x.svg" /></a></div><div class="pl-cell pl-tcs"><div class="tag" ng-repeat="tag in getPostTags(post)" ng-style="{&#39;background-color&#39;:tag.color}"><a class="tag-link" ng-href="/tags?t={{tag.code}}">{{tag.name}}</a></div></div><div class="pl-cell pl-time"><div class="time">{{post.datetime}}</div></div></div></div></div></aside></body><script>$(function () {
+  // TOC
+  try {
+    var contents,
+        articleId;
+    articleId = function (articleName, element) {
+      return md5(articleName);
+    };
+    contents = gajus
+      .Contents({articleId: articleId});
+    $('.toc').append(contents.list());
+  } catch(e) {
+  }
+  // emoji
+  emojify.setConfig({
+    ignore_emoticons: true,
+    img_dir: '/images/emoji',
+    blacklist: {
+      elements: ['script', 'textarea', 'pre', 'code'],
+      classes: ['no-emojify']
+    }
+  });
+  emojify.run();
+});</script></html>

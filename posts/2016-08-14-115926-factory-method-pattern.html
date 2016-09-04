@@ -90,21 +90,21 @@ encrypter = Encrypter.new
 msg_deliver.deliver('hello', :screen_display)
 msg_deliver.deliver('Yoooo~~~', :mailer)
 encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的優點</h2><ul><li>新增一種新 exporter 或是刪除某個 exporter 時，只要修改 ExporterFactory 的 create 就可以了，不會更改到其它的 class。</li><li>MessageDeliver, Encrypter 只與 ExporterFactory 有相依，降低了與其它 exporter 的相依性。</li></ul><h2>上面實作的缺點</h2><ul><li>使用靜態方法實作，變成無法處理更複雜的建立流程。(參考下面的例子)</li></ul><h1>範例問題(延伸)</h1><p>加密方式每個 exporter 變得不同，需要另外三個 exporter(EncryptedScreenDisplay, EncryptedPrinter, EncryptedMailer) 各別處理加密如下：</p><pre><code class="ruby">class EncryptedScreenDisplay < Exporter
-  def display(msg)
+  def output(msg)
     msg = msg.gsub(/[a-zA-Z0-9]/, '*')
     &quot;The message &#39;#{msg}&#39; is displayed on the screen.&quot;
   end
 end
 
 class EncryptedPrinter < Exporter
-  def print(msg)
+  def output(msg)
     msg = msg.gsub(/[a-zA-Z0-9]/, 'o')
     &quot;The message &#39;#{msg}&#39; is printed.&quot;
   end
 end
 
 class EncryptedMailer < Exporter
-  def mail(msg)
+  def output(msg)
     msg = msg.gsub(/[a-zA-Z0-9]/, 'x')
     &quot;The message &#39;#{msg}&#39; is mailed.&quot;
   end
