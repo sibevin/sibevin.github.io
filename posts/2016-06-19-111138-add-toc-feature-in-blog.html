@@ -16,7 +16,11 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
   return md5(articleName);
 };
 contents = gajus
-  .Contents({articleId: articleId});</code></pre><p>contents.js 預設是去找heading中的文字並轉成anchor的id，不過它無法處理中文的heading。還好 contents.js 可以客製化id的生成方式，我直接使用<a href="https://github.com/blueimp/JavaScript-MD5" target="_blank">JavaScript MD5</a>(這個js可以處理UTF的文字)將heading的文字轉成md5 string，這樣就可以用嘍。</p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+  .Contents({articleId: articleId});</code></pre><p>contents.js 預設是去找heading中的文字並轉成anchor的id，不過它無法處理中文的heading。還好 contents.js 可以客製化id的生成方式，我直接使用<a href="https://github.com/blueimp/JavaScript-MD5" target="_blank">JavaScript MD5</a>(這個js可以處理UTF的文字)將heading的文字轉成md5 string，這樣就可以用嘍。</p><h1>UPDATE 2016.09.28</h1><p>上面客製化 articleId 的方法仍然有問題，如果兩個 heading 有相同的文字，則 TOC 裡會產生相同的 md5 anchor 而造成連結都會被指向第一個的 heading。解決的方式就是將 articleId 改成下面這樣：</p><pre><code class="javascript">articleId = function (articleName, element) {
+  return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
+};
+contents = gajus
+  .Contents({articleId: articleId});</code></pre><p>也就是產生 articleId 的方式除了參考原本在 heading 的文字外，還參考了 heading 前後 DOM 包含的文字，這樣就可以大大減少重複的可能性。(如果連前後文都一樣，就只能說遺憾了…)</p><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'add-toc-feature-in-blog';
 /* * * DON'T EDIT BELOW THIS LINE * * */

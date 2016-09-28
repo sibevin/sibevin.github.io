@@ -396,7 +396,7 @@ control.setup(:turn_left, WalkingTurnLeftCommand.new(walking_robot))
 control.move
 control.undo
 control.turn_right
-control.undo</code></pre><h1>樣式名稱</h1><p>Command Pattern - 命令模式</p><h1>目的</h1><p>使用中介的 class(RobotCommand系列的class) 做為傳遞命令的媒界，使呼叫命令的 client(UniversalControl) 與實際執行的 receiver(WalkingRobot, TankRobot, DuckRobot) 之間的相依性降低。另外藉由共同實作的 execute method，讓 client(UniversalControl) 可以動態切換要執行的命令，而不用了解執行命令的 receiver(WalkingRobot, TankRobot, DuckRobot) 是哪個 class，同時也可以做到復原(undo)與批次(batch)執行的功能。</p><h1>使用時機</h1><ul><li>當 client(UniversalControl) 需要動態改變呼叫的命令，可能還需要實作復原(undo)與批次(batch)執行的功能。</li><li>需要將命令做額外處理，例如佇列(queue)或是日誌(logging)。</li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+control.undo</code></pre><h1>樣式名稱</h1><p>Command Pattern - 命令模式</p><h1>目的</h1><p>使用中介的 class(RobotCommand系列的class) 做為傳遞命令的媒界，使呼叫命令的 invoker(UniversalControl) 與實際執行的 receiver(WalkingRobot, TankRobot, DuckRobot) 之間的相依性降低。另外藉由共同實作的 execute method，讓 invoker(UniversalControl) 可以動態切換要執行的命令，而不用了解執行命令的 receiver(WalkingRobot, TankRobot, DuckRobot) 是哪個 class，同時也可以做到復原(undo)與批次(batch)執行的功能。</p><h1>使用時機</h1><ul><li>當 invoker(UniversalControl) 需要動態改變呼叫的命令，可能還需要實作復原(undo)與批次(batch)執行的功能。</li><li>需要將命令做額外處理，例如佇列(queue)或是日誌(logging)。</li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'command-pattern';
 /* * * DON'T EDIT BELOW THIS LINE * * */
