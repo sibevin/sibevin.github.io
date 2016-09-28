@@ -26,7 +26,7 @@ var disqus_identifier = 'gem-default-value-for';
     var contents,
         articleId;
     articleId = function (articleName, element) {
-      return md5(articleName);
+      return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
     };
     contents = gajus
       .Contents({articleId: articleId});

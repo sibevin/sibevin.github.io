@@ -97,7 +97,7 @@ var disqus_identifier = 'upgrade-devise-from-304-to-341';
     var contents,
         articleId;
     articleId = function (articleName, element) {
-      return md5(articleName);
+      return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
     };
     contents = gajus
       .Contents({articleId: articleId});

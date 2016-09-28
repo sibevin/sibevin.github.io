@@ -148,7 +148,7 @@ var disqus_identifier = 'ruby-poodr-ch7-sharing-role-behavior-with-modules';
     var contents,
         articleId;
     articleId = function (articleName, element) {
-      return md5(articleName);
+      return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
     };
     contents = gajus
       .Contents({articleId: articleId});

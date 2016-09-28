@@ -35,7 +35,7 @@ var disqus_identifier = 'how-to-build-js-package-with-grunt-bower-npm-02';
     var contents,
         articleId;
     articleId = function (articleName, element) {
-      return md5(articleName);
+      return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
     };
     contents = gajus
       .Contents({articleId: articleId});

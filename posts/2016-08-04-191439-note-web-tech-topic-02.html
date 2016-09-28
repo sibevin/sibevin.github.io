@@ -17,7 +17,7 @@ var disqus_identifier = 'note-web-tech-topic-02';
     var contents,
         articleId;
     articleId = function (articleName, element) {
-      return md5(articleName);
+      return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
     };
     contents = gajus
       .Contents({articleId: articleId});
