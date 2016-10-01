@@ -211,7 +211,7 @@ control.setup(:turn_right, DuckTurnRightCommand.new(duck_robot))
 control.setup(:turn_left, DuckTurnLeftCommand.new(duck_robot))
 control.move
 control.turn_right
-control.turn_left</code></pre><h2>上面實作的優點</h2><ul><li>UniversalControl只與RobotCommand有相依，UniversalControl與Robot之間的相依性被鬆綁了。</li><li>原本的Robot class完全不用做任何的修改。</li><li>因為只要有實作 execute 的 RobotCommand 都可以使用遙控器控制，大大增加了UniversalControl的通用性。</li></ul><h1>使用命令模式的附加好處1：可以支援復原(undo)功能</h1><p>我們希望可以在遙控器上加一個復原的按鈕，當按鈕按下去的時候可以復原前一個命令。這時候只要在command中定義相對應的undo method，在按鈕按下去的時候去呼叫對應的undo就ok了。</p><pre><code class="ruby">class RobotCommand
+control.turn_left</code></pre><h2>上面實作的優點</h2><ul><li>UniversalControl只與RobotCommand有相依，UniversalControl與Robot之間的相依性被鬆綁了。</li><li>原本的Robot class完全不用做任何的修改。</li><li>因為只要有實作 execute 的 RobotCommand 都可以使用遙控器控制，大大增加了UniversalControl的通用性。</li></ul><h2>上面實作的缺點</h2><ul><li>所有的命令都必須建立一個對應的 RobotCommand-based class，這表示要使用命令模式就一定要建立很多的 class。</li></ul><h1>使用命令模式的附加好處1：可以支援復原(undo)功能</h1><p>我們希望可以在遙控器上加一個復原的按鈕，當按鈕按下去的時候可以復原前一個命令。這時候只要在command中定義相對應的undo method，在按鈕按下去的時候去呼叫對應的undo就ok了。</p><pre><code class="ruby">class RobotCommand
   def initialize(robot)
     @robot = robot
   end
