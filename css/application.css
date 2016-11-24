@@ -242,36 +242,41 @@ i {
 }
 
 /* line 84, ../../src/sass/_base.sass */
+.rwd-table {
+  overflow-x: auto;
+}
+
+/* line 87, ../../src/sass/_base.sass */
 .meta-data {
   display: none;
 }
 
-/* line 87, ../../src/sass/_base.sass */
+/* line 90, ../../src/sass/_base.sass */
 .text-red {
   color: #E3695C;
 }
 
-/* line 89, ../../src/sass/_base.sass */
+/* line 92, ../../src/sass/_base.sass */
 .text-blue {
   color: #3B7F8C;
 }
 
-/* line 91, ../../src/sass/_base.sass */
+/* line 94, ../../src/sass/_base.sass */
 .text-green {
   color: #46AC5C;
 }
 
-/* line 93, ../../src/sass/_base.sass */
+/* line 96, ../../src/sass/_base.sass */
 .text-orange {
   color: #E39E5C;
 }
 
-/* line 95, ../../src/sass/_base.sass */
+/* line 98, ../../src/sass/_base.sass */
 .text-grey {
   color: #999;
 }
 
-/* line 98, ../../src/sass/_base.sass */
+/* line 101, ../../src/sass/_base.sass */
 .mk-red {
   border: 2px solid #E3695C;
   -moz-border-radius: 3px;
@@ -279,7 +284,7 @@ i {
   border-radius: 3px;
 }
 
-/* line 101, ../../src/sass/_base.sass */
+/* line 104, ../../src/sass/_base.sass */
 .mk-blue {
   border: 2px solid #3B7F8C;
   -moz-border-radius: 3px;
@@ -287,7 +292,7 @@ i {
   border-radius: 3px;
 }
 
-/* line 104, ../../src/sass/_base.sass */
+/* line 107, ../../src/sass/_base.sass */
 .mk-green {
   border: 2px solid #46AC5C;
   -moz-border-radius: 3px;
@@ -295,7 +300,7 @@ i {
   border-radius: 3px;
 }
 
-/* line 107, ../../src/sass/_base.sass */
+/* line 110, ../../src/sass/_base.sass */
 .mk-orange {
   border: 2px solid #E39E5C;
   -moz-border-radius: 3px;
@@ -303,13 +308,13 @@ i {
   border-radius: 3px;
 }
 
-/* line 110, ../../src/sass/_base.sass */
+/* line 113, ../../src/sass/_base.sass */
 .mkb-red {
   border: 2px solid red;
   background: rgba(255, 0, 0, 0.1);
 }
 
-/* line 114, ../../src/sass/_base.sass */
+/* line 117, ../../src/sass/_base.sass */
 .emoji {
   width: 1.5em;
   height: 1.5em;
@@ -1109,6 +1114,24 @@ i {
   padding: 0px 8px;
   font-weight: bold;
   background: #ddd;
+}
+/* line 25, ../../src/sass/views/_post.sass */
+.post .content .table-block table {
+  border-collapse: separate;
+  border-spacing: 2px;
+  border: none;
+}
+/* line 29, ../../src/sass/views/_post.sass */
+.post .content .table-block table td {
+  border: 1px #000 solid;
+}
+/* line 31, ../../src/sass/views/_post.sass */
+.post .content .table-block table td.tb-hidden {
+  border: 1px #fff solid;
+}
+/* line 33, ../../src/sass/views/_post.sass */
+.post .content .table-block table table {
+  margin: 0px;
 }
 
 /* line 8, ../../src/sass/views/_posts.sass */
