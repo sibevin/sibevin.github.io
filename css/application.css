@@ -322,6 +322,16 @@ i {
   margin-bottom: -0.25em;
 }
 
+/* line 123, ../../src/sass/_base.sass */
+.inline-block {
+  display: inline-block;
+  vertical-align: top;
+}
+/* line 126, ../../src/sass/_base.sass */
+.inline-block table {
+  margin-right: 1em;
+}
+
 /* line 4, ../../src/sass/partials/_layout.sass */
 .layout .menu {
   left: -216px;
