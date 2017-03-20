@@ -8,7 +8,7 @@ ga('send', 'pageview');</script></head><body class="theme-color-default layout" 
   # Setup logger for development
   config.logger = Logger.new(Rails.root.join(&quot;log&quot;,&quot;#{Rails.env}.log&quot;), 10, 1048576)
   # ...
-end</code></pre><h1>心得</h1><p>為了這個問題，我trace了一下rails的source code，這邊做個記錄：</p><ul><li>rails預設是用ruby原生的logger，所以我們可以利用上面的方式改掉內建的log。</li><li>現在才知道ruby的logger內建就有rotation的功能，是我lag太久了嗎？</li></ul><h1>Refs</h1><ul><li><a href="http://stackoverflow.com/questions/9581332/log-rotation-in-rails-development-mode" target="_blank">SO - Log rotation in Rails DEVELOPMENT mode?</a></li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
+end</code></pre><h2>心得</h2><p>為了這個問題，我trace了一下rails的source code，這邊做個記錄：</p><ul><li>rails預設是用ruby原生的logger，所以我們可以利用上面的方式改掉內建的log。</li><li>現在才知道ruby的logger內建就有rotation的功能，是我lag太久了嗎？</li></ul><h2>Refs</h2><ul><li><a href="http://stackoverflow.com/questions/9581332/log-rotation-in-rails-development-mode" target="_blank">SO - Log rotation in Rails DEVELOPMENT mode?</a></li></ul><div id="disqus_thread"></div><script>/* * * CONFIGURATION VARIABLES * * */
 var disqus_shortname = 'wizard-note';
 var disqus_identifier = 'rails-rotate-development-log';
 /* * * DON'T EDIT BELOW THIS LINE * * */
