@@ -56,7 +56,7 @@ end</code></pre><p><i>app/views/user/roles/edit.html.erb</i></p><pre><code class
     value_method: :first %&gt;
   &lt;%= f.button :submit %&gt;
 &lt;% end %&gt;
-</code></pre><h1>小結</h1><p>這裡介紹了如何使用bitwise的方式儲存multiple value的值，我覺得很重要的兩點就是：</p><ul><li>注意使用的時機，如果你需要做查詢或是動態增加新的角色，使用model的方式才是正解。</li><li>User model中的<code>roles_bitwise</code>與<code>roles_bitwise=</code>這兩個method簡化了roles的計算與處理，我們不直接使用<code>roles</code>而是藉由<code>roles_bitwise</code>來處理<code>roles</code>是一個重要的技巧。</li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+</code></pre><h1>小結</h1><p>這裡介紹了如何使用bitwise的方式儲存multiple value的值，我覺得很重要的兩點就是：</p><ul><li>注意使用的時機，如果你需要做查詢或是動態增加新的角色，使用model的方式才是正解。</li><li>User model中的<code>roles_bitwise</code>與<code>roles_bitwise=</code>這兩個method簡化了roles的計算與處理，我們不直接使用<code>roles</code>而是藉由<code>roles_bitwise</code>來處理<code>roles</code>是一個重要的技巧。</li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -79,4 +79,12 @@ end</code></pre><p><i>app/views/user/roles/edit.html.erb</i></p><pre><code class
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'use-bitwise-column-in-rails-model';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

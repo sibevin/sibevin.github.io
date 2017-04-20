@@ -8,7 +8,7 @@ on_ready = ->
 
 $(document).ready(on_ready)
 $(document).on('page:load', on_ready)</code></pre><p>接著把這個js也加入application.js中，注意要放在angularjs之後。</p><p><i>app/assets/javascripts/application.js</i></p><pre class="js"><code>//= require angular
-//= require angular_app</code></pre><p>這樣就完成啦，可以開心的在rails中使用angular了。</p><h1>P.S.</h1><p>不要再跟我戰為什麼不改用react(那我就會反問為什麼不用angular的directive？)，我就是喜歡angular…好吧，找個時間分享一下怎麼在rails中使用react。</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+//= require angular_app</code></pre><p>這樣就完成啦，可以開心的在rails中使用angular了。</p><h1>P.S.</h1><p>不要再跟我戰為什麼不改用react(那我就會反問為什麼不用angular的directive？)，我就是喜歡angular…好吧，找個時間分享一下怎麼在rails中使用react。</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -31,4 +31,12 @@ $(document).on('page:load', on_ready)</code></pre><p>接著把這個js也加入a
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'use-angularjs-on-rails';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

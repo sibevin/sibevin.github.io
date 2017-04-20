@@ -16,7 +16,7 @@ contents = gajus
   return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
 };
 contents = gajus
-  .Contents({articleId: articleId});</code></pre><p>也就是產生 articleId 的方式除了參考原本在 heading 的文字外，還參考了 heading 前後 DOM 包含的文字，這樣就可以大大減少重複的可能性。(如果連前後文都一樣，就只能說遺憾了…)</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+  .Contents({articleId: articleId});</code></pre><p>也就是產生 articleId 的方式除了參考原本在 heading 的文字外，還參考了 heading 前後 DOM 包含的文字，這樣就可以大大減少重複的可能性。(如果連前後文都一樣，就只能說遺憾了…)</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -39,4 +39,12 @@ contents = gajus
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'add-toc-feature-in-blog';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

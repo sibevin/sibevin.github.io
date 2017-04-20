@@ -13,7 +13,7 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
   panes:
     - zc
     - focus: true</code></pre><p>有了上面的設定檔，當開啟iTerm時，下指令 <code>teamocil my_workspace</code>，這時候iTrem就會做下面的事情：</p><ul><li>開一個新的視窗，將工作目錄切到 /Users/kait/workspace/rails/dev/my_project/ ，分割成左邊一個，右邊上下兩個，共三個面版分別跑 <code>rs -p 1234, guard, zs</code>這三個指令。</li><li>開另一個新的視窗，同樣將工作目錄切到 /Users/kait/workspace/rails/dev/my_project/ ，分割成上下兩個面版，上面跑 <code>zc</code>下面則維持terminal的畫面。</li></ul><p>更多的layout與設定方式可以參考Teamocil的官網。</p><h1>UPDATE</h1><p>如果你的iTerm更新到3.0.0以上的版本，那可能要用brew裝itermocil。指令如下：</p><pre><code class="nohighlight">$ brew update
-$ brew install TomAnthony/brews/itermocil</code></pre><p>請參考 <a href="https://github.com/TomAnthony/itermocil/issues/41" target="_blank">Support iTerm 3.0.0</a></p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+$ brew install TomAnthony/brews/itermocil</code></pre><p>請參考 <a href="https://github.com/TomAnthony/itermocil/issues/41" target="_blank">Support iTerm 3.0.0</a></p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -36,4 +36,12 @@ $ brew install TomAnthony/brews/itermocil</code></pre><p>請參考 <a href="http
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'gem-teamocil';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

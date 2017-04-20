@@ -7,7 +7,7 @@ sc.decode("Wyky gn q nyakyr.")
 sc.seed
 # "abcdefghijklmnopqrstuvwxyz"
 sc.map
-# "qeahyftwgpjixodzbknrlscvum"</code></pre><p><code>SubCipher.gen</code>會使用預設的參數(也就是英文字母)建立一個SubCipherObject，接著可以用<code>encode</code>與<code>decode</code>來進行加解密。注意的是同一個字母但不同大小寫會對應到同一個字母，例如：如果a對應到b，那表示A會對應到B。<code>seed</code>與<code>map</code>則是用來表示字母的對應情況，以上面的例子來說就是將<code>abcdefghijklmnopqrstuvwxyz</code>對應到<code>qeahyftwgpjixodzbknrlscvum</code>。</p><p>另外<code>SubCipher.gen</code>也提供了一些參數可以自定義要加解密的字母(<code>seed</code>)與如何做字母對應(<code>map, keep_case</code>)。詳細的使用方式請參考<a href="https://github.com/sibevin/sub_cipher/blob/master/README.md#options" target="_blank">README - Options</a>。</p><h1>心得</h1><p>想要做一個簡單的加解密方法讓存在資料庫的敏感資料可以做個轉換，不要單純以明碼的方式做儲存。另外覺得自己太久沒有寫ruby了，所以就順便練習一下。</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+# "qeahyftwgpjixodzbknrlscvum"</code></pre><p><code>SubCipher.gen</code>會使用預設的參數(也就是英文字母)建立一個SubCipherObject，接著可以用<code>encode</code>與<code>decode</code>來進行加解密。注意的是同一個字母但不同大小寫會對應到同一個字母，例如：如果a對應到b，那表示A會對應到B。<code>seed</code>與<code>map</code>則是用來表示字母的對應情況，以上面的例子來說就是將<code>abcdefghijklmnopqrstuvwxyz</code>對應到<code>qeahyftwgpjixodzbknrlscvum</code>。</p><p>另外<code>SubCipher.gen</code>也提供了一些參數可以自定義要加解密的字母(<code>seed</code>)與如何做字母對應(<code>map, keep_case</code>)。詳細的使用方式請參考<a href="https://github.com/sibevin/sub_cipher/blob/master/README.md#options" target="_blank">README - Options</a>。</p><h1>心得</h1><p>想要做一個簡單的加解密方法讓存在資料庫的敏感資料可以做個轉換，不要單純以明碼的方式做儲存。另外覺得自己太久沒有寫ruby了，所以就順便練習一下。</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -30,4 +30,12 @@ sc.map
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'gem-sub-cipher';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

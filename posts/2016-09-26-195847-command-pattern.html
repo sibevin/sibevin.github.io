@@ -392,7 +392,7 @@ control.setup(:turn_left, WalkingTurnLeftCommand.new(walking_robot))
 control.move
 control.undo
 control.turn_right
-control.undo</code></pre><h1>樣式名稱</h1><p>Command Pattern - 命令模式</p><h1>目的</h1><p>使用中介的 class(RobotCommand系列的class) 做為傳遞命令的媒界，使呼叫命令的 invoker(UniversalControl) 與實際執行的 receiver(WalkingRobot, TankRobot, DuckRobot) 之間的相依性降低。另外藉由共同實作的 execute method，讓 invoker(UniversalControl) 可以動態切換要執行的命令，而不用了解執行命令的 receiver(WalkingRobot, TankRobot, DuckRobot) 是哪個 class，同時也可以做到復原(undo)與批次(batch)執行的功能。</p><h1>使用時機</h1><ul><li>當 invoker(UniversalControl) 需要動態改變呼叫的命令，可能還需要實作復原(undo)與批次(batch)執行的功能。</li><li>需要將命令做額外處理，例如佇列(queue)或是日誌(logging)。</li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+control.undo</code></pre><h1>樣式名稱</h1><p>Command Pattern - 命令模式</p><h1>目的</h1><p>使用中介的 class(RobotCommand系列的class) 做為傳遞命令的媒界，使呼叫命令的 invoker(UniversalControl) 與實際執行的 receiver(WalkingRobot, TankRobot, DuckRobot) 之間的相依性降低。另外藉由共同實作的 execute method，讓 invoker(UniversalControl) 可以動態切換要執行的命令，而不用了解執行命令的 receiver(WalkingRobot, TankRobot, DuckRobot) 是哪個 class，同時也可以做到復原(undo)與批次(batch)執行的功能。</p><h1>使用時機</h1><ul><li>當 invoker(UniversalControl) 需要動態改變呼叫的命令，可能還需要實作復原(undo)與批次(batch)執行的功能。</li><li>需要將命令做額外處理，例如佇列(queue)或是日誌(logging)。</li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -415,4 +415,12 @@ control.undo</code></pre><h1>樣式名稱</h1><p>Command Pattern - 命令模式<
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'command-pattern';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

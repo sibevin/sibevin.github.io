@@ -181,7 +181,7 @@ end
 a = A.new
 p a.say</code></pre><p>上面的例子，我們用<span class="mk-blue">Open Class</span>的方式將say塞到Kernel中，這時候say變成到處都可以用了。書上也舉了AwesomePrint這個有趣的例子。</p><h2>Method Execution</h2><h3>The self Keyword</h3><p>ruby的每一行程式碼都是在某個物件中執行，我們稱做current object，而ruby會把current object記錄到 <code>self</code>之中。如果呼叫一個method但不指定receiver的話，預設就會把self當做receiver。當你呼叫method時指定了receiver，則self會在呼叫時method切換到對應的receiver。</p><h3>Private Method</h3><p>在ruby中，private method指的是不能使用receiver呼叫的method，即使是self也不行。這樣的定義表示除了在物件本身之中呼叫外，其它的地方都無法呼叫這個method。</p><h3>The Top Level</h3><p>在一開始進入irb或是ruby的程式而尚未呼叫任何的method時，這時候的self會是一個叫做 <code>main</code>的Object，我們稱做top-level context，它是在程式一開始時由ruby interpreter自動配置的物件。(雖然叫做main，可是與C或是Java裡的main()義意完全不同。)</p><h3>Class Definitions and self</h3><p>在class中，self會指向class本身。</p><pre><code class="ruby">class A
   self # => A
-end</code></pre><h2>Refinements</h2><p>請參考： <a href="/posts/2016-05-02-163010-refinement-in-ruby" target="_blank">ruby的refinement</a></p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+end</code></pre><h2>Refinements</h2><p>請參考： <a href="/posts/2016-05-02-163010-refinement-in-ruby" target="_blank">ruby的refinement</a></p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -204,4 +204,12 @@ end</code></pre><h2>Refinements</h2><p>請參考： <a href="/posts/2016-05-02-1
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'mr2-ch2-the-object-model';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

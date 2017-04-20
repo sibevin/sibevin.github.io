@@ -7,7 +7,7 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
     classes: ['no-emojify']
   }
 });
-emojify.run();</code></pre><p>其中<code>ignore_emoticons: true</code>指的是不使用<code>:)</code>之類的符號，而是只使用<code>:smile:</code>等代號，這樣可以避免貼程式碼被誤轉成 emoji 的情況。<code>img_dir: '/images/emoji'</code>則是設定 emoji 的圖片路徑，注意這裡要用<code>/</code>開頭，不然會用相對路徑來找圖片。<code>blacklist</code>則是用來設定哪些元件或是css類別不使用 emoji，因為預設把連結拿掉了，所以我把它加回去。</p><h2>在文章中插入 emoji</h2><p>只要在想顯示 emoji 的地方加上代號即可，不過要注意的是在中文句子中要用空白隔開，例如：<code>這是一句 :smile: 中文。</code>，這樣就有 emoji 可以用了。Ya ~ :v:</p><h1>Refs</h1><ul><li><a href="https://github.com/Ranks/emojify.js" target="_blank">Github - emojify.js</a></li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+emojify.run();</code></pre><p>其中<code>ignore_emoticons: true</code>指的是不使用<code>:)</code>之類的符號，而是只使用<code>:smile:</code>等代號，這樣可以避免貼程式碼被誤轉成 emoji 的情況。<code>img_dir: '/images/emoji'</code>則是設定 emoji 的圖片路徑，注意這裡要用<code>/</code>開頭，不然會用相對路徑來找圖片。<code>blacklist</code>則是用來設定哪些元件或是css類別不使用 emoji，因為預設把連結拿掉了，所以我把它加回去。</p><h2>在文章中插入 emoji</h2><p>只要在想顯示 emoji 的地方加上代號即可，不過要注意的是在中文句子中要用空白隔開，例如：<code>這是一句 :smile: 中文。</code>，這樣就有 emoji 可以用了。Ya ~ :v:</p><h1>Refs</h1><ul><li><a href="https://github.com/Ranks/emojify.js" target="_blank">Github - emojify.js</a></li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -30,4 +30,12 @@ emojify.run();</code></pre><p>其中<code>ignore_emoticons: true</code>指的是
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'add-emoji-feature-to-blog';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

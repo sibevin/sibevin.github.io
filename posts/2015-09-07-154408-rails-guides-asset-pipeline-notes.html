@@ -42,7 +42,7 @@ asset-path("rails.png") -> "/assets/rails-af27b6a414e6da00003503148be9b409.png"<
 
   add_header ETag "";
   break;
-}</code></pre><h2>4.2 Local Precompilation</h2><p>有幾種情況會需要在本地端進行precomile：</p><p><ul><li>沒有production server的寫入權限。</li><li>有多個production server，而不想每一台server在做deploy的時候都進行重複的precomile。</li><li>很常做deploy，但asset幾乎都沒有更動。</li></ul></p><p>這時候你可以將本地端precomile好的壓縮檔案放在source control中，然後照一般的方式進行deploy。但要注意下面幾件事：</p><p><ul><li>不能使用Capistrano預設的task進行precomile。</li><li>必須確定開發環境中有preprocessing所需要的工具。</li><li>需要更改development environemnt中的asset的設定，如下所示：</li></ul></p><p><i>config/environments/development.rb</i></p><pre><code>config.assets.prefix = "/dev-assets"</code></pre><p><i>config/environments/production.rb</i></p><pre><code>config.assets.prefix = "/assets"</code></pre><p>也就是在development中改掉預設的prefix，但在production仍保留原本預設的prefix。這是因為如果你不改掉development的prefix，在預設的debug模式下，你必須要經過precomile才看的到變更過後的檔案。因此經過上面的設定，development的時候會跟之前的行為一樣，也就是當asset變動時會立刻反應至網頁上。</p><h2>4.3 Live Compilation</h2></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+}</code></pre><h2>4.2 Local Precompilation</h2><p>有幾種情況會需要在本地端進行precomile：</p><p><ul><li>沒有production server的寫入權限。</li><li>有多個production server，而不想每一台server在做deploy的時候都進行重複的precomile。</li><li>很常做deploy，但asset幾乎都沒有更動。</li></ul></p><p>這時候你可以將本地端precomile好的壓縮檔案放在source control中，然後照一般的方式進行deploy。但要注意下面幾件事：</p><p><ul><li>不能使用Capistrano預設的task進行precomile。</li><li>必須確定開發環境中有preprocessing所需要的工具。</li><li>需要更改development environemnt中的asset的設定，如下所示：</li></ul></p><p><i>config/environments/development.rb</i></p><pre><code>config.assets.prefix = "/dev-assets"</code></pre><p><i>config/environments/production.rb</i></p><pre><code>config.assets.prefix = "/assets"</code></pre><p>也就是在development中改掉預設的prefix，但在production仍保留原本預設的prefix。這是因為如果你不改掉development的prefix，在預設的debug模式下，你必須要經過precomile才看的到變更過後的檔案。因此經過上面的設定，development的時候會跟之前的行為一樣，也就是當asset變動時會立刻反應至網頁上。</p><h2>4.3 Live Compilation</h2><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -65,4 +65,12 @@ asset-path("rails.png") -> "/assets/rails-af27b6a414e6da00003503148be9b409.png"<
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'rails-guides-asset-pipeline-notes';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

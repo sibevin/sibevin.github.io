@@ -119,7 +119,7 @@ p b.say_hi # undefined method `say_hi' for #&lt;B:0x007fae5c845ff0> (NoMethodErr
   end
   # ...
   instance_methods.each { |m| hide(m) }
-end</code></pre><h1>Wrap-Up</h1><h2>Dynamic Methods vs. Ghost Methods</h2><ul><li>Ghost method是覆寫method_missing而來，所以會視為比較危險的做法，而且ghost method也不會出現在<code>Object#methods</code>之中。相較起來dynamic method的行為就比較像是一般的method定義的方式，只是它可以在程式執行階段被動態的定義。</li><li>Ghost method是使用時機是在不知道有什麼method會被呼叫，或是有很多method需要處理，或是像API在未來有可能會變更的情況下才會使用，不然如果可以用dynamic method就用dynamic method。</li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+end</code></pre><h1>Wrap-Up</h1><h2>Dynamic Methods vs. Ghost Methods</h2><ul><li>Ghost method是覆寫method_missing而來，所以會視為比較危險的做法，而且ghost method也不會出現在<code>Object#methods</code>之中。相較起來dynamic method的行為就比較像是一般的method定義的方式，只是它可以在程式執行階段被動態的定義。</li><li>Ghost method是使用時機是在不知道有什麼method會被呼叫，或是有很多method需要處理，或是像API在未來有可能會變更的情況下才會使用，不然如果可以用dynamic method就用dynamic method。</li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -142,4 +142,12 @@ end</code></pre><h1>Wrap-Up</h1><h2>Dynamic Methods vs. Ghost Methods</h2><ul><l
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'mr2-ch3-methods';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

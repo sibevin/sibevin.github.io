@@ -12,7 +12,7 @@ from /Users/wangkaito/.rvm/gems/ruby-2.2.3/gems/activesupport-4.2.4/lib/active_s
 from /Users/wangkaito/.rvm/gems/ruby-2.2.3/gems/zeus-0.15.4/lib/zeus/rails.rb:196:in `test_helper'
 ...</code></pre><p>查了一下網路的資料發現因為zeus在啟動時，不會像rails一樣一次把所有用到的gem或是library都載入，所以如果有任何沒有require就使用的library的class或module就會出錯。上面的問題是出在 spec/rails_helper.rb 中的第6行：</p><pre><code class="ruby">require 'spec_helper'
 require 'rspec/rails'</code></pre><p>spec_helper裡有用到RSpec的module，但正真載入rspec的地方是在<code>require 'rspec/rails'</code>，因此就出問題了。解法也很簡單，只要將上面兩行對掉就可以了。</p><pre><code class="ruby">require 'rspec/rails'
-require 'spec_helper'</code></pre><h1>Spring?</h1><p>其實rails預設有一個preloader叫做Spring，也是做類似的事。如果有興趣的話，可以看這篇的比較：<a href=" https://hackhands.com/fast-tests-comparing-zeus-spring-rails-4-1-rspec-3/" target="_blank">Fast Tests: Comparing Zeus With Spring on Rails 4.1 and RSpec 3</a></p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+require 'spec_helper'</code></pre><h1>Spring?</h1><p>其實rails預設有一個preloader叫做Spring，也是做類似的事。如果有興趣的話，可以看這篇的比較：<a href=" https://hackhands.com/fast-tests-comparing-zeus-spring-rails-4-1-rspec-3/" target="_blank">Fast Tests: Comparing Zeus With Spring on Rails 4.1 and RSpec 3</a></p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -35,4 +35,12 @@ require 'spec_helper'</code></pre><h1>Spring?</h1><p>其實rails預設有一個p
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'gem-zeus';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

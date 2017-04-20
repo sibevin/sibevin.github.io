@@ -4,7 +4,7 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
   # Setup logger for development
   config.logger = Logger.new(Rails.root.join(&quot;log&quot;,&quot;#{Rails.env}.log&quot;), 10, 1048576)
   # ...
-end</code></pre><h2>心得</h2><p>為了這個問題，我trace了一下rails的source code，這邊做個記錄：</p><ul><li>rails預設是用ruby原生的logger，所以我們可以利用上面的方式改掉內建的log。</li><li>現在才知道ruby的logger內建就有rotation的功能，是我lag太久了嗎？</li></ul><h2>Refs</h2><ul><li><a href="http://stackoverflow.com/questions/9581332/log-rotation-in-rails-development-mode" target="_blank">SO - Log rotation in Rails DEVELOPMENT mode?</a></li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+end</code></pre><h2>心得</h2><p>為了這個問題，我trace了一下rails的source code，這邊做個記錄：</p><ul><li>rails預設是用ruby原生的logger，所以我們可以利用上面的方式改掉內建的log。</li><li>現在才知道ruby的logger內建就有rotation的功能，是我lag太久了嗎？</li></ul><h2>Refs</h2><ul><li><a href="http://stackoverflow.com/questions/9581332/log-rotation-in-rails-development-mode" target="_blank">SO - Log rotation in Rails DEVELOPMENT mode?</a></li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -27,4 +27,12 @@ end</code></pre><h2>心得</h2><p>為了這個問題，我trace了一下rails的
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'rails-rotate-development-log';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

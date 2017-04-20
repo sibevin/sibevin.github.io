@@ -25,7 +25,7 @@ end</code></pre><pre><code class="sql">SELECT "posts".* FROM "posts" INNER JOIN 
   def respond_to_missing?(method_name, include_private = false)
     post.respond_to?(method_name, include_private) || super
   end
-end</code></pre><p>相較於view helper，decorator可以限制存取的model，另外decorator是obejct，使用起來更方便直覺。</p><p>9. 當使用rails建立API server時，很常將資料使用json的格式來傳送。但將組json的程式放在controller或是model中並不適合。使用ActiveModelSerializer可以簡化serialize的程式碼，同時還可以自行定義要如何做serialize。</p><p>10. 在model query中使用pluck選取需要的model attribute並組成array，可以避免ActiveRecord object的生成而達到加速的效果。</p><p>11. 使用config.filter_parameters來過濾log中敏感的資料。</p><p>12. 不要在production中使用WEBrick當作web server。</p><p>13. 在Gemfile中宣告ruby的版本。</p><p>14. 使用Procfile來定義起動rails app的流程，類似makefile的作法。</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+end</code></pre><p>相較於view helper，decorator可以限制存取的model，另外decorator是obejct，使用起來更方便直覺。</p><p>9. 當使用rails建立API server時，很常將資料使用json的格式來傳送。但將組json的程式放在controller或是model中並不適合。使用ActiveModelSerializer可以簡化serialize的程式碼，同時還可以自行定義要如何做serialize。</p><p>10. 在model query中使用pluck選取需要的model attribute並組成array，可以避免ActiveRecord object的生成而達到加速的效果。</p><p>11. 使用config.filter_parameters來過濾log中敏感的資料。</p><p>12. 不要在production中使用WEBrick當作web server。</p><p>13. 在Gemfile中宣告ruby的版本。</p><p>14. 使用Procfile來定義起動rails app的流程，類似makefile的作法。</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -48,4 +48,12 @@ end</code></pre><p>相較於view helper，decorator可以限制存取的model，
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'note-rails4-patterns';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

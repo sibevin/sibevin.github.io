@@ -112,7 +112,7 @@ function containsAll(haystack) {
   return `Lions and ${animals2} and ${animals3}! Oh my!`;
 }</code></pre><p>當參數沒有傳入時，就會使用設定的預設值當做傳入的參數。使用 default parameters 要注意的是：</p><ul><li>預設值是即時運算的，你甚至可以在第二個參數的預設值中使用第一個參數的值，例如：</li></ul><pre><code class="js">function animalSentenceFancy(animals2="tigers", animals3=(animals2 == "bears") ? "sealions" : "bears") {
   return `Lions and ${animals2} and ${animals3}! Oh my!`;
-}</code></pre><ul><li>傳入 undefined 的值會視作不傳入參數，如果對應的參數有設定預設值，就會使用預設值。</li><li>可以部分的參數設定預設值，部分不設，不設的參數相當於有 undefined 這個預設值。例如<code>function myFunc(a=42, b) {...}</code>相當於<code>function myFunc(a=42, b=undefined) {...}</code></li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+}</code></pre><ul><li>傳入 undefined 的值會視作不傳入參數，如果對應的參數有設定預設值，就會使用預設值。</li><li>可以部分的參數設定預設值，部分不設，不設的參數相當於有 undefined 這個預設值。例如<code>function myFunc(a=42, b) {...}</code>相當於<code>function myFunc(a=42, b=undefined) {...}</code></li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -135,4 +135,12 @@ function containsAll(haystack) {
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'note-es6-in-depth';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

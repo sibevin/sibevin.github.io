@@ -101,7 +101,7 @@ About to write to /Users/wangkaito/workspace/angular/dev/test/package.json:
   },
   "homepage": "https://github.com/sibevin/angular-tau-utils"
 }
-Is this ok? (yes)</code></pre><p>package.json的設定值可以參考<a href="https://www.npmjs.org/doc/files/package.json.html" target="_blank">package.json</a>，內容跟bower.json大同小異，所以就不再贅述。</p><h1>NEXT</h1><p>目前我們已經建立好bower與npm package的設定檔，會先建立這兩個檔案是因為在接下來的流程都會用到。下一篇會開始處理package dependence，並使用grunt建立自動化流程。</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+Is this ok? (yes)</code></pre><p>package.json的設定值可以參考<a href="https://www.npmjs.org/doc/files/package.json.html" target="_blank">package.json</a>，內容跟bower.json大同小異，所以就不再贅述。</p><h1>NEXT</h1><p>目前我們已經建立好bower與npm package的設定檔，會先建立這兩個檔案是因為在接下來的流程都會用到。下一篇會開始處理package dependence，並使用grunt建立自動化流程。</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -124,4 +124,12 @@ Is this ok? (yes)</code></pre><p>package.json的設定值可以參考<a href="ht
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'how-to-build-js-package-with-grunt-bower-npm-01';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

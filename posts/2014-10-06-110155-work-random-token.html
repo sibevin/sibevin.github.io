@@ -3,7 +3,7 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
 # "iUEFxcG2"</code></pre><p>可以加上一些參數來修改生成的字串：</p><pre><code class="hljs">RandomToken.gen(20, seed: :alphabet, friendly: true, case: :up)
 # "YTHJHTXKSSXTPLARALRH"</code></pre><p>假如你懶的打字，參數可以簡化如下：</p><pre><code class="hljs">RandomToken.gen(20, s: :a, f: true, c: :u)
 # "YTHJHTXKSSXTPLARALRH"</code></pre><p>另一種方式是使用格式化字串，例如：</p><pre><code class="hljs">RandomToken.gen("%4H-%4H-%4H-%4H")
-# "FD77-2792-91A9-6CE3"</code></pre><p>詳細的使用方式請參考<a href="https://github.com/sibevin/random_token/blob/master/README.md" target="_blank">README</a>，這裡就不再贅述。</p><h1>心得</h1><p>當初只是想要做一個方便用來生成亂數字串的工具，沒有想說要做多完整的功能，另一方面也想嘗試怎麼做一個gem。沒想到做了之後就會開始欲罷不能的多做一些功能，像是string format或是指定亂數機率分佈等。</p><p>做這個gem最大的收獲就是實作string format，如何去parse傳入的string有哪些directive，然而轉成想要的option。看似困難，其實實際下去做感覺反而沒想像的這麼難。另一個收獲是學習使用ruby內建的test framework，之前在寫rails都是用rspec，但如果只是一個gem，用rspec似乎有點殺雞牛刀的感覺，還要增加dependence，所以就試著用ruby的unit test來做測試。感覺跟寫rspec很像，不過每個case前都要用test_開頭的語法有點多餘就是了。</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+# "FD77-2792-91A9-6CE3"</code></pre><p>詳細的使用方式請參考<a href="https://github.com/sibevin/random_token/blob/master/README.md" target="_blank">README</a>，這裡就不再贅述。</p><h1>心得</h1><p>當初只是想要做一個方便用來生成亂數字串的工具，沒有想說要做多完整的功能，另一方面也想嘗試怎麼做一個gem。沒想到做了之後就會開始欲罷不能的多做一些功能，像是string format或是指定亂數機率分佈等。</p><p>做這個gem最大的收獲就是實作string format，如何去parse傳入的string有哪些directive，然而轉成想要的option。看似困難，其實實際下去做感覺反而沒想像的這麼難。另一個收獲是學習使用ruby內建的test framework，之前在寫rails都是用rspec，但如果只是一個gem，用rspec似乎有點殺雞牛刀的感覺，還要增加dependence，所以就試著用ruby的unit test來做測試。感覺跟寫rspec很像，不過每個case前都要用test_開頭的語法有點多餘就是了。</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -26,4 +26,12 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'gem-random-token-generate-random-string';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

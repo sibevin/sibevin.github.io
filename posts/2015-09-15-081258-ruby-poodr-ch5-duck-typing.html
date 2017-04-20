@@ -181,7 +181,7 @@ mp.play(Dvd.new)
 mp.play(Cd.new)
 mp.stop(Dvd.new)
 mp.stop(Cd.new)
-# mp.play(WrongDevice.new) # raise an exception if play method is not implemented</code></pre><h2>優點：</h2><ul><li>Device明確的定義有哪些method需要實作，甚至可以做檢查，例如上面的WrongDevice沒有實作play就會出exception。</li><li>只要include Device的class，就知道它可以用在MediaPlayer中的device。</li><li>預設的method可以在Device中定義，例如上面的stop。</li></ul><h1>Refs</h1><p><ul><li><a href="https://robots.thoughtbot.com/back-to-basics-polymorphism-and-ruby" target="_blank">Back to Basics: Polymorphism and Ruby</a></li><li><a href="http://confreaks.tv/videos/railsconf2015-nothing-is-something" target="_blank">Sandy Metz: Nothing is something</a></li></ul></p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+# mp.play(WrongDevice.new) # raise an exception if play method is not implemented</code></pre><h2>優點：</h2><ul><li>Device明確的定義有哪些method需要實作，甚至可以做檢查，例如上面的WrongDevice沒有實作play就會出exception。</li><li>只要include Device的class，就知道它可以用在MediaPlayer中的device。</li><li>預設的method可以在Device中定義，例如上面的stop。</li></ul><h1>Refs</h1><p><ul><li><a href="https://robots.thoughtbot.com/back-to-basics-polymorphism-and-ruby" target="_blank">Back to Basics: Polymorphism and Ruby</a></li><li><a href="http://confreaks.tv/videos/railsconf2015-nothing-is-something" target="_blank">Sandy Metz: Nothing is something</a></li></ul></p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -204,4 +204,12 @@ mp.stop(Cd.new)
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'ruby-poodr-ch5-duck-typing';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

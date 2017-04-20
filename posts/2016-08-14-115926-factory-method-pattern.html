@@ -196,7 +196,7 @@ encrypter = Encrypter.new
 
 msg_deliver.deliver('hello', :screen_display)
 msg_deliver.deliver('Yoooo~~~', :mailer)
-encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的優點</h2><ul><li>建立 exporter 不是一個單純的 static method(self.create)，而是一個 ExporterFactory 的抽象方法 create，由子類別(NormalExporterFactory, EncryptedExporterFactory)多型的方式實作不同的 create 使建立 exporter 的方式可以更彈性。</li></ul><h1>樣式名稱</h1><p>Factory Method - 工廠方法模式</p><h1>目的</h1><p>將原本建立 class(exporter) 的流程封裝在 factory(ExporterFactory) class 之中，需要建立 class(exporter) 時，就使用 factory(ExporterFactory) 來建立。這樣的好處是透過 factory(ExporterFactory) 降低使用這些 class(exporter) 的 client(MessageDeliver, Encrypter) 與 class(exporter) 之間的相依性。</p><h1>使用時機</h1><p>當有一系列的 class(exporter) 需要被建立，而建立的方式可能會根據不同的情況而需要建立不同的 class(exporter)。</p></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的優點</h2><ul><li>建立 exporter 不是一個單純的 static method(self.create)，而是一個 ExporterFactory 的抽象方法 create，由子類別(NormalExporterFactory, EncryptedExporterFactory)多型的方式實作不同的 create 使建立 exporter 的方式可以更彈性。</li></ul><h1>樣式名稱</h1><p>Factory Method - 工廠方法模式</p><h1>目的</h1><p>將原本建立 class(exporter) 的流程封裝在 factory(ExporterFactory) class 之中，需要建立 class(exporter) 時，就使用 factory(ExporterFactory) 來建立。這樣的好處是透過 factory(ExporterFactory) 降低使用這些 class(exporter) 的 client(MessageDeliver, Encrypter) 與 class(exporter) 之間的相依性。</p><h1>使用時機</h1><p>當有一系列的 class(exporter) 需要被建立，而建立的方式可能會根據不同的情況而需要建立不同的 class(exporter)。</p><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -219,4 +219,12 @@ encrypter.encrypt('A secret message.', :mailer)</code></pre><h2>上面實作的�
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'factory-method-pattern';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

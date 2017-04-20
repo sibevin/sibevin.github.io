@@ -3,7 +3,7 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
   "atom-ctags":
     cmd: "ripper-tags"
     cmdArgs: "-R --exclude=vendor --format=atom"
-    tagsPath: "./tmp/tags"</code></pre><h1>修改的程式碼</h1><h2>ripper-tags</h2><ul><li><a href="https://github.com/tmm1/ripper-tags/compare/master...sibevin:feature-support-atom-ctags" target="_blank">Diff</a></li><li><a href="https://github.com/sibevin/ripper-tags/tree/feature-support-atom-ctags" target="_blank">github:sibevin/ripper-tags branch:feature-support-atom-ctags</a></li></ul><h2>atom-ctags</h2><ul><li><a href="https://github.com/yongkangchen/atom-ctags/compare/master...sibevin:feature-refine-configs" target="_blank">Diff</a></li><li><a href="https://github.com/sibevin/atom-ctags/tree/feature-refine-configs" target="_blank">github:sibevin/atom-ctags branch:feature-refine-configs</a></li></ul><h1>感想</h1><ul><li>以前如果發現不能用，大概就放棄了，這次竟然會trace到atom-ctags與ripper-tags的程式碼，感覺自己又成長了一些。 :muscle: :muscle: :muscle:</li><li>第一次嘗試改atom的package，收獲還蠻多的，不過如果要用atom原生的ui，需要用coffeescript寫啊。自從ES6之後，我已經丟掉coffeescript很久了…</li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+    tagsPath: "./tmp/tags"</code></pre><h1>修改的程式碼</h1><h2>ripper-tags</h2><ul><li><a href="https://github.com/tmm1/ripper-tags/compare/master...sibevin:feature-support-atom-ctags" target="_blank">Diff</a></li><li><a href="https://github.com/sibevin/ripper-tags/tree/feature-support-atom-ctags" target="_blank">github:sibevin/ripper-tags branch:feature-support-atom-ctags</a></li></ul><h2>atom-ctags</h2><ul><li><a href="https://github.com/yongkangchen/atom-ctags/compare/master...sibevin:feature-refine-configs" target="_blank">Diff</a></li><li><a href="https://github.com/sibevin/atom-ctags/tree/feature-refine-configs" target="_blank">github:sibevin/atom-ctags branch:feature-refine-configs</a></li></ul><h1>感想</h1><ul><li>以前如果發現不能用，大概就放棄了，這次竟然會trace到atom-ctags與ripper-tags的程式碼，感覺自己又成長了一些。 :muscle: :muscle: :muscle:</li><li>第一次嘗試改atom的package，收獲還蠻多的，不過如果要用atom原生的ui，需要用coffeescript寫啊。自從ES6之後，我已經丟掉coffeescript很久了…</li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -26,4 +26,12 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'integrate-atom-ctags-and-ripper-tags-to-support-ruby';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

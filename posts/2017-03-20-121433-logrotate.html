@@ -4,7 +4,7 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
   size=100M
   rotate 10
   create 0664 appuser appuser
-}</code></pre><p>參數說明：</p><ul><li>第一行指定了哪些檔案要做rotation，路徑後面接大括號放相關的設定。</li><li><code>weekly</code>指每週定期做rotation。</li><li><code>size=100M</code>每100M做一次rotation，如果 weekly 與 size 這兩個設定都有加，表示如果檔案不到100M便不會生成rotation。</li><li><code>rotate 10</code>要保留幾次rotation。</li><li><code>create 0664 appuser appuser</code>rotation log建立時的檔案權限與所屬的使用者/群組。</li></ul><p>除了上面提到的設定，其實 logrotate 還有非常多的功能可以做調整，細節與使用方式可以參考 man logrotate 。</p><h2>Refs</h2><ul><li><a href="https://linux.die.net/man/8/logrotate" target="_blank">logrotate(8) - Linux man page</a></li><li><a href="http://linux.vbird.org/linux_basic/0570syslog.php#rotate" target="_blank">鳥哥的 Linux 私房菜 - 18.3 登錄檔的輪替(logrotate)</a></li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+}</code></pre><p>參數說明：</p><ul><li>第一行指定了哪些檔案要做rotation，路徑後面接大括號放相關的設定。</li><li><code>weekly</code>指每週定期做rotation。</li><li><code>size=100M</code>每100M做一次rotation，如果 weekly 與 size 這兩個設定都有加，表示如果檔案不到100M便不會生成rotation。</li><li><code>rotate 10</code>要保留幾次rotation。</li><li><code>create 0664 appuser appuser</code>rotation log建立時的檔案權限與所屬的使用者/群組。</li></ul><p>除了上面提到的設定，其實 logrotate 還有非常多的功能可以做調整，細節與使用方式可以參考 man logrotate 。</p><h2>Refs</h2><ul><li><a href="https://linux.die.net/man/8/logrotate" target="_blank">logrotate(8) - Linux man page</a></li><li><a href="http://linux.vbird.org/linux_basic/0570syslog.php#rotate" target="_blank">鳥哥的 Linux 私房菜 - 18.3 登錄檔的輪替(logrotate)</a></li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -27,4 +27,12 @@ hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="po
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'logrotate';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>

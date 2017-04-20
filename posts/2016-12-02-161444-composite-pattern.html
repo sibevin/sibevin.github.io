@@ -158,7 +158,7 @@ p g2.draw # A point on (100, 100). A point on (6, 6). A line from (6, 7) to (8, 
 
 g2.move(10,20)
 
-p g2.draw # A point on (110, 120). A point on (16, 26). A line from (16, 27) to (18, 29). A circle with the center at (20, 30) and 3 redius.</code></pre><h2>上面實作的優點</h2><ul><li>將Group視做一種Drawable，則在操作Group與一般的Drawable可以用一樣的方式處理。</li></ul><h2>上面實作的缺點</h2><ul><li>因為Group實作了Drawable，這表示Group的行為必須要與Drawable一樣，如果有差異就無法使用這個模式。</li></ul><h1>樣式名稱</h1><p>Composite Pattern - 合成模式</p><h1>目的</h1><p>當處理由個體 Leaf(Point, Line, Circle) 組成的群組 Composite(Group)時，將其視做一種個體並實作與個體一致的界面 Component(Drawable)，這樣就可以使用相同的方式 operation(move, draw)來處理個體與群組。</p><h1>使用時機</h1><ul><li>當我們要同時處理個體與個體所組成的群組，而群組中除了包含多個個體之外，也可以包含其它的群組而有多層槽狀結構。</li><li>群組與個體有相同的行為。</li></ul></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+p g2.draw # A point on (110, 120). A point on (16, 26). A line from (16, 27) to (18, 29). A circle with the center at (20, 30) and 3 redius.</code></pre><h2>上面實作的優點</h2><ul><li>將Group視做一種Drawable，則在操作Group與一般的Drawable可以用一樣的方式處理。</li></ul><h2>上面實作的缺點</h2><ul><li>因為Group實作了Drawable，這表示Group的行為必須要與Drawable一樣，如果有差異就無法使用這個模式。</li></ul><h1>樣式名稱</h1><p>Composite Pattern - 合成模式</p><h1>目的</h1><p>當處理由個體 Leaf(Point, Line, Circle) 組成的群組 Composite(Group)時，將其視做一種個體並實作與個體一致的界面 Component(Drawable)，這樣就可以使用相同的方式 operation(move, draw)來處理個體與群組。</p><h1>使用時機</h1><ul><li>當我們要同時處理個體與個體所組成的群組，而群組中除了包含多個個體之外，也可以包含其它的群組而有多層槽狀結構。</li><li>群組與個體有相同的行為。</li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
   // TOC
   try {
     var contents,
@@ -181,4 +181,12 @@ p g2.draw # A point on (110, 120). A point on (16, 26). A line from (16, 27) to 
     }
   });
   emojify.run();
-});</script><script src="/js/post.js"></script></body></html>
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'composite-pattern';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>
