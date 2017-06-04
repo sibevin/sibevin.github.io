@@ -13,11 +13,25 @@ end</code></pre><ul><li>建立一個測試用的API。</li></ul><p><i>app/api/te
       { data: "pong" }
     end
   end
-end</code></pre><ul><li>在routes中掛載api的路徑。</li></ul><p><i>config/routes.rb</i></p><pre><code>Rails.application.routes.draw do
+end</code></pre><ul><li>在routes中掛載api的路徑。我們將api掛載在網址/api下，這樣所有的api網址都會從/api開始。</li></ul><p><i>config/routes.rb</i></p><pre><code>Rails.application.routes.draw do
   # ...
-  mount Api::Test => '/'
+  mount Api::Test => '/api'
   # ...
-end</code></pre><ul><li>重新啟動rails server，在網址列輸入<code>localhost:3000/ping</code>就可以呼叫API了。</li></ul><h1>使用swagger自動生成API文件</h1><p>使用grape的另一個好處是它可以自動生成swagger的API文件，所以只要API寫好了，API文件就寫好了。除此之外，還可以整合swagger-ui直接將API文件掛載在rails的routes下，超級方便的啊。下面是設定的步驟：</p><ul><li>在Gemfile中加入<code>grape-swagger</code>與<code>grape-swagger-rails</code>，基本上我們會將這兩個gem放在development的group下，因為production用不到。</li></ul><p><i>Gemfile</i></p><pre><code>group :development do
+end</code></pre><ul><li>重新啟動rails server，在網址列輸入<code>localhost:3000/api/ping</code>就可以呼叫API了。</li></ul><h1>寫測試</h1><p>寫測試是非常重要的，寫api的測試更是重要。api的測試與controller非常像，都是模擬送出request後，檢查對應的回傳結果。但controller通常不會測試body的內容(因為這是屬於view的測試)，而api的測試就會直接比對body輸出的結果。</p><ul><li>在rails_helper中設定api的spec存放的路徑，將所有api的spec放在spec/api下。</li></ul><i>spec/rails_helper.rb</i><pre><code class="ruby">RSpec.configure do |config|
+  # ...
+  config.include RSpec::Rails::RequestExampleGroup, type: :request, file_path: /spec\/api/
+  # ...
+end</code></pre><ul><li>建立Api::Test的spec：</li></ul><i>spec/api/test_spec.rb</i><pre><code class="ruby">require 'rails_helper'
+
+describe Api::Test do
+  context 'GET /api/ping' do
+    it 'should return 200 and pong data' do
+      get '/api/ping'
+      expect(response.status).to eq(200)
+      expect(JSON.parse(response.body)).to eq({ 'data' => 'pong' })
+    end
+  end
+end</code></pre><ul><li>執行rspec就可以看到測試的結果嘍。</li></ul><pre><code class="nohighlight">rspec spec/api/test_spec.rb</code></pre><h1>使用swagger自動生成API文件</h1><p>使用grape的另一個好處是它可以自動生成swagger的API文件，所以只要API寫好了，API文件就寫好了。除此之外，還可以整合swagger-ui直接將API文件掛載在rails的routes下，超級方便的啊。下面是設定的步驟：</p><ul><li>在Gemfile中加入<code>grape-swagger</code>與<code>grape-swagger-rails</code>，基本上我們會將這兩個gem放在development的group下，因為production用不到。</li></ul><p><i>Gemfile</i></p><pre><code>group :development do
   gem 'grape-swagger'
   gem 'grape-swagger-rails'
 end</code></pre><ul><li>API最上層的class加入<code>add_swagger_documentation</code>，讓grape可以自動生成swagger doc。</li></ul><p><i>app/api/test.rb</i></p><pre><code>module Api
@@ -28,16 +42,16 @@ end</code></pre><ul><li>API最上層的class加入<code>add_swagger_documentatio
 
     if Rails.env.development?
       add_swagger_documentation(
-        mount_path: 'api/swagger_doc',
+        mount_path: 'swagger_doc',
         hide_format: true,
         hide_documentation_path: true
       )
     end
   end
 end</code></pre><p>更多有關grape-swagger的設定選項可以參考<a href="https://github.com/ruby-grape/grape-swagger" target="_blank">grape-swagger的文件</a>。</p><ul><li>在initializer中加入一個新檔案用來初使化grape-swagger-rails。 </li></ul><p><i>config/initializers/grape_swagger_rails.rb</i></p><pre><code>if Rails.env.development?
-  GrapeSwaggerRails.options.url = "api/swagger_doc"
+  GrapeSwaggerRails.options.url = "swagger_doc"
   GrapeSwaggerRails.options.app_name = 'My App'
-  GrapeSwaggerRails.options.app_url = '/'
+  GrapeSwaggerRails.options.app_url = '/api/'
 end</code></pre><ul><li>在routes中掛載api文件的路徑。</li></ul><p><i>config/routes.rb</i></p><pre><code>Rails.application.routes.draw do
   # ...
   if Rails.env.development?
