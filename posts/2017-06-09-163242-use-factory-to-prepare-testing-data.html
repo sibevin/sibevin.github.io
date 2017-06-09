@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><title>使用factory來建立測試資料 | 魔法師的手杖</title><meta content="Kait's Blog - 分享自己寫程式的筆記" name="description" /><link href="//cdn.jsdelivr.net/highlight.js/8.7.0/styles/hybrid.min.css" rel="stylesheet" /><link href="/css/application.css" rel="stylesheet" /><script crossorigin="anonymous" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" src="https://code.jquery.com/jquery-2.2.4.min.js"></script><script src="//cdn.jsdelivr.net/highlight.js/8.7.0/highlight.min.js"></script><script src="/js/consts/metadata.js"></script><script src="/js/vendor/md5.min.js"></script><script src="/js/vendor/contents.js"></script><script src="/js/vendor/emojify.min.js"></script><script type="text/javascript">var FILE = "2017-06-09-163242-use-factory-to-prepare-testing-data";
+hljs.initHighlightingOnLoad();</script></head><body><div id="app"><div class="post layout" v-bind:class="{'lo-toc-on': tocTb.isTab('on')}"><div class="lo-page lo-simple"><div class="pt-header" id="app"><div class="pt-title">{{ currentPost.title }}</div><div class="pt-datetime">{{ currentPost.datetime }}</div><div class="pt-info"><div class="pt-tags"><div class="tag-area"><div class="tag" v-bind:style="{ background: tagMap[tag].color }" v-for="tag in currentPost.tags"><a class="tag-link" v-bind:href="'/tag?t=' + tag">{{ tagMap[tag].name }}</a></div></div></div><div class="pt-category"><div class="category-icon"><a v-bind:href="'/category?c=' + currentPost.category"><div v-bind:class="'ca-icon-' + currentPost.category"></div></a></div></div></div></div><div class="pt-content"><div class="meta-data">title 使用factory來建立測試資料</div><div class="meta-data">datetime 2017-06-09 16:32:42</div><div class="meta-data">tags test,rails,book_tp</div><div class="meta-data">category coding</div><div class="meta-data">link use-factory-to-prepare-testing-data</div><div class="meta-data">file 2017-06-09-163242-use-factory-to-prepare-testing-data</div><div class="meta-data">template post</div><div class="meta-data">end</div><h1>前言</h1><p>這是 Test Prescription 這本書部分內容的筆記整理，如果你對這篇文章有興趣，強烈建議你去讀讀這本書。</p><h1>Factory的特性</h1><ul><li>factories封裝了在model建立時複雜的流程。</li><li>factories提供了建立model的藍圖，不像fixtures在一開始就要定義所有的測試資料，而是在測試需要用到時才做建立的動作，同時也可以必要時覆寫factories裡定義的預設值。</li><li>factory只用在進行測試時建立需要用到的資料，而不應該拿它來建大量的測試資料。如果是大量資料的建立應該要交給fixtures來處理。</li></ul><h1>安裝</h1><ul><li>gem 'factory_girl_rails'</li><li>可以在spec/rails_helper.rb中加入config.include FactoryGirl::Syntax::Methods這個設定，就可以在測試中使用factory_girl的簡略語法，也就是原本必須要寫FactoryGirl.create(:project)變成只需要寫create(:project)。</li></ul><p><i>spec/rails_helper.rb</i></p><pre><code class="ruby">RSpec.configure do |config|
+  # ...
+  # Setup FactoryGirl
+  config.include FactoryGirl::Syntax::Methods
+  # ...
+end</code></pre><h1>建立factory</h1><h2>基本使用方式</h2><p>可以動態定義欄位數值、可以參照已經定義過的欄位、如果factory名稱與model不同需要指定class。</p><p><i>spec/factories/projects.rb</i></p><pre><code class="ruby">FactoryGirl.define do
+  factory :project do
+    name "Project Runway"
+    due_date Date.parse("2014-01-12")
+    slug { "#{name.downcase.gsub(" ", "_")}" }
+  end
+
+  factory :big_project, class: Project do
+    name: "Big Project"
+    due_date { Date.today - rand(50) }
+  end
+end</code></pre><h2>sequence</h2><p>sequence可以用來自動建立序號，另外也支援定義在factory的外面讓多個factory可以共用或是使用generate如果欄位名稱不一樣。</p><p><i>spec/factories/tasks.rb</i></p><pre><code class="ruby">FactoryGirl.define do
+  factory :task do
+    sequence(:title) { |n| "Task #{n}" }
+  end
+end</code></pre><p><i>spec/factories/users.rb</i></p><pre><code class="ruby">FactoryGirl.define do
+  sequence :email do
+    |n| "user_#{n}@test.com"
+  end
+
+  factory :user do
+    name "Fred Flintstone"
+    email
+  end
+
+  factory :task do
+    title "Finish Chapter"
+    user_email { generate(:email) }
+  end
+end</code></pre><h2>Factory的繼承</h2><p><i>spec/factories/tasks.rb</i></p><pre><code class="ruby">FactoryGirl.define do
+  factory :task do
+    sequence(:title) { |n| "Task #{n}" }
+
+    factory :big_task do
+      size 5
+    end
+
+    factory :small_task do
+      size 1
+    end
+  end
+end</code></pre><h2>Trait</h2><p>可以將一些會共用的attributes包成一個trait。</p><pre><code class="ruby">FactoryGirl.define do
+  factory :task do
+    sequence(:title) { |n| "Task #{n}" }
+
+    trait :small do
+      size 1
+    end
+
+    trait :large do
+      size 5
+    end
+
+    trait :soon do
+      due_date { 1.day.from_now }
+    end
+
+    trait :later do
+      due_date { 1.month.from_now }
+    end
+
+    factory :trivial do
+      small
+      later
+    end
+
+    factory :panic do
+      large
+      soon
+    end
+  end
+end</code></pre><p>上面的trivial與panic factory可以寫成一行：</p><pre><code class="ruby">factory :trivial, traits: [:small, :later]
+factory :panic, traits: [:large, :soon]</code></pre><p>使用trait的優點除了可以共用外，將attribute用trait命名也可以增加可讀性，但缺點就是讓factory變複雜，而且要多打一些字。</p><p>factory_girl還有提供額外的功能：包括建立時可以呼叫callback、客製化建立的流程或是建立dummy attributes。更多有關factory_girl的資料請參考：<a href="http://www.rubydoc.info/gems/factory_girl/file/GETTING_STARTED.md" target="_blank">factory_girl - Getting Started</a></p><h1>在測試中使用factory建立假資料</h1><p>在測試中可以使用FactoryGirl提供的method來建立假資料，例如：</p><pre><code class="ruby">it "uses factory girl slug block" do
+  project = FactoryGirl.create(:project, name: "Book To Write")
+  expect(project.slug).to eq("book_to_write")
+end</code></pre><p>而建立的方式有下面4種：</p><ul><li>create(:project)：相當於create一個model的instance，會塞一筆資料到測試的資料庫。因為存取資料庫一定會慢，所以要謹慎的使用create建立測試資料。通常create只用在測試時必須存取資料庫的情況，例如用來測試finder。</li><li>build(:project)：相當於new一個model的instance，不會動到測試的資料庫。</li><li>build_stubbed(:project)：相當於new一個model的instance，不會動到測試的資料庫，但神奇的是會塞一個假的id到id這個欄位，這意味著可以做為association使用。但要注意的是，如果由build_stubbed建立的object在進行save時會出exception。</li><li>attributes_for(:project)：不是用來建立假資料，而是取得factory的attribute hash，通常用來當做ActiveRecord::new/create的參數，或是在測試controller時，建立request時傳入的參數。</li></ul><p>另外在建立時可以接一個block做額外設定：</p><pre><code class="ruby">project = FactoryGirl.build_stubbed(:project) do |p|
+  p.tasks << FactoryGirl.build_stubbed(:task)
+end</code></pre><p>還可以在method後面加上_pair或是_list來同時建立多個測試資料：</p><pre><code class="ruby">create_pair(:project)
+build_stubbed_pair(:project)
+create_list(:project, 5)</code></pre><h1>在factory中定義關聯(association)</h1><p>在factory中可以使用association來建立關聯，建立的時候可以支援association的名稱與model名稱不同，如下面的例子：</p><pre><code class="ruby">FactoryGirl.define do
+  factory :task do
+  title: "To Something"
+  size: 3
+  project
+  association :doer, factory: :user, name: "Task Doer"
+  end
+end</code></pre><p>在測試中使用具有關聯的factory要特別注意立時的行為，以task有一個project的assoication為例：</p><ul><li>如果使用使用create(:task)建立task，則連帶project也會跟著被create，也就是會造成兩次資料庫的insert。</li><li>如果使用build(:task)建立task，則要注意的是project還是會用create建立，也就是會造成一次資料庫的insert，這是association的限制，因為一定要有id才可以做關聯。</li><li>如果使用build_stubbed(:task)建立task，則project會用build_stubbed的方式建立。</li></ul><p>有另一種方式也可以避免assoication產生的create問題，就是在factory中明確指定建立的方式，如下面範例所示：</p><pre><code class="ruby">FactoryGirl.define do
+  factory :task do
+    title: "To Something"
+    size: 3
+    project, strategy: :build
+  end
+end</code></pre><p>不過這種做法有一個很大的缺點，因為使用strategy: :build表示build出來的project並沒有id，而task的project_id也不會有值，沒有意識到這樣的情況會在測試association上出錯。</p><p>其實處理關聯最好的做法是<strong>不要在factory中定義assoication，取而代之的是在測試中明確的設定所需的association</strong>，理由如下：</p><ul><li>明確的設定所需的association可以更清楚的了解在使用對應的model與method時連帶要準備的資料。</li><li>在factory中定義association，表示一旦測試資料被建立，association連帶會產生其它龐大的測試資料。</li><li>如果在測試model時，需要設定多個association，這表示model程式本身就有不好的設計(相依性太多)。如果測試資料建立時就把association都建好了，就會掩蓋這個警訊，這反而失去TDD在幫助設計程式的好處。</li></ul><div id="disqus_thread"></div></div></div><div class="lo-ctrl-panel lo-simple"><div class="ctrl-panel"><div class="lo-toc"><div class="toc"></div></div><div class="cp-menu"><div class="cp-first"></div><div class="cp-middle cp-mu-btn"><a href="/"><img src="/images/header/trademark_50x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/paper_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/tags"><img src="/images/menu/tags_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/categories"><img src="/images/menu/category_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a v-on:click="tocTb.switch('on')"><img src="/images/menu/toc_48x.svg" /></a></div><div class="cp-middle cp-mu-btn"><a href="/posts"><img src="/images/menu/search_48x.svg" /></a></div><div class="cp-last"></div></div></div></div></div></div><script type="text/javascript">$(function () {
+  // TOC
+  try {
+    var contents,
+        articleId;
+    articleId = function (articleName, element) {
+      return md5(articleName + element.previousSibling.innerText + element.nextSibling.innerText);
+    };
+    contents = gajus
+      .Contents({articleId: articleId});
+    $('.toc').append(contents.list());
+  } catch(e) {
+  }
+  // emoji
+  emojify.setConfig({
+    ignore_emoticons: true,
+    img_dir: '/images/emoji',
+    blacklist: {
+      elements: ['script', 'textarea', 'pre', 'code'],
+      classes: ['no-emojify']
+    }
+  });
+  emojify.run();
+});
+// disqus
+var disqus_shortname = 'wizard-note';
+var disqus_identifier = 'use-factory-to-prepare-testing-data';
+(function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();</script><script src="/js/post.js"></script></body></html>
